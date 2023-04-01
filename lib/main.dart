@@ -1,7 +1,8 @@
 import 'package:armyshop_mobile_frontend/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import './screens/products_screen.dart';
-import './screens/login_register_screen.dart';
+import 'screens/login_screen.dart';
+import 'screens/register_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -22,7 +23,8 @@ class MyApp extends StatelessWidget {
       home: const SplashScreen(),
       routes: {
         ProductsScreen.routeName: (context) => const ProductsScreen(),
-        LoginRegisterScreen.routeName: (context) => LoginRegisterScreen(),
+        LoginScreen.routeName: (context) => LoginScreen(),
+        RegisterScreen.routeName: (context) => RegisterScreen(),
       },
     );
   }

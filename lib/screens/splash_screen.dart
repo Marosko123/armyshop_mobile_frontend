@@ -7,7 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../server_handler.dart';
 import './products_screen.dart';
-import './login_register_screen.dart';
+import 'login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -21,11 +21,13 @@ class _SplashScreenState extends State<SplashScreen> {
   dynamic _timer;
 
   void getProducts() async {
-    ServerHandler()
-        .getProducts()
-        .then((value) => Navigator.of(context)
-            .popAndPushNamed(LoginRegisterScreen.routeName))
-        .catchError((e) => print(e));
+    // TODO - potrebujeme zobrazit popup ze nie je internet a reconectovat znovu
+    // ServerHandler()
+    //     .getProducts()
+    //     .then((value) =>
+    //         Navigator.of(context).popAndPushNamed(LoginScreen.routeName))
+    //     .catchError((e) => print(e));
+    Navigator.of(context).popAndPushNamed(LoginScreen.routeName);
   }
 
   @override

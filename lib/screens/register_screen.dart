@@ -1,25 +1,24 @@
 // ignore_for_file: avoid_print
 
 import 'package:armyshop_mobile_frontend/components/my_button.dart';
+import 'package:armyshop_mobile_frontend/screens/photo_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../components/switch_button.dart';
 import '../components/textfield.dart';
 
-class LoginRegisterScreen extends StatelessWidget {
-  static const routeName = '/login-register-screen';
+import './login_screen.dart';
 
-  LoginRegisterScreen({Key? key}) : super(key: key);
+class RegisterScreen extends StatelessWidget {
+  static const routeName = '/register-screen';
+
+  RegisterScreen({Key? key}) : super(key: key);
 
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  bool? _hasMilitaryPassport = false;
 
-  void signUserIn() {
-    print(emailController.text);
-    print(passwordController.text);
-  }
-
-  void registerUser() {
+  void register() {
     print(emailController.text);
     print(passwordController.text);
   }
@@ -44,7 +43,7 @@ class LoginRegisterScreen extends StatelessWidget {
                       child: Align(
                         alignment: Alignment.center,
                         child: Text(
-                          'Log In',
+                          'Register',
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -61,24 +60,31 @@ class LoginRegisterScreen extends StatelessWidget {
                 thickness: 1,
               ),
 
-              // space between login and switch
+              // space between register and switch
               const SizedBox(height: 10),
 
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SwitchButton(
+                  const SwitchButton(
                     text: 'Register',
-                    onTap: signUserIn,
+                    onTap: null,
+                    isHighlighted: true,
                   ),
                   SwitchButton(
                     text: 'Log In',
-                    onTap: registerUser,
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LoginScreen()));
+                    },
+                    isHighlighted: false,
                   ),
                 ],
               ),
 
-              // space between login and icon
+              // space between
               const SizedBox(height: 10),
 
               const Image(
@@ -111,10 +117,35 @@ class LoginRegisterScreen extends StatelessWidget {
               // space between password and button
               const SizedBox(height: 10),
 
-              // login button
+              // password input
+              Textfield(
+                controller: passwordController,
+                hintText: 'Repeat Password',
+                obscureText: true,
+              ),
+
+              const SizedBox(height: 5),
+
+              CheckboxListTile(
+                title: const Text(
+                  'I have military passport',
+                ),
+                value: _hasMilitaryPassport,
+                onChanged: (newValue) {
+                  _hasMilitaryPassport = newValue;
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => PhotoScreen()));
+                },
+                controlAffinity: ListTileControlAffinity.leading,
+              ),
+
+              // space between password and button
+              const SizedBox(height: 10),
+
+              // register button
               MyButton(
-                text: 'Log In',
-                onTap: signUserIn,
+                text: 'Register',
+                onTap: register,
               ),
 
               // space between button and forgot password

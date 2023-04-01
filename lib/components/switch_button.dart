@@ -3,8 +3,13 @@ import 'package:flutter/material.dart';
 class SwitchButton extends StatelessWidget {
   final Function()? onTap;
   final String text;
+  final bool isHighlighted;
 
-  const SwitchButton({super.key, required this.text, required this.onTap});
+  const SwitchButton(
+      {super.key,
+      required this.text,
+      required this.onTap,
+      required this.isHighlighted});
 
   // This widget is the root of your application.
   @override
@@ -15,7 +20,9 @@ class SwitchButton extends StatelessWidget {
           width: 100,
           height: 50,
           decoration: BoxDecoration(
-              color: Color.fromARGB(0, 255, 255, 255),
+              color: isHighlighted
+                  ? const Color.fromARGB(255, 255, 255, 255)
+                  : const Color.fromARGB(0, 255, 255, 255),
               borderRadius: BorderRadius.circular(5),
               border:
                   Border.all(color: Color.fromARGB(255, 0, 0, 0), width: 1)),
