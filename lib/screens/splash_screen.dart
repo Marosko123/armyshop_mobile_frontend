@@ -1,29 +1,39 @@
+// ignore_for_file: avoid_print
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../server_handler.dart';
+import './products_screen.dart';
+import './login_register_screen.dart';
+
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
 
   @override
-  State<SplashScreen> createState() => _splashScreenState();
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _splashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends State<SplashScreen> {
   bool showLoading = false;
   dynamic _timer;
+
+  void getProducts() async {
+    ServerHandler()
+        .getProducts()
+        .then((value) => Navigator.of(context)
+            .popAndPushNamed(LoginRegisterScreen.routeName))
+        .catchError((e) => print(e));
+  }
 
   @override
   void initState() {
     super.initState();
 
-    _timer = Timer(
-        const Duration(seconds: 3),
-        () => {
-              showLoading = true,
-              setState(() {}),
-            });
+    _timer = Timer(const Duration(seconds: 3),
+        () => {showLoading = true, setState(() {}), getProducts()});
   }
 
   @override
@@ -60,7 +70,7 @@ class _splashScreenState extends State<SplashScreen> {
             if (showLoading)
               Padding(
                   padding: const EdgeInsets.only(top: 5.0),
-                  child: Text('Loading Sellers', style: GoogleFonts.poppins()))
+                  child: Text('Loading App', style: GoogleFonts.poppins()))
           ],
         ),
       ),
