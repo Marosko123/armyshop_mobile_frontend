@@ -7,8 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../components/my_button.dart';
 import '../server_handler.dart';
-import './products_screen.dart';
-import 'login_screen.dart';
+import 'login_register_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -24,11 +23,11 @@ class _SplashScreenState extends State<SplashScreen> {
   dynamic _timer;
 
   void getProducts() async {
-    // TODO - potrebujeme zobrazit popup ze nie je internet a reconectovat znovu
     await ServerHandler()
         .getProducts()
-        .then((value) =>
-            Navigator.of(context).popAndPushNamed(LoginScreen.routeName))
+        .then((value) => Navigator.of(context)
+            .popAndPushNamed(LoginRegisterScreen.routeName))
+        // ignore: invalid_return_type_for_catch_error
         .catchError((e) => print(e));
 
     _noInternetCounter++;
@@ -47,7 +46,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void continueOfflinePressed() {
-    Navigator.of(context).popAndPushNamed(LoginScreen.routeName);
+    Navigator.of(context).popAndPushNamed(LoginRegisterScreen.routeName);
   }
 
   @override
@@ -96,11 +95,9 @@ class _SplashScreenState extends State<SplashScreen> {
             if (noInternet)
               Padding(
                   padding: const EdgeInsets.only(top: 5.0),
-                  child: Text(
-                      'Our apologies, connection to the server may not be available',
+                  child: Text('Connection to the server may not be available',
                       style: GoogleFonts.poppins())),
             if (noInternet)
-              // login button
               MyButton(
                 text: 'Continue offline',
                 onTap: continueOfflinePressed,

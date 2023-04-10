@@ -2,7 +2,7 @@
 
 import 'dart:io';
 
-import 'package:armyshop_mobile_frontend/screens/register_screen.dart';
+import 'package:armyshop_mobile_frontend/screens/login_register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
@@ -31,11 +31,10 @@ class PhotoScreenState extends State<PhotoScreen> {
 
     await imageFile!.copy(imagePath);
 
+    // TODO: after photo publishing set the military_passport_checkbox to true
     // ignore: use_build_context_synchronously
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => RegisterScreen(someValue: true)));
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const LoginRegisterScreen()));
   }
 
   @override
@@ -107,24 +106,21 @@ class PhotoScreenState extends State<PhotoScreen> {
         ),
 
         // submit photo button
-        imageFile != null
-            ? Padding(
-                padding:
-                    const EdgeInsets.only(left: 30.0, right: 30.0, bottom: 30),
-                child: ElevatedButton(
-                  onPressed: () {
-                    submitPhoto();
-                  },
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.green),
-                      padding:
-                          MaterialStateProperty.all(const EdgeInsets.all(12)),
-                      textStyle: MaterialStateProperty.all(
-                          const TextStyle(fontSize: 16))),
-                  child: const Text('Submit photo'),
-                ),
-              )
-            : Container(),
+        if (imageFile != null)
+          Padding(
+            padding: const EdgeInsets.only(left: 30.0, right: 30.0, bottom: 30),
+            child: ElevatedButton(
+              onPressed: () {
+                submitPhoto();
+              },
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.green),
+                  padding: MaterialStateProperty.all(const EdgeInsets.all(12)),
+                  textStyle:
+                      MaterialStateProperty.all(const TextStyle(fontSize: 16))),
+              child: const Text('Submit photo'),
+            ),
+          )
       ],
     ));
   }
