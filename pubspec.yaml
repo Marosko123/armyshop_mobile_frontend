@@ -36,6 +36,8 @@ dependencies:
   google_nav_bar: ^5.0.6
   path_provider: ^2.0.5
   expandable: ^5.0.1
+  grouped_list: ^4.2.0
+  intl: ^0.17.0
 
 
   # The following adds the Cupertino Icons font to your application.

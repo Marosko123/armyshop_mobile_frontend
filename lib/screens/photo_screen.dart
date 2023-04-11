@@ -42,6 +42,8 @@ class PhotoScreenState extends State<PhotoScreen> {
     return Scaffold(
         body: ListView(
       children: [
+        const SizedBox(height: 10),
+
         Row(
           children: const [
             Align(

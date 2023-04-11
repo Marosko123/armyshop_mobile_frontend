@@ -39,6 +39,8 @@ class LoginRegisterScreenState extends State<LoginRegisterScreen> {
           child: Center(
             child: Column(
               children: [
+                const SizedBox(height: 10),
+
                 Row(
                   children: [
                     const Align(

@@ -1,3 +1,5 @@
+import 'package:armyshop_mobile_frontend/components/my_button.dart';
+import 'package:armyshop_mobile_frontend/screens/chat_rooms.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 
@@ -14,8 +16,9 @@ class UserAccountState extends State<UserAccount> {
   String loremIpsum =
       'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ';
 
-  String helpText =
-      'If you have any questions, please contact us at: \n\nsupport@armyshop.xd';
+  void openChatRoom() {
+    Navigator.of(context).pushNamed(ChatRooms.routeName);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -168,7 +171,8 @@ class UserAccountState extends State<UserAccount> {
           child: ExpandablePanel(
             header: Container(
               decoration: const BoxDecoration(
-                  color: Color.fromARGB(255, 173, 173, 173)),
+                color: Color.fromARGB(255, 173, 173, 173),
+              ),
               child: const Padding(
                 padding: EdgeInsets.only(top: 12, left: 15),
                 child: Text(
@@ -183,12 +187,27 @@ class UserAccountState extends State<UserAccount> {
             collapsed: const Text(''),
             expanded: Container(
               decoration: const BoxDecoration(
-                  color: Color.fromARGB(255, 204, 204, 204)),
+                color: Color.fromARGB(255, 204, 204, 204),
+              ),
               child: Padding(
                 padding: const EdgeInsets.all(20),
-                child: Text(
-                  helpText,
-                  style: const TextStyle(fontSize: 18),
+                child: Column(
+                  children: [
+                    const Text(
+                      'Write us an email:',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    const Text(
+                      'support@armyshop.xd',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    const SizedBox(height: 10),
+                    const Text(
+                      'Or',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    MyButton(text: 'Chat with us', onTap: openChatRoom),
+                  ],
                 ),
               ),
             ),
