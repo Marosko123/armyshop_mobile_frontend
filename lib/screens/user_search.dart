@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class UserSearch extends StatelessWidget {
+  static const routeName = '/user-search-screen';
+
   const UserSearch({super.key});
 
   @override

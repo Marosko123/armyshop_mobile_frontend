@@ -6,15 +6,15 @@ import 'package:armyshop_mobile_frontend/screens/user_shopping_cart.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+class PrimaryPage extends StatefulWidget {
+  const PrimaryPage({Key? key}) : super(key: key);
   static const routeName = '/products-screen';
 
   @override
-  HomePageState createState() => HomePageState();
+  PrimaryPageState createState() => PrimaryPageState();
 }
 
-class HomePageState extends State<HomePage> {
+class PrimaryPageState extends State<PrimaryPage> {
   int _selectedIndex = 0;
 
   void _navigateToBottomBar(int index) {
@@ -34,7 +34,56 @@ class HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: _pages[_selectedIndex],
+        backgroundColor: Colors.grey[300],
+        body: SingleChildScrollView(
+          child: Center(
+            child: Column(
+              children: [
+                // Header
+                Row(
+                  children: [
+                    const Align(
+                      alignment: Alignment.centerLeft,
+                      child: BackButton(),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 40.0),
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            _selectedIndex == 0
+                                ? 'Home'
+                                : _selectedIndex == 1
+                                    ? 'Likes'
+                                    : _selectedIndex == 2
+                                        ? 'Search'
+                                        : _selectedIndex == 3
+                                            ? 'Cart'
+                                            : 'Account',
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+
+                const Divider(
+                  color: Colors.grey,
+                  thickness: 1,
+                ),
+
+                // space between login and switch
+                const SizedBox(height: 10),
+                _pages[_selectedIndex],
+              ],
+            ),
+          ),
+        ),
         bottomNavigationBar: Container(
           color: Colors.black,
           child: Padding(

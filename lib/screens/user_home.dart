@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class UserHome extends StatelessWidget {
+  static const routeName = '/user-home-screen';
+
   const UserHome({super.key});
 
   @override

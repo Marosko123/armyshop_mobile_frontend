@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class UserShoppingCart extends StatelessWidget {
+  static const routeName = '/user-shopping-cart-screen';
+
   const UserShoppingCart({super.key});
 
   @override

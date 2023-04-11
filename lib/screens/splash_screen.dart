@@ -2,12 +2,12 @@
 
 import 'dart:async';
 
+import 'package:armyshop_mobile_frontend/primaryPage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../components/my_button.dart';
 import '../server_handler.dart';
-import 'login_register_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -25,8 +25,8 @@ class _SplashScreenState extends State<SplashScreen> {
   void getProducts() async {
     await ServerHandler()
         .getProducts()
-        .then((value) => Navigator.of(context)
-            .popAndPushNamed(LoginRegisterScreen.routeName))
+        .then((value) =>
+            Navigator.of(context).popAndPushNamed(PrimaryPage.routeName))
         // ignore: invalid_return_type_for_catch_error
         .catchError((e) => print(e));
 
@@ -46,7 +46,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void continueOfflinePressed() {
-    Navigator.of(context).popAndPushNamed(LoginRegisterScreen.routeName);
+    Navigator.of(context).popAndPushNamed(PrimaryPage.routeName);
   }
 
   @override

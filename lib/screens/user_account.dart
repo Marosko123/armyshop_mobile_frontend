@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class UserAccount extends StatelessWidget {
+  static const routeName = '/user-account-screen';
+
   const UserAccount({super.key});
 
   @override
