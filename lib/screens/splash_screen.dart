@@ -2,7 +2,7 @@
 
 import 'dart:async';
 
-import 'package:armyshop_mobile_frontend/primaryPage.dart';
+import 'package:armyshop_mobile_frontend/primary_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
