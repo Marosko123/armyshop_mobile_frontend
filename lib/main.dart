@@ -31,7 +31,8 @@ class MyApp extends StatelessWidget {
         RegisterScreen.routeName: (context) => RegisterScreen(),
         LoginRegisterScreen.routeName: (context) => const LoginRegisterScreen(),
         ChatRooms.routeName: (context) => const ChatRooms(),
-        Chat.routeName: (context) => const Chat(),
+        Chat.routeName: (context) => Chat(
+            roomName: ModalRoute.of(context)?.settings.arguments as String),
       },
     );
   }
