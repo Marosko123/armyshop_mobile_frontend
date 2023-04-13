@@ -6,6 +6,8 @@ import 'package:armyshop_mobile_frontend/screens/user_shopping_cart.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
+import 'colors.dart';
+
 class PrimaryPage extends StatefulWidget {
   const PrimaryPage({Key? key}) : super(key: key);
   static const routeName = '/products-screen';
@@ -16,6 +18,11 @@ class PrimaryPage extends StatefulWidget {
 
 class PrimaryPageState extends State<PrimaryPage> {
   int _selectedIndex = 0;
+  List<Widget> _pages = [];
+
+  void updateState() {
+    setState(() {});
+  }
 
   void _navigateToBottomBar(int index) {
     setState(() {
@@ -23,18 +30,35 @@ class PrimaryPageState extends State<PrimaryPage> {
     });
   }
 
-  final List<Widget> _pages = [
-    const UserHome(),
-    const UserLikedList(),
-    const UserSearch(),
-    const UserShoppingCart(),
-    const UserAccount(),
-  ];
+  void _updateMessage() {
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize the _pages list inside initState()
+    _pages = [
+      const UserHome(),
+      const UserLikedList(),
+      const UserSearch(),
+      const UserShoppingCart(),
+      UserAccount(callback: _updateMessage),
+    ];
+  }
+
+  // final List<Widget> _pages = [
+  //   const UserHome(),
+  //   const UserLikedList(),
+  //   const UserSearch(),
+  //   const UserShoppingCart(),
+  //   UserAccount(callback: _updateMessage),
+  // ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: ArmyshopColors.backgroundColor,
       body: SingleChildScrollView(
         child: Center(
           child: Column(

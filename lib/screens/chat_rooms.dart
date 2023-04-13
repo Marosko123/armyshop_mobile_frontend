@@ -14,8 +14,8 @@ class ChatRooms extends StatefulWidget {
 class ChatRoomsState extends State<ChatRooms> {
   List chatRooms = [1, 2, 3, 4, 5, 6];
 
-  void openChatRoom() {
-    Navigator.of(context).pushNamed(Chat.routeName);
+  void openChatRoom(String roomName) {
+    Navigator.of(context).pushNamed(Chat.routeName, arguments: roomName);
   }
 
   void createChatRoom() {
@@ -35,7 +35,10 @@ class ChatRoomsState extends State<ChatRooms> {
       chatRoomButtons.add(
         Padding(
           padding: const EdgeInsets.only(top: 10),
-          child: MyButton(text: 'Room $x', onTap: openChatRoom),
+          child: MyButton(
+            text: 'Room $x',
+            onTap: () => openChatRoom('Room $x'),
+          ),
         ),
       );
     }
