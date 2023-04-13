@@ -37,6 +37,23 @@ class ArmyshopColors {
   // Chat bubble color
   static const Color lightModeChatBubble = Color.fromARGB(255, 0, 76, 138);
   static const Color darkModeChatBubble = Color.fromARGB(255, 0, 153, 180);
+  // Logo color
+  static const Color lightModeLogo = Color.fromARGB(255, 4, 133, 0);
+  static const Color darkModeLogo = Color.fromARGB(255, 41, 204, 0);
+  // Switch button color
+  static const Color lightModeSwitchButtonDisabled =
+      Color.fromARGB(255, 255, 255, 255);
+  static const Color darkModeSwitchButtonDisabled =
+      Color.fromARGB(255, 0, 0, 0);
+  // Switch button highlighted color
+  static const Color lightModeSwitchButtonHighlighted =
+      Color.fromARGB(255, 211, 211, 211);
+  static const Color darkModeSwitchButtonHighlighted =
+      Color.fromARGB(255, 90, 90, 90);
+  // Switch button border color
+  static const Color lightModeSwitchButtonBorder = Color.fromARGB(255, 0, 0, 0);
+  static const Color darkModeSwitchButtonBorder =
+      Color.fromARGB(255, 255, 255, 255);
 
   // Variables
   static Color textColor = const Color.fromARGB(0, 0, 0, 0);
@@ -49,6 +66,10 @@ class ArmyshopColors {
   static Color textFieldFillColor = const Color.fromARGB(0, 0, 0, 0);
   static Color textFieldHintColor = const Color.fromARGB(0, 0, 0, 0);
   static Color chatBubbleColor = const Color.fromARGB(0, 0, 0, 0);
+  static Color logoColor = const Color.fromARGB(0, 0, 0, 0);
+  static Color switchButtonDisabled = const Color.fromARGB(0, 0, 0, 0);
+  static Color switchButtonHighlighted = const Color.fromARGB(0, 0, 0, 0);
+  static Color switchButtonBorder = const Color.fromARGB(0, 0, 0, 0);
 
   static void setColors() {
     textColor = isDarkMode ? darkModeText : lightModeText;
@@ -64,6 +85,15 @@ class ArmyshopColors {
     textFieldHintColor =
         isDarkMode ? darkModeTextFieldHint : lightModeTextFieldHint;
     chatBubbleColor = isDarkMode ? darkModeChatBubble : lightModeChatBubble;
+    logoColor = isDarkMode ? darkModeLogo : lightModeLogo;
+    switchButtonDisabled = isDarkMode
+        ? darkModeSwitchButtonDisabled
+        : lightModeSwitchButtonDisabled;
+    switchButtonHighlighted = isDarkMode
+        ? darkModeSwitchButtonHighlighted
+        : lightModeSwitchButtonHighlighted;
+    switchButtonBorder =
+        isDarkMode ? darkModeSwitchButtonBorder : lightModeSwitchButtonBorder;
   }
 
   static void changeColors(bool value) {

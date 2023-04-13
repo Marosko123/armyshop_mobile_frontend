@@ -4,6 +4,8 @@ import 'package:armyshop_mobile_frontend/screens/chat_rooms.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 
+import 'login_register_screen.dart';
+
 class UserAccount extends StatefulWidget {
   final Function callback;
   static const routeName = '/user-account-screen';
@@ -17,6 +19,7 @@ class UserAccount extends StatefulWidget {
 class UserAccountState extends State<UserAccount> {
   String loremIpsum =
       'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ';
+  bool isLoggedIn = false;
 
   void openChatRoom() {
     Navigator.of(context).pushNamed(ChatRooms.routeName);
@@ -40,16 +43,34 @@ class UserAccountState extends State<UserAccount> {
       ),
 
       // space between icon and name
-      const SizedBox(height: 10),
+      const SizedBox(height: 20),
 
-      Text(
-        'Ferko Mrkvicka',
-        style: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-          color: ArmyshopColors.textColor,
+      if (isLoggedIn)
+        Text(
+          'Ferko Mrkvicka',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: ArmyshopColors.textColor,
+          ),
         ),
-      ),
+
+      if (!isLoggedIn) ...[
+        Text(
+          'You are not logged in',
+          style: TextStyle(
+            fontSize: 20,
+            color: ArmyshopColors.textColor,
+          ),
+        ),
+        const SizedBox(height: 20),
+        MyButton(
+          text: 'Login',
+          onTap: () {
+            Navigator.of(context).pushNamed(LoginRegisterScreen.routeName);
+          },
+        ),
+      ],
 
       Padding(
         padding: const EdgeInsets.only(left: 30, right: 30, top: 200),
@@ -65,50 +86,6 @@ class UserAccountState extends State<UserAccount> {
                 padding: const EdgeInsets.only(top: 12, left: 15),
                 child: Text(
                   'Preferences',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: ArmyshopColors.textColor,
-                  ),
-                ),
-              ),
-            ),
-            collapsed: const Text(''),
-            expanded: Container(
-              decoration: BoxDecoration(
-                color: ArmyshopColors.dropdownContentColor,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Text(
-                  List.generate(5, (_) => loremIpsum).join('\n\n'),
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: ArmyshopColors.textColor,
-                  ),
-                ),
-              ),
-            ),
-            builder: (_, collapsed, expanded) =>
-                Expandable(collapsed: collapsed, expanded: expanded),
-          ),
-        ),
-      ),
-
-      Padding(
-        padding: const EdgeInsets.only(left: 30, right: 30, top: 10),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5),
-            color: ArmyshopColors.dropdownColor,
-          ),
-          child: ExpandablePanel(
-            header: Container(
-              decoration: BoxDecoration(color: ArmyshopColors.dropdownColor),
-              child: Padding(
-                padding: EdgeInsets.only(top: 12, left: 15),
-                child: Text(
-                  'Account settings',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -157,118 +134,118 @@ class UserAccountState extends State<UserAccount> {
         ),
       ),
 
-      Padding(
-        padding: const EdgeInsets.only(left: 30, right: 30, top: 10),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5),
-            color: ArmyshopColors.dropdownColor,
-          ),
-          child: ExpandablePanel(
-            header: Container(
-              decoration: BoxDecoration(
-                color: ArmyshopColors.dropdownColor,
-              ),
-              child: Padding(
-                padding: EdgeInsets.only(top: 12, left: 15),
-                child: Text(
-                  'Favorite items',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: ArmyshopColors.textColor,
+      if (isLoggedIn)
+        Padding(
+          padding: const EdgeInsets.only(left: 30, right: 30, top: 10),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              color: ArmyshopColors.dropdownColor,
+            ),
+            child: ExpandablePanel(
+              header: Container(
+                decoration: BoxDecoration(color: ArmyshopColors.dropdownColor),
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 12, left: 15),
+                  child: Text(
+                    'Account Settings',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: ArmyshopColors.textColor,
+                    ),
                   ),
                 ),
               ),
-            ),
-            collapsed: const Text(''),
-            expanded: Container(
-              decoration: BoxDecoration(
-                color: ArmyshopColors.dropdownContentColor,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Text(
-                  List.generate(5, (_) => loremIpsum).join('\n\n'),
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: ArmyshopColors.textColor,
+              collapsed: const Text(''),
+              expanded: Container(
+                decoration: BoxDecoration(
+                  color: ArmyshopColors.dropdownContentColor,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Text(
+                    List.generate(5, (_) => loremIpsum).join('\n\n'),
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: ArmyshopColors.textColor,
+                    ),
                   ),
                 ),
               ),
+              builder: (_, collapsed, expanded) =>
+                  Expandable(collapsed: collapsed, expanded: expanded),
             ),
-            builder: (_, collapsed, expanded) =>
-                Expandable(collapsed: collapsed, expanded: expanded),
           ),
         ),
-      ),
 
-      Padding(
-        padding:
-            const EdgeInsets.only(left: 30, right: 30, top: 10, bottom: 30),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5),
-            color: ArmyshopColors.dropdownColor,
-          ),
-          child: ExpandablePanel(
-            header: Container(
-              decoration: BoxDecoration(
-                color: ArmyshopColors.dropdownColor,
-              ),
-              child: Padding(
-                padding: EdgeInsets.only(top: 12, left: 15),
-                child: Text(
-                  'Help',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: ArmyshopColors.textColor,
+      if (isLoggedIn)
+        Padding(
+          padding:
+              const EdgeInsets.only(left: 30, right: 30, top: 10, bottom: 30),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              color: ArmyshopColors.dropdownColor,
+            ),
+            child: ExpandablePanel(
+              header: Container(
+                decoration: BoxDecoration(
+                  color: ArmyshopColors.dropdownColor,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 12, left: 15),
+                  child: Text(
+                    'Help',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: ArmyshopColors.textColor,
+                    ),
                   ),
                 ),
               ),
-            ),
-            collapsed: const Text(''),
-            expanded: Container(
-              decoration: BoxDecoration(
-                color: ArmyshopColors.dropdownContentColor,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  children: [
-                    Text(
-                      'Write us an email:',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: ArmyshopColors.textColor,
+              collapsed: const Text(''),
+              expanded: Container(
+                decoration: BoxDecoration(
+                  color: ArmyshopColors.dropdownContentColor,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    children: [
+                      Text(
+                        'Write us an email:',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: ArmyshopColors.textColor,
+                        ),
                       ),
-                    ),
-                    Text(
-                      'support@armyshop.xd',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: ArmyshopColors.textColor,
+                      Text(
+                        'support@armyshop.xd',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: ArmyshopColors.textColor,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      'Or',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: ArmyshopColors.textColor,
+                      const SizedBox(height: 10),
+                      Text(
+                        'Or',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: ArmyshopColors.textColor,
+                        ),
                       ),
-                    ),
-                    MyButton(text: 'Chat with us', onTap: openChatRoom),
-                  ],
+                      MyButton(text: 'Chat with us', onTap: openChatRoom),
+                    ],
+                  ),
                 ),
               ),
+              builder: (_, collapsed, expanded) =>
+                  Expandable(collapsed: collapsed, expanded: expanded),
             ),
-            builder: (_, collapsed, expanded) =>
-                Expandable(collapsed: collapsed, expanded: expanded),
           ),
         ),
-      ),
     ]);
   }
 }

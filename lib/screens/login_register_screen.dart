@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print
 
+import 'package:armyshop_mobile_frontend/colors.dart';
 import 'package:flutter/material.dart';
 
 import '../components/switch_button.dart';
@@ -33,7 +34,7 @@ class LoginRegisterScreenState extends State<LoginRegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: ArmyshopColors.backgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Center(
@@ -43,9 +44,11 @@ class LoginRegisterScreenState extends State<LoginRegisterScreen> {
 
                 Row(
                   children: [
-                    const Align(
+                    Align(
                       alignment: Alignment.centerLeft,
-                      child: BackButton(),
+                      child: BackButton(
+                        color: ArmyshopColors.textColor,
+                      ),
                     ),
                     Expanded(
                       child: Padding(
@@ -54,9 +57,10 @@ class LoginRegisterScreenState extends State<LoginRegisterScreen> {
                           alignment: Alignment.center,
                           child: Text(
                             _isLoginScreenOn ? 'Log In' : 'Register',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
+                              color: ArmyshopColors.textColor,
                             ),
                           ),
                         ),
@@ -65,8 +69,8 @@ class LoginRegisterScreenState extends State<LoginRegisterScreen> {
                   ],
                 ),
 
-                const Divider(
-                  color: Colors.grey,
+                Divider(
+                  color: ArmyshopColors.dividerColor,
                   thickness: 1,
                 ),
 
@@ -100,10 +104,10 @@ class LoginRegisterScreenState extends State<LoginRegisterScreen> {
                 // space between login and icon
                 const SizedBox(height: 10),
 
-                const Image(
-                  image: AssetImage('assets/images/logoTransparent.png'),
+                Image(
+                  image: const AssetImage('assets/images/logoTransparent.png'),
                   width: 200,
-                  color: Color.fromARGB(255, 20, 90, 11),
+                  color: ArmyshopColors.logoColor,
                   fit: BoxFit.contain,
                 ),
 

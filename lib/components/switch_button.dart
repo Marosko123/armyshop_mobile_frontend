@@ -1,3 +1,4 @@
+import 'package:armyshop_mobile_frontend/colors.dart';
 import 'package:flutter/material.dart';
 
 class SwitchButton extends StatelessWidget {
@@ -21,16 +22,19 @@ class SwitchButton extends StatelessWidget {
         height: 50,
         decoration: BoxDecoration(
           color: isHighlighted
-              ? const Color.fromARGB(255, 255, 255, 255)
-              : const Color.fromARGB(0, 255, 255, 255),
+              ? ArmyshopColors.switchButtonHighlighted
+              : ArmyshopColors.switchButtonDisabled,
           borderRadius: BorderRadius.circular(5),
-          border: Border.all(color: Color.fromARGB(255, 0, 0, 0), width: 1),
+          border: Border.all(
+            color: ArmyshopColors.switchButtonBorder,
+            width: 1,
+          ),
         ),
         child: Center(
           child: Text(
             text,
-            style: const TextStyle(
-              color: Color.fromARGB(255, 0, 0, 0),
+            style: TextStyle(
+              color: ArmyshopColors.textColor,
               fontWeight: FontWeight.normal,
               fontSize: 16,
             ),
