@@ -12,15 +12,19 @@ class ServerHandler {
     try {
       List<Product> products = [];
 
-      http.Response response = await http.get(Uri.parse('$_baseURL/products'));
+      http.Response response = await http.get(
+        Uri.parse('$_baseURL/products'),
+      );
       print(response.body);
 
-      final Map<String, dynamic> data = (json.decode(response.body));
+      final Map<String, dynamic> data = json.decode(response.body);
 
       final List productsList = data['products'];
 
       for (Map m in productsList) {
-        products.add(Product.fromMap(m));
+        products.add(
+          Product.fromMap(m),
+        );
       }
 
       return products;

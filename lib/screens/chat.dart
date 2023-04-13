@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
 
+import '../colors.dart';
 import '../models/message.dart';
 
 class Chat extends StatefulWidget {
@@ -72,7 +73,7 @@ class ChatState extends State<Chat> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: ArmyshopColors.backgroundColor,
       body: Column(
         children: [
           const SizedBox(height: 10),
@@ -80,9 +81,11 @@ class ChatState extends State<Chat> {
           // Header
           Row(
             children: [
-              const Align(
+              Align(
                 alignment: Alignment.centerLeft,
-                child: BackButton(),
+                child: BackButton(
+                  color: ArmyshopColors.textColor,
+                ),
               ),
               Expanded(
                 child: Padding(
@@ -91,9 +94,10 @@ class ChatState extends State<Chat> {
                     alignment: Alignment.center,
                     child: Text(
                       _roomName,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
+                        color: ArmyshopColors.textColor,
                       ),
                     ),
                   ),
@@ -103,14 +107,17 @@ class ChatState extends State<Chat> {
                 alignment: Alignment.centerRight,
                 child: GestureDetector(
                   onTap: editChat,
-                  child: const Icon(Icons.settings),
+                  child: Icon(
+                    Icons.settings,
+                    color: ArmyshopColors.textColor,
+                  ),
                 ),
               ),
             ],
           ),
 
-          const Divider(
-            color: Colors.grey,
+          Divider(
+            color: ArmyshopColors.dividerColor,
             thickness: 1,
           ),
 
@@ -136,7 +143,9 @@ class ChatState extends State<Chat> {
                       padding: const EdgeInsets.all(8),
                       child: Text(
                         DateFormat.yMMMd().format(message.date),
-                        style: const TextStyle(color: Colors.white),
+                        style: TextStyle(
+                          color: ArmyshopColors.textColor,
+                        ),
                       ),
                     ),
                   ),
@@ -147,17 +156,23 @@ class ChatState extends State<Chat> {
                     ? Alignment.centerRight
                     : Alignment.centerLeft,
                 child: Card(
+                  color: ArmyshopColors.chatBubbleColor,
                   elevation: 8,
                   child: Padding(
                     padding: const EdgeInsets.all(12),
-                    child: Text(message.text),
+                    child: Text(
+                      message.text,
+                      style: TextStyle(
+                        color: ArmyshopColors.textColor,
+                      ),
+                    ),
                   ),
                 ),
               ),
             ),
           ),
           Container(
-            color: Colors.grey.shade400,
+            color: ArmyshopColors.textFieldFillColor,
             child: Row(
               children: [
                 Expanded(

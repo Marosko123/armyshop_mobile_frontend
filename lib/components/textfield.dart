@@ -1,3 +1,4 @@
+import 'package:armyshop_mobile_frontend/colors.dart';
 import 'package:flutter/material.dart';
 
 class Textfield extends StatelessWidget {
@@ -16,20 +17,25 @@ class Textfield extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25.0),
-        child: TextField(
-            controller: controller,
-            obscureText: obscureText,
-            decoration: InputDecoration(
-                enabledBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
-                ),
-                focusedBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey),
-                ),
-                fillColor: Colors.grey.shade200,
-                filled: true,
-                hintText: hintText,
-                hintStyle: TextStyle(color: Colors.grey[500]))));
+      padding: const EdgeInsets.symmetric(horizontal: 25.0),
+      child: TextField(
+        controller: controller,
+        obscureText: obscureText,
+        decoration: InputDecoration(
+          enabledBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.white),
+          ),
+          focusedBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey),
+          ),
+          fillColor: ArmyshopColors.textFieldFillColor,
+          filled: true,
+          hintText: hintText,
+          hintStyle: TextStyle(
+            color: ArmyshopColors.textFieldHintColor,
+          ),
+        ),
+      ),
+    );
   }
 }

@@ -17,21 +17,26 @@ class SwitchButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-          width: 100,
-          height: 50,
-          decoration: BoxDecoration(
-              color: isHighlighted
-                  ? const Color.fromARGB(255, 255, 255, 255)
-                  : const Color.fromARGB(0, 255, 255, 255),
-              borderRadius: BorderRadius.circular(5),
-              border:
-                  Border.all(color: Color.fromARGB(255, 0, 0, 0), width: 1)),
-          child: Center(
-              child: Text(text,
-                  style: const TextStyle(
-                      color: Color.fromARGB(255, 0, 0, 0),
-                      fontWeight: FontWeight.normal,
-                      fontSize: 16)))),
+        width: 100,
+        height: 50,
+        decoration: BoxDecoration(
+          color: isHighlighted
+              ? const Color.fromARGB(255, 255, 255, 255)
+              : const Color.fromARGB(0, 255, 255, 255),
+          borderRadius: BorderRadius.circular(5),
+          border: Border.all(color: Color.fromARGB(255, 0, 0, 0), width: 1),
+        ),
+        child: Center(
+          child: Text(
+            text,
+            style: const TextStyle(
+              color: Color.fromARGB(255, 0, 0, 0),
+              fontWeight: FontWeight.normal,
+              fontSize: 16,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

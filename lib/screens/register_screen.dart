@@ -62,8 +62,12 @@ class RegisterScreen extends StatelessWidget {
           value: someValue ?? _hasMilitaryPassport,
           onChanged: (newValue) {
             _hasMilitaryPassport = newValue;
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const PhotoScreen()));
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const PhotoScreen(),
+              ),
+            );
           },
           controlAffinity: ListTileControlAffinity.leading,
         ),

@@ -84,19 +84,28 @@ class _SplashScreenState extends State<SplashScreen> {
                 height: 20.0,
                 width: 20.0,
                 child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Color(0xff4e8489)),
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    Color(0xff4e8489),
+                  ),
                   strokeWidth: 1.5,
                 ),
               ),
             if (showLoading)
               Padding(
-                  padding: const EdgeInsets.only(top: 5.0),
-                  child: Text('Loading App', style: GoogleFonts.poppins())),
+                padding: const EdgeInsets.only(top: 5.0),
+                child: Text(
+                  'Loading App',
+                  style: GoogleFonts.poppins(),
+                ),
+              ),
             if (noInternet)
               Padding(
-                  padding: const EdgeInsets.only(top: 5.0),
-                  child: Text('Connection to the server may not be available',
-                      style: GoogleFonts.poppins())),
+                padding: const EdgeInsets.only(top: 5.0),
+                child: Text(
+                  'Connection to the server may not be available',
+                  style: GoogleFonts.poppins(),
+                ),
+              ),
             if (noInternet)
               MyButton(
                 text: 'Continue offline',

@@ -47,14 +47,6 @@ class PrimaryPageState extends State<PrimaryPage> {
     ];
   }
 
-  // final List<Widget> _pages = [
-  //   const UserHome(),
-  //   const UserLikedList(),
-  //   const UserSearch(),
-  //   const UserShoppingCart(),
-  //   UserAccount(callback: _updateMessage),
-  // ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,9 +60,11 @@ class PrimaryPageState extends State<PrimaryPage> {
               // Header
               Row(
                 children: [
-                  const Align(
+                  Align(
                     alignment: Alignment.centerLeft,
-                    child: BackButton(),
+                    child: BackButton(
+                      color: ArmyshopColors.textColor,
+                    ),
                   ),
                   Expanded(
                     child: Padding(
@@ -87,9 +81,10 @@ class PrimaryPageState extends State<PrimaryPage> {
                                       : _selectedIndex == 3
                                           ? 'Cart'
                                           : 'Account',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
+                            color: ArmyshopColors.textColor,
                           ),
                         ),
                       ),
@@ -98,8 +93,8 @@ class PrimaryPageState extends State<PrimaryPage> {
                 ],
               ),
 
-              const Divider(
-                color: Colors.grey,
+              Divider(
+                color: ArmyshopColors.dividerColor,
                 thickness: 1,
               ),
 

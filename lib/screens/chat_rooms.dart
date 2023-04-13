@@ -2,6 +2,8 @@ import 'package:armyshop_mobile_frontend/components/my_button.dart';
 import 'package:armyshop_mobile_frontend/screens/chat.dart';
 import 'package:flutter/material.dart';
 
+import '../colors.dart';
+
 class ChatRooms extends StatefulWidget {
   const ChatRooms({Key? key}) : super(key: key);
 
@@ -44,7 +46,7 @@ class ChatRoomsState extends State<ChatRooms> {
     }
 
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: ArmyshopColors.backgroundColor,
       body: SingleChildScrollView(
         child: Center(
           child: Column(
@@ -54,13 +56,15 @@ class ChatRoomsState extends State<ChatRooms> {
               // Header
               Row(
                 children: [
-                  const Align(
+                  Align(
                     alignment: Alignment.centerLeft,
-                    child: BackButton(),
+                    child: BackButton(
+                      color: ArmyshopColors.textColor,
+                    ),
                   ),
-                  const Expanded(
+                  Expanded(
                     child: Padding(
-                      padding: EdgeInsets.only(right: 40.0),
+                      padding: const EdgeInsets.only(right: 40.0),
                       child: Align(
                         alignment: Alignment.center,
                         child: Text(
@@ -68,6 +72,7 @@ class ChatRoomsState extends State<ChatRooms> {
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
+                            color: ArmyshopColors.textColor,
                           ),
                         ),
                       ),
@@ -77,14 +82,17 @@ class ChatRoomsState extends State<ChatRooms> {
                     alignment: Alignment.centerRight,
                     child: GestureDetector(
                       onTap: createChatRoom,
-                      child: const Icon(Icons.add),
+                      child: Icon(
+                        Icons.add,
+                        color: ArmyshopColors.textColor,
+                      ),
                     ),
                   ),
                 ],
               ),
 
-              const Divider(
-                color: Colors.grey,
+              Divider(
+                color: ArmyshopColors.dividerColor,
                 thickness: 1,
               ),
 

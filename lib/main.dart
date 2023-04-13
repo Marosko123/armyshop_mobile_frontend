@@ -12,7 +12,9 @@ import 'screens/register_screen.dart';
 void main() {
   ArmyshopColors.setColors();
 
-  runApp(const MyApp());
+  runApp(
+    const MyApp(),
+  );
 }
 
 class MyApp extends StatelessWidget {
