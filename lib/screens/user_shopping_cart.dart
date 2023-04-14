@@ -1,3 +1,4 @@
+import 'package:armyshop_mobile_frontend/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -51,7 +52,7 @@ class UserShoppingCartState extends State<UserShoppingCart> {
                       padding: const EdgeInsets.all(4),
                       child: Container(
                         decoration: BoxDecoration(
-                          color: Colors.green[100],
+                          color: ArmyshopColors.shoppingCartItemBubble,
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: ListTile(
@@ -69,30 +70,30 @@ class UserShoppingCartState extends State<UserShoppingCart> {
                               children: [
                                 Text(
                                   value.cartItems[index][0],
-                                  style: const TextStyle(
-                                    color: Colors.green,
+                                  style: TextStyle(
+                                    color: ArmyshopColors.textColor,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20,
                                   ),
                                 ),
                                 Text(
                                   value.cartItems[index][3],
-                                  style: const TextStyle(
-                                    color: Colors.black,
+                                  style: TextStyle(
+                                    color: ArmyshopColors.textColor,
                                     fontSize: 13,
                                   ),
                                 ),
-                                const Text(
+                                Text(
                                   'Price For One:',
                                   style: TextStyle(
-                                    color: Colors.black,
+                                    color: ArmyshopColors.textColor,
                                     fontSize: 10,
                                   ),
                                 ),
                                 Text(
                                   '\$${value.cartItems[index][1]}',
-                                  style: const TextStyle(
-                                    color: Colors.black,
+                                  style: TextStyle(
+                                    color: ArmyshopColors.textColor,
                                     fontSize: 14,
                                   ),
                                 ),
@@ -115,17 +116,17 @@ class UserShoppingCartState extends State<UserShoppingCart> {
                                     });
                                   },
                                 ),
-                                const Text(
+                                Text(
                                   'You Pay',
                                   style: TextStyle(
-                                    color: Colors.black,
+                                    color: ArmyshopColors.textColor,
                                     fontSize: 10,
                                   ),
                                 ),
                                 Text(
                                   '\$${(double.parse(value.cartItems[index][1]) * value.cartItems[index][2]).toStringAsFixed(2)}',
-                                  style: const TextStyle(
-                                    color: Colors.black,
+                                  style: TextStyle(
+                                    color: ArmyshopColors.textColor,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16,
                                   ),
@@ -160,13 +161,13 @@ class UserShoppingCartState extends State<UserShoppingCart> {
                     children: [
                       Text(
                         'Total Price',
-                        style: TextStyle(color: Colors.green[100]),
+                        style: TextStyle(color: ArmyshopColors.textColor),
                       ),
                       const SizedBox(height: 4),
                       Text(
                         '\$${totalPrice.toStringAsFixed(2)}',
-                        style: const TextStyle(
-                          color: Colors.white,
+                        style: TextStyle(
+                          color: ArmyshopColors.textColor,
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
@@ -177,22 +178,24 @@ class UserShoppingCartState extends State<UserShoppingCart> {
                   // Pay Now
                   Container(
                     decoration: BoxDecoration(
+                      color: ArmyshopColors.buttonColor,
                       border: Border.all(
-                        color: Colors.green.shade100,
+                        color: ArmyshopColors.buttonTextColor,
                       ),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     padding: const EdgeInsets.all(12),
                     child: Row(
-                      children: const [
+                      children: [
                         Text(
                           'Pay Now',
-                          style: TextStyle(color: Colors.white),
+                          style:
+                              TextStyle(color: ArmyshopColors.buttonTextColor),
                         ),
                         Icon(
                           Icons.arrow_forward_ios,
                           size: 16,
-                          color: Colors.white,
+                          color: ArmyshopColors.buttonTextColor,
                         ),
                       ],
                     ),

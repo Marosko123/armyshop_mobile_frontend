@@ -54,6 +54,11 @@ class ArmyshopColors {
   static const Color lightModeSwitchButtonBorder = Color.fromARGB(255, 0, 0, 0);
   static const Color darkModeSwitchButtonBorder =
       Color.fromARGB(255, 255, 255, 255);
+  // Shopping cart item bubble
+  static const Color lightModeShoppingCartItemBubble =
+      Color.fromARGB(255, 145, 230, 48);
+  static const Color darkModeShoppingCartItemBubble =
+      Color.fromARGB(255, 77, 117, 32);
 
   // Variables
   static Color textColor = const Color.fromARGB(0, 0, 0, 0);
@@ -70,6 +75,7 @@ class ArmyshopColors {
   static Color switchButtonDisabled = const Color.fromARGB(0, 0, 0, 0);
   static Color switchButtonHighlighted = const Color.fromARGB(0, 0, 0, 0);
   static Color switchButtonBorder = const Color.fromARGB(0, 0, 0, 0);
+  static Color shoppingCartItemBubble = const Color.fromARGB(0, 0, 0, 0);
 
   static void setColors() {
     textColor = isDarkMode ? darkModeText : lightModeText;
@@ -94,6 +100,9 @@ class ArmyshopColors {
         : lightModeSwitchButtonHighlighted;
     switchButtonBorder =
         isDarkMode ? darkModeSwitchButtonBorder : lightModeSwitchButtonBorder;
+    shoppingCartItemBubble = isDarkMode
+        ? darkModeShoppingCartItemBubble
+        : lightModeShoppingCartItemBubble;
   }
 
   static void changeColors(bool value) {

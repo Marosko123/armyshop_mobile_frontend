@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../colors.dart';
+
 class NumericStepButton extends StatefulWidget {
   final int minValue;
   final int maxValue;
@@ -42,12 +44,12 @@ class _NumericStepButtonState extends State<NumericStepButton> {
           IconButton(
             icon: Icon(
               Icons.remove,
-              color: Theme.of(context).accentColor,
+              color: ArmyshopColors.textColor,
             ),
             padding: const EdgeInsets.symmetric(
               horizontal: 0,
             ),
-            iconSize: 8.0,
+            iconSize: 12.0,
             color: Theme.of(context).primaryColor,
             onPressed: () {
               setState(() {
@@ -61,8 +63,8 @@ class _NumericStepButtonState extends State<NumericStepButton> {
           Text(
             '$counter',
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: Colors.black87,
+            style: TextStyle(
+              color: ArmyshopColors.textColor,
               fontSize: 14.0,
               fontWeight: FontWeight.w500,
             ),
@@ -70,12 +72,12 @@ class _NumericStepButtonState extends State<NumericStepButton> {
           IconButton(
             icon: Icon(
               Icons.add,
-              color: Theme.of(context).accentColor,
+              color: ArmyshopColors.textColor,
             ),
             padding: const EdgeInsets.symmetric(
               horizontal: 0,
             ),
-            iconSize: 8.0,
+            iconSize: 12.0,
             color: Theme.of(context).primaryColor,
             onPressed: () {
               setState(() {
