@@ -81,7 +81,7 @@ class ArmyshopColors {
     textColor = isDarkMode ? darkModeText : lightModeText;
     dropdownColor = isDarkMode ? darkModeDropdown : lightModeDropdown;
     dropdownContentColor =
-        isDarkMode ? darkModeDropdownContent : lightMocdeDropdownContent;
+        isDarkMode ? darkModeDropdownContent : lightModeDropdownContent;
     backgroundColor = isDarkMode ? darkModeBackground : lightModeBackground;
     dividerColor = isDarkMode ? darkModeDivider : lightModeDivider;
     buttonTextColor = isDarkMode ? darkModeButtonText : lightModeButtonText;
