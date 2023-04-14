@@ -42,12 +42,12 @@ class ArmyshopColors {
   static const Color darkModeLogo = Color.fromARGB(255, 41, 204, 0);
   // Switch button color
   static const Color lightModeSwitchButtonDisabled =
-      Color.fromARGB(255, 255, 255, 255);
+      Color.fromARGB(255, 211, 211, 211);
   static const Color darkModeSwitchButtonDisabled =
       Color.fromARGB(255, 0, 0, 0);
   // Switch button highlighted color
   static const Color lightModeSwitchButtonHighlighted =
-      Color.fromARGB(255, 211, 211, 211);
+      Color.fromARGB(255, 255, 255, 255);
   static const Color darkModeSwitchButtonHighlighted =
       Color.fromARGB(255, 90, 90, 90);
   // Switch button border color

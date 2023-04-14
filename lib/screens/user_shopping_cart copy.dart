@@ -6,23 +6,15 @@ import '../models/cart_model.dart';
 class UserShoppingCart extends StatefulWidget {
   static const routeName = '/user-shopping-cart-screen';
 
-  const UserShoppingCart({Key? key}) : super(key: key);
+  const UserShoppingCart({super.key});
 
   @override
   UserShoppingCartState createState() => UserShoppingCartState();
 }
 
 class UserShoppingCartState extends State<UserShoppingCart> {
-  double totalPrice = 0;
-
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {
-        totalPrice = totalPrice;
-      });
-    });
-
     return Column(
       children: [
         Icon(
@@ -33,17 +25,12 @@ class UserShoppingCartState extends State<UserShoppingCart> {
 
         Consumer<CartModel>(
           builder: (context, value, child) {
-            totalPrice = 0;
-            value.cartItems.forEach((item) {
-              totalPrice += double.parse(item[1]) * item[2];
-            });
-
             return Container(
               height: MediaQuery.of(context).size.height *
                   0.4, // Explicit height constraint
               child: ListView.builder(
                 itemCount: value.cartItems.length,
-                padding: const EdgeInsets.all(12),
+                padding: EdgeInsets.all(12),
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.all(12.0),
@@ -55,20 +42,12 @@ class UserShoppingCartState extends State<UserShoppingCart> {
                       child: ListTile(
                           leading: const Icon(Icons.filter_outlined),
                           title: Text(value.cartItems[index][0]),
-                          subtitle: Text(
-                            '\$${double.parse(value.cartItems[index][1]) * value.cartItems[index][2]}',
-                          ),
+                          subtitle: Text('\$' + value.cartItems[index][1]),
                           trailing: IconButton(
                             icon: const Icon(Icons.delete_outline),
                             onPressed: () {
                               Provider.of<CartModel>(context, listen: false)
                                   .removeItemFromCart(index);
-                              setState(() {
-                                totalPrice = 0;
-                                value.cartItems.forEach((item) {
-                                  totalPrice += double.parse(item[1]) * item[2];
-                                });
-                              });
                             },
                           )),
                     ),
@@ -85,7 +64,7 @@ class UserShoppingCartState extends State<UserShoppingCart> {
           child: Container(
             decoration: BoxDecoration(
                 color: Colors.green, borderRadius: BorderRadius.circular(8)),
-            padding: const EdgeInsets.all(24),
+            padding: EdgeInsets.all(24),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -99,7 +78,8 @@ class UserShoppingCartState extends State<UserShoppingCart> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      '\$${totalPrice.toStringAsFixed(2)}',
+                      // '\$' + value.calculateTotal(),
+                      '4',
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 18,
