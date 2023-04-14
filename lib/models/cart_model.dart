@@ -8,9 +8,15 @@ class CartModel extends ChangeNotifier {
   ];
 
   final List _cartItems = [
-    ['Avocado', '4.00', 1, 'lib/images/avocado.jpg', Colors.green],
-    ['Melon', '12.00', 2, 'lib/images/avocado.jpg', Colors.red],
-    ['Mango', '16.00', 3, 'lib/images/avocado.jpg', Colors.yellow],
+    ['Comfy jacket', '55.00', 5, 'Clothing/Jackets'],
+    ['Karambit', '32.00', 2, 'Weapons/Knives'],
+    ['Machinegun', '100.00', 1, 'Weapons/Heavy'],
+    ['Socks', '1.00', 5, 'Clothing/Socks'],
+    ['Ak47', '256.00', 2, 'Weapons/Rifles'],
+    ['Shield', '100.00', 2, 'Weapons/Heavy'],
+    ['Glasses', '5.00', 6, 'Accessories/Glasses'],
+    ['Hat', '12.00', 2, 'Clothing/Hats'],
+    ['Bazooka', '100.00', 1, 'Explosives'],
   ];
 
   get shopItems => _shopItems;

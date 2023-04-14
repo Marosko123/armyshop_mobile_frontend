@@ -1,0 +1,93 @@
+import 'package:flutter/material.dart';
+
+class NumericStepButton extends StatefulWidget {
+  final int minValue;
+  final int maxValue;
+  final int defaultValue;
+
+  final ValueChanged<int> onChanged;
+
+  NumericStepButton(
+      {Key? key,
+      this.minValue = 0,
+      this.maxValue = 10,
+      this.defaultValue = 1,
+      required this.onChanged})
+      : super(key: key);
+
+  @override
+  State<NumericStepButton> createState() {
+    return _NumericStepButtonState();
+  }
+}
+
+class _NumericStepButtonState extends State<NumericStepButton> {
+  late int counter = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    counter = widget.defaultValue; // Initialize counter with defaultValue
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 16,
+      width: 111,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          IconButton(
+            icon: Icon(
+              Icons.remove,
+              color: Theme.of(context).accentColor,
+            ),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 0,
+            ),
+            iconSize: 8.0,
+            color: Theme.of(context).primaryColor,
+            onPressed: () {
+              setState(() {
+                if (counter > widget.minValue) {
+                  counter--;
+                }
+                widget.onChanged(counter);
+              });
+            },
+          ),
+          Text(
+            '$counter',
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              color: Colors.black87,
+              fontSize: 14.0,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          IconButton(
+            icon: Icon(
+              Icons.add,
+              color: Theme.of(context).accentColor,
+            ),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 0,
+            ),
+            iconSize: 8.0,
+            color: Theme.of(context).primaryColor,
+            onPressed: () {
+              setState(() {
+                if (counter < widget.maxValue) {
+                  counter++;
+                }
+                widget.onChanged(counter);
+              });
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
