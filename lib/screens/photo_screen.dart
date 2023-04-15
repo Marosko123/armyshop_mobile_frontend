@@ -2,7 +2,7 @@
 
 import 'dart:io';
 
-import 'package:armyshop_mobile_frontend/screens/login_register_screen.dart';
+import 'package:armyshop_mobile_frontend/screens/login_register/login_register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';

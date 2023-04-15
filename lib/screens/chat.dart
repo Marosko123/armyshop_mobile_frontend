@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
 
-import '../colors.dart';
+import '../common/armyshop_colors.dart';
 import '../models/message.dart';
 
 class Chat extends StatefulWidget {
@@ -18,32 +18,32 @@ class Chat extends StatefulWidget {
 
 class ChatState extends State<Chat> {
   String _roomName = '';
-  TextEditingController _textController = TextEditingController();
+  final TextEditingController _textController = TextEditingController();
 
   List<Message> messages = [
     Message(
         text: "Hello maj frend!",
-        date: DateTime.now().subtract(Duration(minutes: 1)),
+        date: DateTime.now().subtract(const Duration(minutes: 1)),
         isSentByMe: false),
     Message(
         text: "Helo!",
-        date: DateTime.now().subtract(Duration(minutes: 1)),
+        date: DateTime.now().subtract(const Duration(minutes: 1)),
         isSentByMe: true),
     Message(
         text: "2 + 2?",
-        date: DateTime.now().subtract(Duration(minutes: 1)),
+        date: DateTime.now().subtract(const Duration(minutes: 1)),
         isSentByMe: false),
     Message(
         text: "Devat",
-        date: DateTime.now().subtract(Duration(minutes: 1)),
+        date: DateTime.now().subtract(const Duration(minutes: 1)),
         isSentByMe: true),
     Message(
         text: "A ty kto?",
-        date: DateTime.now().subtract(Duration(minutes: 1)),
+        date: DateTime.now().subtract(const Duration(minutes: 1)),
         isSentByMe: false),
     Message(
         text: "Ja nevjem us..",
-        date: DateTime.now().subtract(Duration(minutes: 1)),
+        date: DateTime.now().subtract(const Duration(minutes: 1)),
         isSentByMe: true),
   ];
 

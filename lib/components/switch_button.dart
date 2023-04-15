@@ -1,4 +1,4 @@
-import 'package:armyshop_mobile_frontend/colors.dart';
+import 'package:armyshop_mobile_frontend/common/armyshop_colors.dart';
 import 'package:flutter/material.dart';
 
 class SwitchButton extends StatelessWidget {

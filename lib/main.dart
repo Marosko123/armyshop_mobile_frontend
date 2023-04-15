@@ -1,15 +1,15 @@
 import 'package:armyshop_mobile_frontend/models/cart_model.dart';
 import 'package:armyshop_mobile_frontend/screens/chat.dart';
 import 'package:armyshop_mobile_frontend/screens/chat_rooms.dart';
-import 'package:armyshop_mobile_frontend/screens/login_register_screen.dart';
+import 'package:armyshop_mobile_frontend/screens/login_register/login_register_screen.dart';
 import 'package:armyshop_mobile_frontend/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import './screens/products_screen.dart';
-import 'colors.dart';
-import 'primary_page.dart';
-import 'screens/login_screen.dart';
-import 'screens/register_screen.dart';
+import 'common/armyshop_colors.dart';
+import 'screens/primary_page.dart';
+import 'screens/login_register/login_screen.dart';
+import 'screens/login_register/register_screen.dart';
 
 void main() {
   ArmyshopColors.setColors();
@@ -36,8 +36,8 @@ class MyApp extends StatelessWidget {
         home: const SplashScreen(),
         routes: {
           ProductsScreen.routeName: (context) => const PrimaryPage(),
-          LoginScreen.routeName: (context) => LoginScreen(),
-          RegisterScreen.routeName: (context) => RegisterScreen(),
+          LoginScreen.routeName: (context) => const LoginScreen(),
+          RegisterScreen.routeName: (context) => const RegisterScreen(),
           LoginRegisterScreen.routeName: (context) =>
               const LoginRegisterScreen(),
           ChatRooms.routeName: (context) => const ChatRooms(),

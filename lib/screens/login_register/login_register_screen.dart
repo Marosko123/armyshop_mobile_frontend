@@ -1,11 +1,11 @@
 // ignore_for_file: avoid_print
 
-import 'package:armyshop_mobile_frontend/colors.dart';
+import 'package:armyshop_mobile_frontend/common/armyshop_colors.dart';
 import 'package:flutter/material.dart';
 
-import '../components/switch_button.dart';
+import '../../components/switch_button.dart';
 
-import './register_screen.dart';
+import 'register_screen.dart';
 import 'login_screen.dart';
 
 class LoginRegisterScreen extends StatefulWidget {
@@ -114,7 +114,10 @@ class LoginRegisterScreenState extends State<LoginRegisterScreen> {
                 // space between icon and email
                 const SizedBox(height: 10),
 
-                if (_isLoginScreenOn) LoginScreen() else RegisterScreen(),
+                if (_isLoginScreenOn)
+                  const LoginScreen()
+                else
+                  const RegisterScreen(),
               ],
             ),
           ),

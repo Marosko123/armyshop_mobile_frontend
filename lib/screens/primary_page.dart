@@ -6,7 +6,7 @@ import 'package:armyshop_mobile_frontend/screens/user_shopping_cart.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
-import 'colors.dart';
+import '../common/armyshop_colors.dart';
 
 class PrimaryPage extends StatefulWidget {
   const PrimaryPage({Key? key}) : super(key: key);

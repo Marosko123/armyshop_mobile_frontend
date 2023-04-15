@@ -2,7 +2,7 @@ import 'package:armyshop_mobile_frontend/components/my_button.dart';
 import 'package:armyshop_mobile_frontend/screens/chat.dart';
 import 'package:flutter/material.dart';
 
-import '../colors.dart';
+import '../common/armyshop_colors.dart';
 
 class ChatRooms extends StatefulWidget {
   const ChatRooms({Key? key}) : super(key: key);

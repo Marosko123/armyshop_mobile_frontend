@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../colors.dart';
+import '../common/armyshop_colors.dart';
 
 class NumericStepButton extends StatefulWidget {
   final int minValue;
@@ -9,7 +9,7 @@ class NumericStepButton extends StatefulWidget {
 
   final ValueChanged<int> onChanged;
 
-  NumericStepButton(
+  const NumericStepButton(
       {Key? key,
       this.minValue = 0,
       this.maxValue = 10,
@@ -34,7 +34,7 @@ class _NumericStepButtonState extends State<NumericStepButton> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 16,
       width: 111,
       child: Row(

@@ -1,8 +1,8 @@
-import 'package:armyshop_mobile_frontend/colors.dart';
+import 'package:armyshop_mobile_frontend/common/armyshop_colors.dart';
 import 'package:flutter/material.dart';
 
 class Textfield extends StatelessWidget {
-  final controller;
+  final TextEditingController controller;
   final String hintText;
   final bool obscureText;
 

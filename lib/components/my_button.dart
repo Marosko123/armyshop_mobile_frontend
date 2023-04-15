@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../colors.dart';
+import '../common/armyshop_colors.dart';
 
 class MyButton extends StatelessWidget {
   final Function()? onTap;

@@ -1,4 +1,4 @@
-import 'package:armyshop_mobile_frontend/colors.dart';
+import 'package:armyshop_mobile_frontend/common/armyshop_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -39,11 +39,11 @@ class UserShoppingCartState extends State<UserShoppingCart> {
               totalPrice += double.parse(item[1]) * item[2];
             });
 
-            return Container(
+            return SizedBox(
               height: MediaQuery.of(context).size.height *
                   0.6, // Explicit height constraint
               child: Padding(
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
                 child: ListView.builder(
                   itemCount: value.cartItems.length,
                   padding: const EdgeInsets.all(0),
@@ -56,7 +56,7 @@ class UserShoppingCartState extends State<UserShoppingCart> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: ListTile(
-                          leading: Container(
+                          leading: SizedBox(
                             height: 70, // provide a height constraint
                             child: Column(
                               children: const [
@@ -64,7 +64,7 @@ class UserShoppingCartState extends State<UserShoppingCart> {
                               ],
                             ),
                           ),
-                          subtitle: Container(
+                          subtitle: SizedBox(
                             height: 70, // provide a height constraint
                             child: Column(
                               children: [
@@ -73,7 +73,7 @@ class UserShoppingCartState extends State<UserShoppingCart> {
                                   style: TextStyle(
                                     color: ArmyshopColors.textColor,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 20,
+                                    fontSize: 16,
                                   ),
                                 ),
                                 Text(
@@ -100,39 +100,37 @@ class UserShoppingCartState extends State<UserShoppingCart> {
                               ],
                             ),
                           ),
-                          trailing: Container(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                NumericStepButton(
-                                  maxValue: 20,
-                                  defaultValue: value.cartItems[index][2],
-                                  onChanged: (val) {
-                                    value.cartItems[index][2] = val;
-                                    setState(() {
-                                      if (val == 0) {
-                                        value.cartItems.removeAt(index);
-                                      }
-                                    });
-                                  },
+                          trailing: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              NumericStepButton(
+                                maxValue: 20,
+                                defaultValue: value.cartItems[index][2],
+                                onChanged: (val) {
+                                  value.cartItems[index][2] = val;
+                                  setState(() {
+                                    if (val == 0) {
+                                      value.cartItems.removeAt(index);
+                                    }
+                                  });
+                                },
+                              ),
+                              Text(
+                                'You Pay',
+                                style: TextStyle(
+                                  color: ArmyshopColors.textColor,
+                                  fontSize: 10,
                                 ),
-                                Text(
-                                  'You Pay',
-                                  style: TextStyle(
-                                    color: ArmyshopColors.textColor,
-                                    fontSize: 10,
-                                  ),
+                              ),
+                              Text(
+                                '\$${(double.parse(value.cartItems[index][1]) * value.cartItems[index][2]).toStringAsFixed(2)}',
+                                style: TextStyle(
+                                  color: ArmyshopColors.textColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
                                 ),
-                                Text(
-                                  '\$${(double.parse(value.cartItems[index][1]) * value.cartItems[index][2]).toStringAsFixed(2)}',
-                                  style: TextStyle(
-                                    color: ArmyshopColors.textColor,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
