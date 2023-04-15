@@ -19,7 +19,6 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class RegisterScreenState extends State<RegisterScreen> {
-  final RequestHandler _requestHandler = RequestHandler();
   bool? someValue;
   String errorText = '';
 
@@ -30,20 +29,29 @@ class RegisterScreenState extends State<RegisterScreen> {
 
   Future<void> register() async {
     dynamic user;
+    dynamic response;
 
-    final response = await _requestHandler.register(
-      emailController.text,
-      passwordController1.text,
-      passwordController2.text,
-      _hasMilitaryPassport!,
-    );
+    try {
+      response = await RequestHandler.register(
+        emailController.text,
+        passwordController1.text,
+        passwordController2.text,
+        _hasMilitaryPassport!,
+      );
+    } catch (e) {
+      print(e);
+      return setState(() {
+        errorText = e.toString();
+      });
+    }
 
     if (response['status'] == 200 || response['status'] == 'success') {
       user = response['user'];
 
       final UserAuthenticator userAuthenticator = UserAuthenticator();
       // ignore: use_build_context_synchronously
-      return userAuthenticator.userSuccessfullyLoggedIn(user, context);
+      return userAuthenticator.userSuccessfullyLoggedIn(
+          user: user, context: context);
     }
 
     if (response['status'] == 422) {

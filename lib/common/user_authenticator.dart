@@ -5,7 +5,10 @@ import 'global_variables.dart';
 import '../models/user.dart';
 
 class UserAuthenticator {
-  void userSuccessfullyLoggedIn(user, context) {
+  // Define a function to handle successful user login
+  void userSuccessfullyLoggedIn(
+      {required Map<String, dynamic> user, required BuildContext context}) {
+    // Set the values of the user instance based on the returned map
     GlobalVariables.user = User(
       id: user['id'],
       email: user['email'],
@@ -14,13 +17,14 @@ class UserAuthenticator {
       age: user['age'] ?? 0,
       address: user['address'] ?? '',
       licensePicture: user['license_picture'] ?? '',
-      isLicenseValid: user['is_license_valid'] == 1 ? true : false,
+      isLicenseValid: user['is_license_valid'] == 1,
     );
 
+    // Navigate to the PrimaryPage and remove all previous routes from the stack
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => const PrimaryPage()),
-      (route) => false,
+      (_) => false,
     );
   }
 }

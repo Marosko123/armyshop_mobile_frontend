@@ -17,7 +17,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class LoginScreenState extends State<LoginScreen> {
-  final RequestHandler _requestHandler = RequestHandler();
   String errorText = '';
 
   final emailController = TextEditingController();
@@ -25,18 +24,27 @@ class LoginScreenState extends State<LoginScreen> {
 
   Future<void> login() async {
     dynamic user;
+    dynamic response;
 
-    final response = await _requestHandler.login(
-      emailController.text,
-      passwordController.text,
-    );
+    try {
+      response = await RequestHandler.login(
+        emailController.text,
+        passwordController.text,
+      );
+    } catch (e) {
+      print(e);
+      return setState(() {
+        errorText = e.toString();
+      });
+    }
 
     if (response['status'] == 200 || response['status'] == 'success') {
       user = response['user'];
 
       final UserAuthenticator userAuthenticator = UserAuthenticator();
       // ignore: use_build_context_synchronously
-      return userAuthenticator.userSuccessfullyLoggedIn(user, context);
+      return userAuthenticator.userSuccessfullyLoggedIn(
+          user: user, context: context);
     }
 
     if (response['status'] == 422) {

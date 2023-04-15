@@ -6,6 +6,7 @@ import 'package:armyshop_mobile_frontend/screens/primary_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../common/global_variables.dart';
 import '../components/my_button.dart';
 import '../common/request_handler.dart';
 
@@ -17,31 +18,30 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  final RequestHandler _requestHandler = RequestHandler();
-
   bool showLoading = false;
-  bool noInternet = false;
   int _noInternetCounter = 0;
   dynamic _timer;
 
   void getProducts() async {
-    await _requestHandler
-        .getProducts()
+    await RequestHandler.getProducts()
         .then((value) =>
             Navigator.of(context).popAndPushNamed(PrimaryPage.routeName))
         // ignore: invalid_return_type_for_catch_error
-        .catchError((e) => print(e));
+        .catchError(
+          (e) => {
+            print(e),
+          },
+        );
 
     _noInternetCounter++;
     print(_noInternetCounter);
 
     if (_noInternetCounter >= 3) {
-      setState(() {
-        noInternet = true;
+      return setState(() {
+        GlobalVariables.isConnectedToServer = false;
         showLoading = false;
         _timer.cancel();
       });
-      return;
     }
 
     await Future.delayed(const Duration(seconds: 1), () => getProducts());
@@ -100,7 +100,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   style: GoogleFonts.poppins(),
                 ),
               ),
-            if (noInternet)
+            if (!GlobalVariables.isConnectedToServer)
               Padding(
                 padding: const EdgeInsets.only(top: 5.0),
                 child: Text(
@@ -108,7 +108,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   style: GoogleFonts.poppins(),
                 ),
               ),
-            if (noInternet)
+            if (!GlobalVariables.isConnectedToServer)
               MyButton(
                 text: 'Continue offline',
                 onTap: continueOfflinePressed,

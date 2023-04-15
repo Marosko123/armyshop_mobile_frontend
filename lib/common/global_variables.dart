@@ -1,6 +1,7 @@
 import '../models/user.dart';
 
 class GlobalVariables {
+  static bool isConnectedToServer = true;
   static User user = User(
     id: 0,
     email: '',
