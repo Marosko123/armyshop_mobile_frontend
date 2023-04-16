@@ -1,12 +1,17 @@
+import 'package:armyshop_mobile_frontend/common/server_requester.dart';
+
+import '../common/converters.dart';
+
 class User {
   final int id;
-  final String email;
-  final String firstName;
-  final String lastName;
-  final int age;
-  final String address;
-  final String licensePicture;
-  final bool isLicenseValid;
+  String email;
+  String firstName;
+  String lastName;
+  int age;
+  String address;
+  String licensePicture;
+  bool isLicenseValid;
+  String telephone;
 
   User({
     required this.id,
@@ -17,6 +22,7 @@ class User {
     required this.address,
     required this.licensePicture,
     required this.isLicenseValid,
+    required this.telephone,
   });
 
   Map<String, dynamic> toJson() {
@@ -29,7 +35,39 @@ class User {
       'address': address,
       'licensePicture': licensePicture,
       'isLicenseValid': isLicenseValid,
+      'telephone': telephone,
     };
+  }
+
+  Future<dynamic> updateValue(String key, dynamic value) async {
+    final String keyCamelCase = Converters.convertToCamelCase(key);
+    final String keySnakeCase = Converters.convertToSnakeCase(key);
+
+    final propertyMap = {
+      'email': () => email = value,
+      'firstName': () => firstName = value,
+      'lastName': () => lastName = value,
+      'age': () => age = value == "" ? 0 : int.parse(value),
+      'address': () => address = value,
+      'licensePicture': () => licensePicture = value,
+      'isLicenseValid': () => isLicenseValid = value,
+      'telephone': () => telephone = value,
+      'password': () => null,
+    };
+
+    final setter = propertyMap[keyCamelCase];
+    if (setter != null) {
+      final response = await ServerRequester.request(
+          type: 'PATCH',
+          subUrl: '/users/$id',
+          dataToSend: {keySnakeCase: value});
+
+      if (response['status'] == 200) {
+        setter();
+      }
+
+      return response;
+    }
   }
 
   isEmpty() {

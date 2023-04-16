@@ -18,6 +18,7 @@ class UserAuthenticator {
       address: user['address'] ?? '',
       licensePicture: user['license_picture'] ?? '',
       isLicenseValid: user['is_license_valid'] == 1,
+      telephone: user['telephone'] ?? '',
     );
 
     // Navigate to the PrimaryPage and remove all previous routes from the stack

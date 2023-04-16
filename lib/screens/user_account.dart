@@ -1,5 +1,6 @@
 import 'package:armyshop_mobile_frontend/common/armyshop_colors.dart';
 import 'package:armyshop_mobile_frontend/components/my_button.dart';
+import 'package:armyshop_mobile_frontend/components/my_textfield.dart';
 import 'package:armyshop_mobile_frontend/screens/chat_rooms.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
@@ -41,7 +42,7 @@ class UserAccountState extends State<UserAccount> {
       children: [
         if (!GlobalVariables.user.isEmpty()) ...[
           Icon(
-            Icons.account_circle_outlined,
+            Icons.account_circle_sharp,
             color: Colors.green[700],
             size: MediaQuery.of(context).size.width * 0.4,
           ),
@@ -199,44 +200,115 @@ class UserAccountState extends State<UserAccount> {
         ),
         Padding(
           padding: const EdgeInsets.only(left: 30, right: 30, top: 10),
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              color: ArmyshopColors.dropdownColor,
-            ),
-            child: ExpandablePanel(
-              header: Container(
-                decoration: BoxDecoration(color: ArmyshopColors.dropdownColor),
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 12, left: 15),
-                  child: Text(
-                    'Account Settings',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: ArmyshopColors.textColor,
+          child: AbsorbPointer(
+            absorbing: GlobalVariables.user.isEmpty(),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                color: ArmyshopColors.dropdownColor,
+              ),
+              child: ExpandablePanel(
+                header: Container(
+                  decoration:
+                      BoxDecoration(color: ArmyshopColors.dropdownColor),
+                  child: Padding(
+                      padding: const EdgeInsets.only(top: 12, left: 15),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Account Settings',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: ArmyshopColors.textColor,
+                            ),
+                          ),
+                          if (GlobalVariables.user.isEmpty())
+                            Text(
+                              'Log In',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey[600],
+                              ),
+                            ),
+                        ],
+                      )),
+                ),
+                collapsed: const Text(''),
+                expanded: Container(
+                  decoration: BoxDecoration(
+                    color: ArmyshopColors.dropdownContentColor,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      children: [
+                        MyTextfield(
+                          icon: Icons.email_outlined,
+                          label: 'Email',
+                          value: GlobalVariables.user.email,
+                          saveCallback: () {
+                            setState(() {});
+                          },
+                        ),
+                        MyTextfield(
+                          icon: Icons.password,
+                          label: 'Password',
+                          value: '********',
+                          saveCallback: () {
+                            setState(() {});
+                          },
+                        ),
+                        MyTextfield(
+                          icon: Icons.text_fields_outlined,
+                          label: 'First Name',
+                          value: GlobalVariables.user.firstName,
+                          saveCallback: () {
+                            setState(() {});
+                          },
+                        ),
+                        MyTextfield(
+                          icon: Icons.text_fields_outlined,
+                          label: 'Last Name',
+                          value: GlobalVariables.user.lastName,
+                          saveCallback: () {
+                            setState(() {});
+                          },
+                        ),
+                        MyTextfield(
+                          icon: Icons.numbers_outlined,
+                          label: 'Age',
+                          value: GlobalVariables.user.age.toString(),
+                          isNumeric: true,
+                          saveCallback: () {
+                            setState(() {});
+                          },
+                        ),
+                        MyTextfield(
+                          icon: Icons.location_on_outlined,
+                          label: 'Address',
+                          value: GlobalVariables.user.address,
+                          saveCallback: () {
+                            setState(() {});
+                          },
+                        ),
+                        MyTextfield(
+                          icon: Icons.phone_outlined,
+                          label: 'Telephone',
+                          value: GlobalVariables.user.telephone,
+                          saveCallback: () {
+                            setState(() {});
+                          },
+                        ),
+                      ],
                     ),
                   ),
                 ),
+                builder: (_, collapsed, expanded) =>
+                    Expandable(collapsed: collapsed, expanded: expanded),
               ),
-              collapsed: const Text(''),
-              expanded: Container(
-                decoration: BoxDecoration(
-                  color: ArmyshopColors.dropdownContentColor,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Text(
-                    List.generate(5, (_) => loremIpsum).join('\n\n'),
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: ArmyshopColors.textColor,
-                    ),
-                  ),
-                ),
-              ),
-              builder: (_, collapsed, expanded) =>
-                  Expandable(collapsed: collapsed, expanded: expanded),
             ),
           ),
         ),
@@ -340,6 +412,7 @@ class UserAccountState extends State<UserAccount> {
                             address: '',
                             licensePicture: '',
                             isLicenseValid: false,
+                            telephone: '',
                           );
                           setState(() {});
                         },
