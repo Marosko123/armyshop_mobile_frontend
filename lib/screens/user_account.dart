@@ -290,6 +290,7 @@ class UserAccountState extends State<UserAccount> {
                           icon: Icons.location_on_outlined,
                           label: 'Address',
                           value: GlobalVariables.user.address,
+                          isAddress: true,
                           saveCallback: () {
                             setState(() {});
                           },

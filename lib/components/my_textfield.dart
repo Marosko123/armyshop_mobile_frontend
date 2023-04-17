@@ -1,4 +1,3 @@
-import 'package:armyshop_mobile_frontend/common/converters.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -10,6 +9,7 @@ class MyTextfield extends StatefulWidget {
   final String label;
   final String? value;
   final bool? isNumeric;
+  final bool? isAddress;
   final Function saveCallback;
 
   const MyTextfield(
@@ -18,7 +18,8 @@ class MyTextfield extends StatefulWidget {
       required this.label,
       required this.value,
       required this.saveCallback,
-      this.isNumeric = false})
+      this.isNumeric = false,
+      this.isAddress = false})
       : super(key: key);
 
   @override
