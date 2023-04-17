@@ -1,5 +1,5 @@
 import 'server_requester.dart';
-
+import 'global_variables.dart';
 import '../models/product.dart';
 
 class RequestHandler {
@@ -62,6 +62,35 @@ class RequestHandler {
         'password2': password2,
         'hasMilitaryPassport': hasMilitaryPassport.toString(),
       },
+    );
+
+    if (data['error'] != null) {
+      throw data['error'];
+    }
+
+    return data;
+  }
+
+  // create new chat room
+  static Future<dynamic> getChatRooms() async {
+    final data = await ServerRequester.request(
+      subUrl: '/chat_rooms/${GlobalVariables.user.id}',
+      type: 'GET',
+    );
+
+    if (data['error'] != null) {
+      throw data['error'];
+    }
+
+    return data;
+  }
+
+  // create new chat room
+  static Future<dynamic> createChatRoom(dynamic dataToSend) async {
+    final data = await ServerRequester.request(
+      subUrl: '/chat_rooms',
+      type: 'POST',
+      dataToSend: dataToSend,
     );
 
     if (data['error'] != null) {

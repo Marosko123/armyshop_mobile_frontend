@@ -14,5 +14,6 @@ class GlobalVariables {
     licensePicture: '',
     isLicenseValid: false,
     telephone: '',
+    chatRooms: [],
   );
 }

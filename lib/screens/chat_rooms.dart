@@ -1,4 +1,9 @@
+import 'dart:convert';
+
+import 'package:armyshop_mobile_frontend/common/global_variables.dart';
+import 'package:armyshop_mobile_frontend/common/request_handler.dart';
 import 'package:armyshop_mobile_frontend/components/my_button.dart';
+import 'package:armyshop_mobile_frontend/models/chat_room.dart';
 import 'package:armyshop_mobile_frontend/screens/chat.dart';
 import 'package:flutter/material.dart';
 
@@ -14,19 +19,44 @@ class ChatRooms extends StatefulWidget {
 }
 
 class ChatRoomsState extends State<ChatRooms> {
-  List chatRooms = [1, 2, 3, 4, 5, 6];
+  late List chatRooms;
+  String roomName = 'RUMKA';
+  List<int> userIds = [1, 2, 3];
+
+  @override
+  void initState() {
+    super.initState();
+
+    chatRooms = GlobalVariables.user.chatRooms;
+  }
 
   void openChatRoom(String roomName) {
     Navigator.of(context).pushNamed(Chat.routeName, arguments: roomName);
   }
 
-  void createChatRoom() {
-    // ignore: avoid_print
-    print('Chat room added');
-    chatRooms.add(chatRooms.length + 1);
-    setState(() {
-      chatRooms = chatRooms;
+  void createChatRoom() async {
+    final response = await RequestHandler.createChatRoom({
+      'creator_id': GlobalVariables.user.id,
+      'room_name': roomName,
+      'members': jsonEncode({'user_ids': userIds}),
     });
+
+    print(response);
+
+    if (response['status'] == 200) {
+      final chatRoom = response['chat_room'];
+
+      GlobalVariables.user.chatRooms.add(ChatRoom(
+        roomId: chatRoom['id'],
+        creatorId: chatRoom['creator_id'],
+        roomName: chatRoom['room_name'],
+        members: jsonDecode(chatRoom['members']),
+      ));
+
+      setState(() {
+        chatRooms = GlobalVariables.user.chatRooms;
+      });
+    }
   }
 
   @override
@@ -38,8 +68,8 @@ class ChatRoomsState extends State<ChatRooms> {
         Padding(
           padding: const EdgeInsets.only(top: 10),
           child: MyButton(
-            text: 'Room $x',
-            onTap: () => openChatRoom('Room $x'),
+            text: x.roomName,
+            onTap: () => openChatRoom('Room ${x.roomName}'),
           ),
         ),
       );

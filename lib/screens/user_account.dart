@@ -24,7 +24,7 @@ class UserAccountState extends State<UserAccount> {
       'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ';
   bool isLoggedIn = false;
 
-  void openChatRoom() {
+  void openChatRooms() {
     Navigator.of(context).pushNamed(ChatRooms.routeName);
   }
 
@@ -369,7 +369,7 @@ class UserAccountState extends State<UserAccount> {
                           color: ArmyshopColors.textColor,
                         ),
                       ),
-                      MyButton(text: 'Chat with us', onTap: openChatRoom),
+                      MyButton(text: 'Chat with us', onTap: openChatRooms),
                     ],
                   ),
                 ),
@@ -414,6 +414,7 @@ class UserAccountState extends State<UserAccount> {
                             licensePicture: '',
                             isLicenseValid: false,
                             telephone: '',
+                            chatRooms: [],
                           );
                           setState(() {});
                         },

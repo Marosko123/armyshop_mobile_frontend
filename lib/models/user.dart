@@ -1,4 +1,5 @@
 import 'package:armyshop_mobile_frontend/common/server_requester.dart';
+import 'package:armyshop_mobile_frontend/models/chat_room.dart';
 
 import '../common/converters.dart';
 
@@ -12,6 +13,7 @@ class User {
   String licensePicture;
   bool isLicenseValid;
   String telephone;
+  List<ChatRoom> chatRooms;
 
   User({
     required this.id,
@@ -23,6 +25,7 @@ class User {
     required this.licensePicture,
     required this.isLicenseValid,
     required this.telephone,
+    required this.chatRooms,
   });
 
   Map<String, dynamic> toJson() {
