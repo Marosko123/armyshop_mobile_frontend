@@ -71,6 +71,9 @@ flutter:
   assets:
     - assets/images/logoTransparent.png
     - assets/images/army-bg1.jpg
+    - assets/images/army-bg2.jpg
+    - assets/images/army-bg3.jpg
+    - assets/images/army-bg4.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
