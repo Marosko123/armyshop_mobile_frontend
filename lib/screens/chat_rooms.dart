@@ -3,11 +3,13 @@ import 'dart:convert';
 import 'package:armyshop_mobile_frontend/common/global_variables.dart';
 import 'package:armyshop_mobile_frontend/common/request_handler.dart';
 import 'package:armyshop_mobile_frontend/components/my_button.dart';
+import 'package:armyshop_mobile_frontend/components/my_scroll_list.dart';
 import 'package:armyshop_mobile_frontend/models/chat_room.dart';
 import 'package:armyshop_mobile_frontend/screens/chat.dart';
 import 'package:flutter/material.dart';
 
 import '../common/armyshop_colors.dart';
+import '../models/user.dart';
 
 class ChatRooms extends StatefulWidget {
   const ChatRooms({Key? key}) : super(key: key);
@@ -20,8 +22,12 @@ class ChatRooms extends StatefulWidget {
 
 class ChatRoomsState extends State<ChatRooms> {
   late List chatRooms;
-  String roomName = 'RUMKA';
-  List<int> userIds = [1, 2, 3];
+  String roomName = '';
+  List<bool> isChecked = [];
+  String error = '';
+  bool dataInvalid = false;
+
+  List<User> users = [];
 
   @override
   void initState() {
@@ -34,7 +40,21 @@ class ChatRoomsState extends State<ChatRooms> {
     Navigator.of(context).pushNamed(Chat.routeName, arguments: roomName);
   }
 
-  void createChatRoom() async {
+  void createChatRoom(context) async {
+    dynamic userIds = [];
+
+    await showDialogAlert(context);
+
+    if (dataInvalid || isChecked.isEmpty) {
+      return;
+    }
+
+    for (int i = 0; i < isChecked.length; i++) {
+      if (isChecked[i]) {
+        userIds.add(users[i].id);
+      }
+    }
+
     final response = await RequestHandler.createChatRoom({
       'creator_id': GlobalVariables.user.id,
       'room_name': roomName,
@@ -57,6 +77,131 @@ class ChatRoomsState extends State<ChatRooms> {
         chatRooms = GlobalVariables.user.chatRooms;
       });
     }
+
+    roomName = '';
+    error = '';
+    dataInvalid = false;
+  }
+
+  void validatePopupData(context) {
+    if (roomName.isEmpty) {
+      error = 'Room name cannot be empty';
+      dataInvalid = true;
+      setState(() {});
+    } else {
+      error = '';
+      dataInvalid = false;
+      setState(() {});
+      Navigator.of(context).pop();
+    }
+  }
+
+  Future<void> showDialogAlert(BuildContext context) async {
+    final response = await RequestHandler.getUsers();
+
+    if (response['status'] == 200) {
+      final usersList = response['users'];
+      users = [];
+
+      for (Map u in usersList) {
+        if (u['id'] == GlobalVariables.user.id) {
+          continue;
+        }
+
+        users.add(
+          User(
+            id: u['id'],
+            email: u['email'],
+            firstName: u['first_name'],
+            lastName: u['last_name'],
+            age: 0,
+            address: '',
+            licensePicture: '',
+            isLicenseValid: true,
+            telephone: '',
+            chatRooms: [],
+          ),
+        );
+      }
+    } else {
+      return;
+    }
+
+    // ignore: use_build_context_synchronously
+    return showDialog<void>(
+      barrierColor: const Color.fromRGBO(0, 0, 0, 0.5),
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: ArmyshopColors.popupBackgroundColor,
+          title: Text(
+            'Create Chat Room',
+            style: TextStyle(
+              color: ArmyshopColors.popupTextColor,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: [
+                Column(
+                  children: [
+                    Text(
+                      'Room Name',
+                      style: TextStyle(color: ArmyshopColors.popupTextColor),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: ArmyshopColors.dividerColor,
+                            width: 2.0,
+                          ),
+                        ),
+                      ),
+                      child: TextField(
+                        autofocus: true,
+                        style: TextStyle(color: ArmyshopColors.popupTextColor),
+                        onChanged: (value) {
+                          roomName = value;
+                          setState(() {});
+                        },
+                      ),
+                    ),
+                    Text(
+                      error,
+                      style: const TextStyle(
+                        color: Colors.red,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                MyScrollList(
+                    users: users, callback: (value) => isChecked = value),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                dataInvalid = true;
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              onPressed: () {
+                validatePopupData(context);
+              },
+              child: const Text('Create'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -69,7 +214,7 @@ class ChatRoomsState extends State<ChatRooms> {
           padding: const EdgeInsets.only(top: 10),
           child: MyButton(
             text: x.roomName,
-            onTap: () => openChatRoom('Room ${x.roomName}'),
+            onTap: () => openChatRoom('${x.roomName}'),
           ),
         ),
       );
@@ -111,7 +256,9 @@ class ChatRoomsState extends State<ChatRooms> {
                   Align(
                     alignment: Alignment.centerRight,
                     child: GestureDetector(
-                      onTap: createChatRoom,
+                      onTap: () {
+                        createChatRoom(context);
+                      },
                       child: Icon(
                         Icons.add,
                         color: ArmyshopColors.textColor,

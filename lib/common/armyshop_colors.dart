@@ -18,6 +18,8 @@ class ArmyshopColors {
   static late Color switchButtonHighlighted;
   static late Color switchButtonBorder;
   static late Color shoppingCartItemBubble;
+  static late Color popupBackgroundColor;
+  static late Color popupTextColor;
 
   static const Map<String, Color> lightColors = {
     "background": Color.fromARGB(255, 228, 227, 227),
@@ -34,7 +36,9 @@ class ArmyshopColors {
     "switchButtonDisabled": Color.fromARGB(255, 211, 211, 211),
     "switchButtonHighlighted": Color.fromARGB(255, 255, 255, 255),
     "switchButtonBorder": Color.fromARGB(255, 0, 0, 0),
-    "shoppingCartItemBubble": Color.fromARGB(255, 145, 230, 48)
+    "shoppingCartItemBubble": Color.fromARGB(255, 145, 230, 48),
+    "popupBackground": Color.fromARGB(255, 40, 102, 44),
+    "popupText": Color.fromARGB(255, 255, 255, 255),
   };
 
   static const Map<String, Color> darkColors = {
@@ -48,11 +52,13 @@ class ArmyshopColors {
     "textFieldFill": Color.fromARGB(255, 112, 112, 112),
     "textFieldHint": Color.fromARGB(255, 241, 241, 241),
     "chatBubble": Color.fromARGB(255, 0, 153, 180),
-    "logo": Color.fromARGB(255, 41, 204, 0),
+    "logo": Color.fromARGB(255, 24, 104, 87),
     "switchButtonDisabled": Color.fromARGB(255, 0, 0, 0),
     "switchButtonHighlighted": Color.fromARGB(255, 90, 90, 90),
     "switchButtonBorder": Color.fromARGB(255, 255, 255, 255),
-    "shoppingCartItemBubble": Color.fromARGB(255, 77, 117, 32)
+    "shoppingCartItemBubble": Color.fromARGB(255, 77, 117, 32),
+    "popupBackground": Color.fromARGB(255, 255, 255, 255),
+    "popupText": Color.fromARGB(255, 0, 0, 0),
   };
 
   static void setColors() {
@@ -73,6 +79,8 @@ class ArmyshopColors {
     ArmyshopColors.switchButtonHighlighted = colors["switchButtonHighlighted"]!;
     ArmyshopColors.switchButtonBorder = colors["switchButtonBorder"]!;
     ArmyshopColors.shoppingCartItemBubble = colors["shoppingCartItemBubble"]!;
+    ArmyshopColors.popupBackgroundColor = colors["popupBackground"]!;
+    ArmyshopColors.popupTextColor = colors["popupText"]!;
   }
 
   static void changeColors(bool value) {

@@ -26,6 +26,20 @@ class RequestHandler {
   }
 
   // login existing user
+  static Future<dynamic> getUsers() async {
+    final data = await ServerRequester.request(
+      subUrl: '/users',
+      type: 'GET',
+    );
+
+    if (data['error'] != null) {
+      throw data['error'];
+    }
+
+    return data;
+  }
+
+  // login existing user
   static Future<dynamic> login(
     String email,
     String password,
