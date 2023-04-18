@@ -1,3 +1,5 @@
+import 'package:armyshop_mobile_frontend/common/armyshop_colors.dart';
+import 'package:armyshop_mobile_frontend/screens/product_detail.dart';
 import 'package:flutter/material.dart';
 
 class UserLikedList extends StatefulWidget {
@@ -39,14 +41,14 @@ class UserLikedListState extends State<UserLikedList> {
               mainAxisSpacing: 15.0,
               childAspectRatio: 0.8,
               children: <Widget>[
+                _buildCard('AK 47 flkjdsdfj fldj fdsfj', '\$3.99',
+                    'assets/images/army-bg1.jpg', context),
                 _buildCard(
-                    'AK 47', '\$3.99', 'assets/images/army-bg1.jpg', context),
+                    'AK 47', '\$5.99', 'assets/images/army-bg2.jpg', context),
                 _buildCard(
-                    'AK 47', '\$5.99', 'assets/images/army-bg1.jpg', context),
+                    'AK 47', '\$1.99', 'assets/images/army-bg3.jpg', context),
                 _buildCard(
-                    'AK 47', '\$1.99', 'assets/images/army-bg1.jpg', context),
-                _buildCard(
-                    'AK 47', '\$2.99', 'assets/images/army-bg1.jpg', context)
+                    'AK 47', '\$2.99', 'assets/images/army-bg4.jpg', context)
               ],
             ),
           ),
@@ -90,77 +92,101 @@ class UserLikedListState extends State<UserLikedList> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Container(
-                height: cardHeight,
-                width: double.infinity,
-                child: Hero(
-                  tag: image,
-                  child: Container(
-                    height: double.infinity,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage(image),
-                        fit: BoxFit.cover,
+              GestureDetector(
+                onTap: () {
+                  // Navigate to the product detail page
+                  Navigator.of(context).pushNamed(ProductPage.routeName);
+                },
+                child: Container(
+                  height: cardHeight,
+                  width: double.infinity,
+                  child: Hero(
+                    tag: image,
+                    child: Container(
+                      height: double.infinity,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage(image),
+                          fit: BoxFit.cover,
+                        ),
+                        borderRadius: BorderRadius.circular(12.0),
                       ),
-                      borderRadius: BorderRadius.circular(12.0),
                     ),
                   ),
                 ),
               ),
               const SizedBox(height: 2.0),
-              Row(
-                mainAxisAlignment:
-                    MainAxisAlignment.spaceBetween, // Space between columns
-                crossAxisAlignment:
-                    CrossAxisAlignment.center, // Center vertically
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        name,
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.bold,
+              Padding(
+                padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            name,
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                          ),
+                          Text(
+                            price,
+                            style: const TextStyle(
+                              color: Colors.grey,
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Column(
+                      children: [
+                        Icon(
+                          Icons.favorite,
+                          color: Colors.red,
+                          size: 40,
                         ),
-                      ),
-                      Text(
-                        price,
-                        style: const TextStyle(
-                          color: Colors.grey,
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(width: 10), // Add some space between columns
-                  Column(
-                    children: [
-                      Icon(
-                        Icons.favorite,
-                        color: Colors.red,
-                        size: 50,
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
               const SizedBox(height: 2.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Icon(
-                    Icons.favorite,
-                    color: Colors.red,
-                    size: 30,
-                  ),
-                  Icon(
                     Icons.shopping_basket,
                     color: Theme.of(context).primaryColor,
                     size: 30,
+                  ),
+                  Container(
+                    height: 25.0,
+                    width: 70.0,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15.0),
+                      color: Colors.grey.withOpacity(0.2),
+                    ),
+                    child: Center(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          // Add your button press logic here
+                        },
+                        child: const Text('Order'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: ArmyshopColors.buttonColor,
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               )
