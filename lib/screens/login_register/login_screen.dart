@@ -95,15 +95,6 @@ class LoginScreenState extends State<LoginScreen> {
           text: 'Log In',
           onTap: login,
         ),
-
-        // space between button and forgot password
-        const SizedBox(height: 10),
-
-        // forgot password
-        Text(
-          'Forgot password?',
-          style: TextStyle(color: Colors.grey[600]),
-        ),
       ],
     );
   }
