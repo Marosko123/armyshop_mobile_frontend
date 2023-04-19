@@ -24,7 +24,7 @@ class ChatRoomsState extends State<ChatRooms> {
   late List<ChatRoom> chatRooms;
   String roomName = '';
   List<bool> isChecked = [];
-  String error = '';
+  String error = 'Room name cannot be empty';
   bool dataInvalid = false;
 
   List<User> users = [];
@@ -95,7 +95,7 @@ class ChatRoomsState extends State<ChatRooms> {
   }
 
   Future<void> showDialogAlert(BuildContext context) async {
-    List<User> users = await RequestHandler.getUsers();
+    users = await RequestHandler.getUsers();
 
     if (users.isEmpty) {
       return;
