@@ -17,6 +17,7 @@ class ServerRequester {
       switch (type) {
         case 'GET':
           response = await http.get(Uri.parse('$_baseURL$subUrl'));
+          print(response.body);
           break;
         case 'POST':
           response = await http.post(
@@ -50,6 +51,7 @@ class ServerRequester {
       // ignore: avoid_print
       print(e);
       GlobalVariables.isConnectedToServer = false;
+      // throw e;
       return {'error': 'Server is not responding'};
     }
   }

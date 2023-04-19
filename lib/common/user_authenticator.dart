@@ -43,4 +43,14 @@ class UserAuthenticator {
       (_) => false,
     );
   }
+
+  static String getUserName(int id) {
+    for (var user in GlobalVariables.users) {
+      if (user.id == id) {
+        return '${user.firstName} ${user.lastName}';
+      }
+    }
+
+    return 'Unknown Unknown';
+  }
 }

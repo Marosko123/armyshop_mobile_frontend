@@ -95,35 +95,13 @@ class ChatRoomsState extends State<ChatRooms> {
   }
 
   Future<void> showDialogAlert(BuildContext context) async {
-    final response = await RequestHandler.getUsers();
+    List<User> users = await RequestHandler.getUsers();
 
-    if (response['status'] == 200) {
-      final usersList = response['users'];
-      users = [];
-
-      for (Map u in usersList) {
-        if (u['id'] == GlobalVariables.user.id) {
-          continue;
-        }
-
-        users.add(
-          User(
-            id: u['id'],
-            email: u['email'],
-            firstName: u['first_name'],
-            lastName: u['last_name'],
-            age: 0,
-            address: '',
-            licensePicture: '',
-            isLicenseValid: true,
-            telephone: '',
-            chatRooms: [],
-          ),
-        );
-      }
-    } else {
+    if (users.isEmpty) {
       return;
     }
+
+    users.removeWhere((user) => user.id == GlobalVariables.user.id);
 
     // ignore: use_build_context_synchronously
     return showDialog<void>(

@@ -1,4 +1,5 @@
 import '../models/message.dart';
+import '../models/user.dart';
 import 'server_requester.dart';
 import 'global_variables.dart';
 import '../models/product.dart';
@@ -11,9 +12,9 @@ class RequestHandler {
     final Map<String, dynamic> data =
         await ServerRequester.request(subUrl: '/products', type: 'GET');
 
-    if (data['error'] != null) {
-      throw data['error'];
-    }
+    // if (data['error'] != null) {
+    //   throw data['error'];
+    // }
 
     final List productsList = data['products'];
 
@@ -28,16 +29,37 @@ class RequestHandler {
 
   // login existing user
   static Future<dynamic> getUsers() async {
-    final data = await ServerRequester.request(
+    final response = await ServerRequester.request(
       subUrl: '/users',
       type: 'GET',
     );
 
-    if (data['error'] != null) {
-      throw data['error'];
+    if (response['status'] == 200) {
+      final usersList = response['users'];
+
+      GlobalVariables.users = [];
+
+      for (Map u in usersList) {
+        GlobalVariables.users.add(
+          User(
+            id: u['id'],
+            email: u['email'],
+            firstName: u['first_name'],
+            lastName: u['last_name'],
+            age: u['age'] ?? 0,
+            address: u['address'] ?? '',
+            licensePicture: '',
+            isLicenseValid: false,
+            telephone: u['telephone'] ?? '',
+            chatRooms: [],
+          ),
+        );
+      }
+    } else {
+      return [];
     }
 
-    return data;
+    return GlobalVariables.users;
   }
 
   // login existing user
@@ -54,9 +76,9 @@ class RequestHandler {
       },
     );
 
-    if (data['error'] != null) {
-      throw data['error'];
-    }
+    // if (data['error'] != null) {
+    //   throw data['error'];
+    // }
 
     return data;
   }
@@ -79,9 +101,9 @@ class RequestHandler {
       },
     );
 
-    if (data['error'] != null) {
-      throw data['error'];
-    }
+    // if (data['error'] != null) {
+    //   throw data['error'];
+    // }
 
     return data;
   }
@@ -93,9 +115,9 @@ class RequestHandler {
       type: 'GET',
     );
 
-    if (data['error'] != null) {
-      throw data['error'];
-    }
+    // if (data['error'] != null) {
+    //   throw data['error'];
+    // }
 
     return data;
   }
@@ -108,22 +130,25 @@ class RequestHandler {
       dataToSend: dataToSend,
     );
 
-    if (data['error'] != null) {
-      throw data['error'];
-    }
+    // if (data['error'] != null) {
+    //   throw data['error'];
+    // }
 
     return data;
   }
 
   // get messages from room of user
-  static Future<dynamic> getMessages(int userId, int roomId) async {
+  static Future<dynamic> getMessages(
+      int userId, int roomId, bool getOnlyUnreadMessages) async {
     final data = await ServerRequester.request(
-      subUrl: '/messages/user/$userId/room/$roomId',
+      subUrl: getOnlyUnreadMessages
+          ? '/messages/unread/user/$userId/room/$roomId'
+          : '/messages/user/$userId/room/$roomId',
       type: 'GET',
     );
 
     if (data['error'] != null) {
-      throw data['error'];
+      print(data['error']);
     }
 
     return data;
@@ -142,7 +167,7 @@ class RequestHandler {
     );
 
     if (data['error'] != null) {
-      throw data['error'];
+      print(data['error']);
     }
 
     return data;

@@ -3,6 +3,7 @@ import '../models/user.dart';
 
 class GlobalVariables {
   static List<Product> products = [];
+  static List<User> users = [];
   static bool isConnectedToServer = true;
   static User user = User(
     id: 1,

@@ -1,11 +1,13 @@
 import 'dart:async';
 
 import 'package:armyshop_mobile_frontend/common/global_variables.dart';
+import 'package:armyshop_mobile_frontend/common/user_authenticator.dart';
 import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
 
 import '../common/armyshop_colors.dart';
+import '../common/converters.dart';
 import '../common/request_handler.dart';
 import '../models/chat_room.dart';
 import '../models/message.dart';
@@ -23,7 +25,7 @@ class Chat extends StatefulWidget {
 
 class ChatState extends State<Chat> {
   late ChatRoom _chatRoom;
-  late List<Message> _messages = [];
+  late final List<Message> _messages = [];
   final TextEditingController _textController = TextEditingController();
   late Timer? _timer;
 
@@ -31,20 +33,22 @@ class ChatState extends State<Chat> {
   void initState() {
     super.initState();
     _chatRoom = widget.chatRoom;
-    // _timer = Timer.periodic(const Duration(milliseconds: 1000), (timer) {
-    //   getMessages();
-    // });
     getMessages();
+    RequestHandler.getUsers();
+
+    _timer = Timer.periodic(const Duration(milliseconds: 3000), (timer) async {
+      await getMessages(getOnlyUnreadMessages: true);
+    });
   }
 
-  Future<void> getMessages() async {
+  Future<void> getMessages({bool getOnlyUnreadMessages = false}) async {
     final response = await RequestHandler.getMessages(
-        GlobalVariables.user.id, _chatRoom.roomId);
+        GlobalVariables.user.id, _chatRoom.roomId, getOnlyUnreadMessages);
 
     if (response['status'] == 200) {
-      _messages = [];
-
-      for (var x in response['messages']) {
+      print(response['messages']);
+      dynamic arrOfMessages = response['messages'];
+      for (var x in arrOfMessages) {
         _messages.add(Message(
           senderId: x['sender_id'],
           roomId: x['room_id'],
@@ -100,6 +104,10 @@ class ChatState extends State<Chat> {
                 alignment: Alignment.centerLeft,
                 child: BackButton(
                   color: ArmyshopColors.textColor,
+                  onPressed: () {
+                    _timer?.cancel();
+                    Navigator.of(context).pop();
+                  },
                 ),
               ),
               Expanded(
@@ -170,20 +178,52 @@ class ChatState extends State<Chat> {
                 alignment: message.isSentByMe
                     ? Alignment.centerRight
                     : Alignment.centerLeft,
-                child: Card(
-                  color: message.isSentByMe
-                      ? ArmyshopColors.chatBubbleRightColor
-                      : ArmyshopColors.chatBubbleLeftColor,
-                  elevation: 8,
-                  child: Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: Text(
-                      message.message,
-                      style: TextStyle(
-                        color: ArmyshopColors.textColor,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (!message.isSentByMe)
+                      CircleAvatar(
+                        radius: 10,
+                        backgroundColor: Colors.green,
+                        child: Text(
+                          '${UserAuthenticator.getUserName(message.senderId).split(' ')[0][0]}${UserAuthenticator.getUserName(message.senderId).split(' ')[1][0]}',
+                          style: TextStyle(
+                            color: ArmyshopColors.textColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 10,
+                          ),
+                        ),
+                      ),
+                    Card(
+                      color: message.isSentByMe
+                          ? ArmyshopColors.chatBubbleRightColor
+                          : ArmyshopColors.chatBubbleLeftColor,
+                      elevation: 8,
+                      child: Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: Text(
+                          message.message,
+                          style: TextStyle(
+                            color: ArmyshopColors.textColor,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                    if (message.isSentByMe)
+                      CircleAvatar(
+                        radius: 10,
+                        backgroundColor: Converters.initialsToColor(
+                            '${UserAuthenticator.getUserName(GlobalVariables.user.id).split(' ')[0][0]}${UserAuthenticator.getUserName(GlobalVariables.user.id).split(' ')[1][0]}'),
+                        child: Text(
+                          '${UserAuthenticator.getUserName(GlobalVariables.user.id).split(' ')[0][0]}${UserAuthenticator.getUserName(GlobalVariables.user.id).split(' ')[1][0]}',
+                          style: TextStyle(
+                            color: ArmyshopColors.textColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 10,
+                          ),
+                        ),
+                      ),
+                  ],
                 ),
               ),
             ),
