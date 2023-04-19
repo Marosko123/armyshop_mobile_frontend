@@ -1,4 +1,5 @@
 import 'package:armyshop_mobile_frontend/models/cart_model.dart';
+import 'package:armyshop_mobile_frontend/models/chat_room.dart';
 import 'package:armyshop_mobile_frontend/screens/chat.dart';
 import 'package:armyshop_mobile_frontend/screens/chat_rooms.dart';
 import 'package:armyshop_mobile_frontend/screens/login_register/login_register_screen.dart';
@@ -44,7 +45,7 @@ class MyApp extends StatelessWidget {
               const LoginRegisterScreen(),
           ChatRooms.routeName: (context) => const ChatRooms(),
           Chat.routeName: (context) => Chat(
-              roomName: ModalRoute.of(context)?.settings.arguments as String),
+              chatRoom: ModalRoute.of(context)?.settings.arguments as ChatRoom),
         },
       ),
     );

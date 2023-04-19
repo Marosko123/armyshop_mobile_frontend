@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:armyshop_mobile_frontend/common/armyshop_colors.dart';
+import 'package:armyshop_mobile_frontend/common/request_handler.dart';
 import 'package:armyshop_mobile_frontend/components/my_button.dart';
 import 'package:armyshop_mobile_frontend/components/my_textfield.dart';
 import 'package:armyshop_mobile_frontend/screens/chat_rooms.dart';
@@ -6,6 +9,7 @@ import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 
 import '../common/global_variables.dart';
+import '../models/chat_room.dart';
 import '../models/user.dart';
 import 'login_register/login_register_screen.dart';
 
@@ -24,7 +28,24 @@ class UserAccountState extends State<UserAccount> {
       'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ';
   bool isLoggedIn = false;
 
-  void openChatRooms() {
+  Future<void> openChatRooms() async {
+    dynamic response = await RequestHandler.getChatRooms();
+
+    if (response['status'] == 200) {
+      List<ChatRoom> chatRooms = [];
+
+      for (var chatRoom in response['chat_rooms']) {
+        chatRooms.add(ChatRoom(
+          roomId: chatRoom['id'],
+          creatorId: chatRoom['creator_id'],
+          roomName: chatRoom['room_name'],
+          members: jsonDecode(chatRoom['members']),
+        ));
+      }
+
+      GlobalVariables.user.chatRooms = chatRooms;
+    }
+
     Navigator.of(context).pushNamed(ChatRooms.routeName);
   }
 
@@ -388,6 +409,7 @@ class UserAccountState extends State<UserAccount> {
                 showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
+                    backgroundColor: ArmyshopColors.backgroundColor,
                     title: Text(
                       'Are you sure you want to log out?',
                       style: TextStyle(

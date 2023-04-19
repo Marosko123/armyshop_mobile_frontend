@@ -12,7 +12,8 @@ class ArmyshopColors {
   static late Color buttonColor;
   static late Color textFieldFillColor;
   static late Color textFieldHintColor;
-  static late Color chatBubbleColor;
+  static late Color chatBubbleRightColor;
+  static late Color chatBubbleLeftColor;
   static late Color logoColor;
   static late Color switchButtonDisabled;
   static late Color switchButtonHighlighted;
@@ -31,7 +32,8 @@ class ArmyshopColors {
     "button": Color.fromARGB(255, 0, 0, 0),
     "textFieldFill": Color.fromARGB(255, 238, 238, 238),
     "textFieldHint": Color.fromARGB(255, 158, 158, 158),
-    "chatBubble": Color.fromARGB(255, 0, 76, 138),
+    "chatBubbleRight": Color.fromARGB(255, 0, 76, 138),
+    "chatBubbleLeft": Color.fromARGB(255, 0, 105, 190),
     "logo": Color.fromARGB(255, 4, 133, 0),
     "switchButtonDisabled": Color.fromARGB(255, 211, 211, 211),
     "switchButtonHighlighted": Color.fromARGB(255, 255, 255, 255),
@@ -51,7 +53,8 @@ class ArmyshopColors {
     "button": Color.fromARGB(255, 255, 255, 255),
     "textFieldFill": Color.fromARGB(255, 112, 112, 112),
     "textFieldHint": Color.fromARGB(255, 241, 241, 241),
-    "chatBubble": Color.fromARGB(255, 0, 153, 180),
+    "chatBubbleRight": Color.fromARGB(255, 0, 153, 180),
+    "chatBubbleLeft": Color.fromARGB(255, 0, 197, 59),
     "logo": Color.fromARGB(255, 24, 104, 87),
     "switchButtonDisabled": Color.fromARGB(255, 0, 0, 0),
     "switchButtonHighlighted": Color.fromARGB(255, 90, 90, 90),
@@ -73,7 +76,8 @@ class ArmyshopColors {
     ArmyshopColors.buttonColor = colors["button"]!;
     ArmyshopColors.textFieldFillColor = colors["textFieldFill"]!;
     ArmyshopColors.textFieldHintColor = colors["textFieldHint"]!;
-    ArmyshopColors.chatBubbleColor = colors["chatBubble"]!;
+    ArmyshopColors.chatBubbleRightColor = colors["chatBubbleRight"]!;
+    ArmyshopColors.chatBubbleLeftColor = colors["chatBubbleLeft"]!;
     ArmyshopColors.logoColor = colors["logo"]!;
     ArmyshopColors.switchButtonDisabled = colors["switchButtonDisabled"]!;
     ArmyshopColors.switchButtonHighlighted = colors["switchButtonHighlighted"]!;

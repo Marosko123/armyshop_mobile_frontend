@@ -1,3 +1,4 @@
+import '../models/message.dart';
 import 'server_requester.dart';
 import 'global_variables.dart';
 import '../models/product.dart';
@@ -105,6 +106,39 @@ class RequestHandler {
       subUrl: '/chat_rooms',
       type: 'POST',
       dataToSend: dataToSend,
+    );
+
+    if (data['error'] != null) {
+      throw data['error'];
+    }
+
+    return data;
+  }
+
+  // get messages from room of user
+  static Future<dynamic> getMessages(int userId, int roomId) async {
+    final data = await ServerRequester.request(
+      subUrl: '/messages/user/$userId/room/$roomId',
+      type: 'GET',
+    );
+
+    if (data['error'] != null) {
+      throw data['error'];
+    }
+
+    return data;
+  }
+
+  // get messages from room of user
+  static Future<dynamic> sendMessage(Message message) async {
+    final data = await ServerRequester.request(
+      subUrl: '/messages',
+      type: 'POST',
+      dataToSend: {
+        'sender_id': message.senderId,
+        'room_id': message.roomId,
+        'message': message.message,
+      },
     );
 
     if (data['error'] != null) {

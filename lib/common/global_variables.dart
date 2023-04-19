@@ -5,15 +5,15 @@ class GlobalVariables {
   static List<Product> products = [];
   static bool isConnectedToServer = true;
   static User user = User(
-    id: 0,
-    email: '',
-    firstName: '',
-    lastName: '',
-    age: 0,
-    address: '',
+    id: 1,
+    email: 'admin@armyshop.xd',
+    firstName: 'Adminko',
+    lastName: 'Adminer',
+    age: 99,
+    address: 'FIIT STU',
     licensePicture: '',
-    isLicenseValid: false,
-    telephone: '',
+    isLicenseValid: true,
+    telephone: '911',
     chatRooms: [],
   );
 }

@@ -21,7 +21,7 @@ class ChatRooms extends StatefulWidget {
 }
 
 class ChatRoomsState extends State<ChatRooms> {
-  late List chatRooms;
+  late List<ChatRoom> chatRooms;
   String roomName = '';
   List<bool> isChecked = [];
   String error = '';
@@ -36,8 +36,8 @@ class ChatRoomsState extends State<ChatRooms> {
     chatRooms = GlobalVariables.user.chatRooms;
   }
 
-  void openChatRoom(String roomName) {
-    Navigator.of(context).pushNamed(Chat.routeName, arguments: roomName);
+  void openChatRoom(ChatRoom chatRoom) {
+    Navigator.of(context).pushNamed(Chat.routeName, arguments: chatRoom);
   }
 
   void createChatRoom(context) async {
@@ -60,8 +60,6 @@ class ChatRoomsState extends State<ChatRooms> {
       'room_name': roomName,
       'members': jsonEncode({'user_ids': userIds}),
     });
-
-    print(response);
 
     if (response['status'] == 200) {
       final chatRoom = response['chat_room'];
@@ -208,13 +206,13 @@ class ChatRoomsState extends State<ChatRooms> {
   Widget build(BuildContext context) {
     List<Widget> chatRoomButtons = [];
 
-    for (var x in chatRooms) {
+    for (var room in chatRooms) {
       chatRoomButtons.add(
         Padding(
           padding: const EdgeInsets.only(top: 10),
           child: MyButton(
-            text: x.roomName,
-            onTap: () => openChatRoom('${x.roomName}'),
+            text: room.roomName,
+            onTap: () => openChatRoom(room),
           ),
         ),
       );
