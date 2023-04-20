@@ -3,6 +3,7 @@ import 'package:armyshop_mobile_frontend/models/chat_room.dart';
 import 'package:armyshop_mobile_frontend/screens/chat.dart';
 import 'package:armyshop_mobile_frontend/screens/chat_rooms.dart';
 import 'package:armyshop_mobile_frontend/screens/login_register/login_register_screen.dart';
+import 'package:armyshop_mobile_frontend/screens/payment_screeen.dart';
 import 'package:armyshop_mobile_frontend/screens/product_detail.dart';
 import 'package:armyshop_mobile_frontend/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
         routes: {
           ProductsScreen.routeName: (context) => const PrimaryPage(),
           ProductPage.routeName: (context) => const ProductPage(),
+          PaymentScreen.routeName: (context) => const PaymentScreen(),
           LoginScreen.routeName: (context) => const LoginScreen(),
           RegisterScreen.routeName: (context) => const RegisterScreen(),
           LoginRegisterScreen.routeName: (context) =>

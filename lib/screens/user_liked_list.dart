@@ -1,4 +1,5 @@
 import 'package:armyshop_mobile_frontend/common/armyshop_colors.dart';
+import 'package:armyshop_mobile_frontend/screens/payment_screeen.dart';
 import 'package:armyshop_mobile_frontend/screens/product_detail.dart';
 import 'package:flutter/material.dart';
 
@@ -64,11 +65,13 @@ class UserLikedListState extends State<UserLikedList> {
     double deviceWidth = MediaQuery.of(context).size.width;
     double cardHeight;
     if (deviceWidth < 600) {
-      cardHeight = MediaQuery.of(context).size.height * 0.16;
+      cardHeight = MediaQuery.of(context).size.height * 0.14;
+    } else if (deviceWidth < 800) {
+      cardHeight = MediaQuery.of(context).size.height * 0.26;
     } else if (deviceWidth < 1000) {
-      cardHeight = MediaQuery.of(context).size.height * 0.24;
-    } else {
       cardHeight = MediaQuery.of(context).size.height * 0.40;
+    } else {
+      cardHeight = MediaQuery.of(context).size.height * 0.50;
     }
 
     return Padding(
@@ -179,7 +182,8 @@ class UserLikedListState extends State<UserLikedList> {
                     child: Center(
                       child: ElevatedButton(
                         onPressed: () {
-                          // Add your button press logic here
+                          // Navigate to the product detail page
+                          Navigator.of(context).pushNamed(PaymentScreen.routeName);
                         },
                         child: const Text('Order'),
                         style: ElevatedButton.styleFrom(
