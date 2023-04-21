@@ -15,6 +15,7 @@ class UserHomeState extends State<UserHome> {
 
   void _toggleFavorite() {
     setState(() {
+      print('here');
       _isFavorite = !_isFavorite;
     });
   }
@@ -133,8 +134,6 @@ class UserHomeState extends State<UserHome> {
       ),
     );
   }
-
-
 
   // Widget _buildCard(
   //     String name, String price, String imagePath, BuildContext context) {

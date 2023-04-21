@@ -13,8 +13,57 @@ class ProductPage extends StatefulWidget {
 class ProductPageState extends State<ProductPage> {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text('ProductPage'),
-    );
+    return Scaffold(
+        backgroundColor: ArmyshopColors.backgroundColor,
+        body: SingleChildScrollView(
+          child: Center(
+            child: Column(children: [
+              const SizedBox(height: 10),
+
+              // Header
+              Row(
+                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: BackButton(
+                      color: ArmyshopColors.textColor,
+                    ),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 40.0),
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          'AK 47',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: ArmyshopColors.textColor,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+              // page content
+              const SizedBox(height: 10),
+              Container(
+                width: 300,
+                height: 200,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/army-bg1.jpg'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              )
+            ]),
+          ),
+        ));
   }
 }
