@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'global_variables.dart';
 
 class ServerRequester {
-  static const String _baseURL = 'http://127.0.0.1:8000/api';
+  static final String _baseURL = 'http://${GlobalVariables.serverIP}:8000/api';
 
   static Future<dynamic> request({
     required String subUrl,

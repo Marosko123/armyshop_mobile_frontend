@@ -184,7 +184,8 @@ class ChatState extends State<Chat> {
                     if (!message.isSentByMe)
                       CircleAvatar(
                         radius: 10,
-                        backgroundColor: Colors.green,
+                        backgroundColor: Converters.initialsToColor(
+                            '${UserAuthenticator.getUserName(message.senderId).split(' ')[0][0]}${UserAuthenticator.getUserName(message.senderId).split(' ')[1][0]}'),
                         child: Text(
                           '${UserAuthenticator.getUserName(message.senderId).split(' ')[0][0]}${UserAuthenticator.getUserName(message.senderId).split(' ')[1][0]}',
                           style: TextStyle(

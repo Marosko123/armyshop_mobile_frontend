@@ -402,7 +402,7 @@ class UserAccountState extends State<UserAccount> {
         ),
         if (!GlobalVariables.user.isEmpty())
           Padding(
-            padding: const EdgeInsets.only(left: 110, right: 110, bottom: 30),
+            padding: const EdgeInsets.only(left: 50, right: 50, bottom: 30),
             child: MyButton(
               text: 'Log Out',
               onTap: () {
