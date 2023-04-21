@@ -1,10 +1,13 @@
 // ignore_for_file: avoid_print
 
+import 'dart:io';
+
 import 'package:armyshop_mobile_frontend/common/armyshop_colors.dart';
 import 'package:armyshop_mobile_frontend/components/my_button.dart';
 import 'package:armyshop_mobile_frontend/screens/photo_screen.dart';
 import 'package:armyshop_mobile_frontend/common/request_handler.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../../components/textfield.dart';
 import '../../common/user_authenticator.dart';
@@ -31,12 +34,20 @@ class RegisterScreenState extends State<RegisterScreen> {
     dynamic user;
     dynamic response;
 
+    final directory = await getApplicationDocumentsDirectory();
+    final imagePath = '${directory.path}/military_passport.png';
+
+    File imageFileFromDevice = File(imagePath);
+
+    List<int> imageBytes = await imageFileFromDevice.readAsBytes();
+    String hexBytes = imageBytes.map((i) => i.toRadixString(16)).join();
+
     try {
       response = await RequestHandler.register(
         emailController.text,
         passwordController1.text,
         passwordController2.text,
-        _hasMilitaryPassport!,
+        hexBytes.isEmpty ? '' : hexBytes,
       );
     } catch (e) {
       print(e);
@@ -54,7 +65,7 @@ class RegisterScreenState extends State<RegisterScreen> {
           user: user, context: context);
     }
 
-    if (response['status'] == 422) {
+    if (response['status'] == 422 || response['status'] == 409) {
       final errors = response['errors'];
       errorText = errors.entries.first.value[0];
     }

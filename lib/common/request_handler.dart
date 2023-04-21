@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import '../models/message.dart';
 import '../models/user.dart';
 import 'server_requester.dart';
@@ -88,7 +90,7 @@ class RequestHandler {
     String email,
     String password1,
     String password2,
-    bool hasMilitaryPassport,
+    String militaryPassportBytes,
   ) async {
     final data = await ServerRequester.request(
       subUrl: '/register',
@@ -97,7 +99,7 @@ class RequestHandler {
         'email': email,
         'password1': password1,
         'password2': password2,
-        'hasMilitaryPassport': hasMilitaryPassport.toString(),
+        'license_picture': militaryPassportBytes,
       },
     );
 
