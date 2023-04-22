@@ -13,6 +13,14 @@ class UserLikedList extends StatefulWidget {
 }
 
 class UserLikedListState extends State<UserLikedList> {
+  bool isLiked = false;
+
+  void _toggleLike() {
+    setState(() {
+      isLiked = !isLiked;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -64,6 +72,7 @@ class UserLikedListState extends State<UserLikedList> {
     // set the height of the card
     double deviceWidth = MediaQuery.of(context).size.width;
     double cardHeight;
+
     if (deviceWidth < 600) {
       cardHeight = MediaQuery.of(context).size.height * 0.14;
     } else if (deviceWidth < 800) {
@@ -121,12 +130,12 @@ class UserLikedListState extends State<UserLikedList> {
               ),
               const SizedBox(height: 2.0),
               Padding(
-                padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+                padding: const EdgeInsets.only(left: 15.0, right: 25.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Expanded(
+                    Flexible(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -140,6 +149,9 @@ class UserLikedListState extends State<UserLikedList> {
                             overflow: TextOverflow.ellipsis,
                             maxLines: 2,
                           ),
+                          SizedBox(
+                              height:
+                                  4), // <-- Add an empty Text widget with a height of 4 between the Text widgets
                           Text(
                             price,
                             style: const TextStyle(
@@ -153,10 +165,19 @@ class UserLikedListState extends State<UserLikedList> {
                     ),
                     Column(
                       children: [
-                        Icon(
-                          Icons.favorite,
-                          color: Colors.red,
-                          size: 40,
+                        Container(
+                          padding: EdgeInsets.only(
+                              bottom:
+                                  15.0), // <-- Adjust the top padding as needed
+                          child: IconButton(
+                            onPressed: _toggleLike,
+                            icon: Icon(
+                              isLiked ? Icons.favorite : Icons.favorite_border,
+                              color: Colors.red,
+                              size: 40,
+                              // color: isLiked ? Colors.red : Colors.grey,
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -183,7 +204,8 @@ class UserLikedListState extends State<UserLikedList> {
                       child: ElevatedButton(
                         onPressed: () {
                           // Navigate to the product detail page
-                          Navigator.of(context).pushNamed(PaymentScreen.routeName);
+                          Navigator.of(context)
+                              .pushNamed(PaymentScreen.routeName);
                         },
                         child: const Text('Order'),
                         style: ElevatedButton.styleFrom(
