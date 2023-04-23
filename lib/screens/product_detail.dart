@@ -1,5 +1,8 @@
 import 'package:armyshop_mobile_frontend/common/armyshop_colors.dart';
+import 'package:armyshop_mobile_frontend/screens/payment_screeen.dart';
+import 'package:armyshop_mobile_frontend/screens/user_shopping_cart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class ProductPage extends StatefulWidget {
   static const routeName = '/product-page';
@@ -11,10 +14,64 @@ class ProductPage extends StatefulWidget {
 }
 
 class ProductPageState extends State<ProductPage> {
+  // get product from database
+  // Product product = Product();
+  String name = 'AK 47';
+  int amount = 1;
+  double price = 3.99;
+  String image = 'assets/images/army-bg1.jpg';
+  String description = 'lorem ipsum dolor sit amet';
+  bool isLiked = false;
+  double totalPrice = 3.99;
+  final TextEditingController _controller = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.text = amount.toString();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _toggleLike() {
+    setState(() {
+      isLiked = !isLiked;
+      if (isLiked) {
+        // Add the product to the liked list database
+      } else {
+        // Remove the product from the liked list database
+      }
+    });
+  }
+
+  void _addAmount() {
+    setState(() {
+      if (amount < 99) {
+        amount++;
+        _controller.text = amount.toString();
+        totalPrice = amount * price;
+      }
+    });
+  }
+
+  void _removeAmount() {
+    setState(() {
+      if (amount > 1) {
+        amount--;
+        _controller.text = amount.toString();
+        totalPrice = amount * price;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    int amount = 1;
+
     return Scaffold(
         backgroundColor: ArmyshopColors.backgroundColor,
         body: SingleChildScrollView(
@@ -37,7 +94,7 @@ class ProductPageState extends State<ProductPage> {
                       child: Align(
                         alignment: Alignment.center,
                         child: Text(
-                          'AK 47',
+                          name,
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -51,7 +108,7 @@ class ProductPageState extends State<ProductPage> {
               ),
 
               SizedBox(
-                height: size.height,
+                height: size.height * 1.5,
                 child: Stack(
                   children: <Widget>[
                     Positioned(
@@ -64,7 +121,7 @@ class ProductPageState extends State<ProductPage> {
                           topLeft: Radius.circular(24),
                           topRight: Radius.circular(24),
                         ),
-                        child: Container(
+                        child: SizedBox(
                           height: size.height * 0.33,
                           width: size.width,
                           child: Image.asset(
@@ -76,7 +133,7 @@ class ProductPageState extends State<ProductPage> {
                     ),
                     Container(
                       margin: EdgeInsets.only(top: size.height * 0.30),
-                      height: size.height * 0.70,
+                      height: size.height * 1.5,
                       decoration: const BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.only(
@@ -92,12 +149,12 @@ class ProductPageState extends State<ProductPage> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                SizedBox(width: 10),
+                                const SizedBox(width: 10),
                                 Flexible(
                                   flex:
                                       2, // Set the flex property to a value greater than 1
                                   child: Text(
-                                    'womens army boots',
+                                    description,
                                     style: TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold,
@@ -107,19 +164,25 @@ class ProductPageState extends State<ProductPage> {
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
-                                SizedBox(width: 25),
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: const Icon(
-                                    Icons.favorite,
-                                    color: Colors.red,
-                                    size: 40,
+                                const SizedBox(width: 25),
+                                Container(
+                                  padding: const EdgeInsets.only(bottom: 10.0),
+                                  child: IconButton(
+                                    onPressed: _toggleLike,
+                                    icon: Icon(
+                                      isLiked
+                                          ? Icons.favorite
+                                          : Icons.favorite_border,
+                                      color: Colors.red,
+                                      size: 40,
+                                      // color: isLiked ? Colors.red : Colors.grey,
+                                    ),
                                   ),
                                 ),
-                                SizedBox(width: 10),
+                                const SizedBox(width: 10),
                               ],
                             ),
-                            SizedBox(height: 10),
+                            const SizedBox(height: 10),
                             Column(
                               children: [
                                 Container(
@@ -134,13 +197,13 @@ class ProductPageState extends State<ProductPage> {
                                         CrossAxisAlignment.center,
                                     children: [
                                       Text(
-                                        'Price for 1: \$3.99',
+                                        'Price for 1: \$$price',
                                         style: TextStyle(
                                           fontSize: 16,
                                           color: ArmyshopColors.textColor,
                                         ),
                                       ),
-                                      SizedBox(height: 10),
+                                      const SizedBox(height: 10),
                                       // amount
                                       Container(
                                         width: size.width * 0.35,
@@ -154,26 +217,50 @@ class ProductPageState extends State<ProductPage> {
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             IconButton(
-                                              onPressed: () {},
+                                              onPressed: _removeAmount,
                                               icon: const Icon(
                                                 Icons.remove,
                                                 color: Colors.white,
                                                 size: 25,
                                               ),
                                             ),
-                                            Transform.translate(
-                                              offset: const Offset(0,
-                                                  -1.5), // Move up by 5 pixels
-                                              child: Text(
-                                                amount.toString(),
+                                            SizedBox(
+                                              width: 30,
+                                              child: TextFormField(
+                                                controller: _controller,
                                                 style: const TextStyle(
                                                   fontSize: 20,
                                                   color: Colors.white,
                                                 ),
+                                                keyboardType:
+                                                    TextInputType.number,
+                                                inputFormatters: [
+                                                  FilteringTextInputFormatter
+                                                      .allow(RegExp(r'\d+')),
+                                                ],
+                                                textAlign: TextAlign.center,
+                                                onChanged: (value) {
+                                                  try {
+                                                    setState(() {
+                                                      amount = int.parse(value);
+                                                      totalPrice =
+                                                          amount * price;
+                                                    });
+                                                  } catch (e) {
+                                                    setState(() {
+                                                      amount = 0;
+                                                      totalPrice = 0;
+                                                    });
+                                                  }
+                                                },
+                                                decoration:
+                                                    const InputDecoration(
+                                                  border: InputBorder.none,
+                                                ),
                                               ),
                                             ),
                                             IconButton(
-                                              onPressed: () {},
+                                              onPressed: _addAmount,
                                               icon: const Icon(
                                                 Icons.add,
                                                 color: Colors.white,
@@ -195,7 +282,7 @@ class ProductPageState extends State<ProductPage> {
                                             ),
                                           ),
                                           Text(
-                                            '\$3.99',
+                                            '${totalPrice.toStringAsFixed(2)} \$',
                                             style: TextStyle(
                                               fontSize: 22,
                                               color: ArmyshopColors.textColor,
@@ -207,27 +294,32 @@ class ProductPageState extends State<ProductPage> {
                                       const SizedBox(height: 10),
                                       Row(
                                         children: [
-                                          Expanded(
-                                            child: ElevatedButton(
-                                              onPressed: () {},
-                                              style: ElevatedButton.styleFrom(
-                                                primary:
-                                                    ArmyshopColors.buttonColor,
-                                                onPrimary: Colors.white,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          32.0),
-                                                ),
+                                          const SizedBox(width: 50),
+                                          Container(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 10.0),
+                                            child: IconButton(
+                                              icon: Icon(
+                                                Icons.shopping_basket,
+                                                color: Theme.of(context)
+                                                    .primaryColor,
+                                                size: 30,
                                               ),
-                                              child: const Text('Add to cart'),
+                                              onPressed: () {
+                                                // Navigate to the product detail page
+                                                Navigator.of(context).pushNamed(
+                                                    UserShoppingCart.routeName);
+                                              },
                                             ),
                                           ),
-                                          const SizedBox(width: 10),
+                                          const SizedBox(width: 30),
                                           Expanded(
                                             child: ElevatedButton(
-                                              onPressed: () {},
-                                              child: Text('Buy now'),
+                                              onPressed: () {
+                                                // Navigate to the product detail page
+                                                Navigator.of(context).pushNamed(
+                                                    PaymentScreen.routeName);
+                                              },
                                               style: ElevatedButton.styleFrom(
                                                 backgroundColor:
                                                     ArmyshopColors.buttonColor,
@@ -238,8 +330,10 @@ class ProductPageState extends State<ProductPage> {
                                                           32.0),
                                                 ),
                                               ),
+                                              child: const Text('Order now'),
                                             ),
                                           ),
+                                          const SizedBox(width: 20),
                                         ],
                                       ),
                                     ],

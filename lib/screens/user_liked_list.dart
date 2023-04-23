@@ -25,9 +25,9 @@ class UserLikedListState extends State<UserLikedList> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(height: 5.0),
+        const SizedBox(height: 5.0),
         Padding(
-          padding: EdgeInsets.only(left: 5.0, right: 5.0),
+          padding: const EdgeInsets.only(left: 5.0, right: 5.0),
           child: Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height - 50.0,
@@ -39,7 +39,7 @@ class UserLikedListState extends State<UserLikedList> {
                   color: Colors.grey.withOpacity(0.2),
                   spreadRadius: 3,
                   blurRadius: 5,
-                  offset: Offset(0, 3), // changes position of shadow
+                  offset: const Offset(0, 3),
                 ),
               ],
             ),
@@ -47,7 +47,7 @@ class UserLikedListState extends State<UserLikedList> {
               crossAxisCount: 2,
               primary: false,
               crossAxisSpacing: 10.0,
-              mainAxisSpacing: 15.0,
+              mainAxisSpacing: 10.0,
               childAspectRatio: 0.8,
               children: <Widget>[
                 _buildCard('AK 47 flkjdsdfj fldj fdsfj', '\$3.99',
@@ -62,7 +62,7 @@ class UserLikedListState extends State<UserLikedList> {
             ),
           ),
         ),
-        SizedBox(height: 15.0)
+        const SizedBox(height: 15.0)
       ],
     );
   }
@@ -96,7 +96,7 @@ class UserLikedListState extends State<UserLikedList> {
                 color: Colors.grey.withOpacity(0.2),
                 spreadRadius: 3,
                 blurRadius: 5,
-                offset: const Offset(0, 3), // changes position of shadow
+                offset: const Offset(0, 3),
               ),
             ],
             color: Colors.white,
@@ -149,15 +149,13 @@ class UserLikedListState extends State<UserLikedList> {
                             overflow: TextOverflow.ellipsis,
                             maxLines: 2,
                           ),
-                          SizedBox(
-                              height:
-                                  4), // <-- Add an empty Text widget with a height of 4 between the Text widgets
+                          const SizedBox(height: 4),
                           Text(
                             price,
                             style: const TextStyle(
-                              color: Colors.grey,
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                              fontSize: 12.0,
+                              // fontWeight: FontWeight.bold,
                             ),
                           ),
                         ],
@@ -166,9 +164,7 @@ class UserLikedListState extends State<UserLikedList> {
                     Column(
                       children: [
                         Container(
-                          padding: EdgeInsets.only(
-                              bottom:
-                                  15.0), // <-- Adjust the top padding as needed
+                          padding: const EdgeInsets.only(bottom: 15.0),
                           child: IconButton(
                             onPressed: _toggleLike,
                             icon: Icon(
@@ -207,10 +203,10 @@ class UserLikedListState extends State<UserLikedList> {
                           Navigator.of(context)
                               .pushNamed(PaymentScreen.routeName);
                         },
-                        child: const Text('Order'),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: ArmyshopColors.buttonColor,
                         ),
+                        child: const Text('Order'),
                       ),
                     ),
                   ),

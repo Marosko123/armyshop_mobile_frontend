@@ -6,6 +6,7 @@ import 'package:armyshop_mobile_frontend/screens/login_register/login_register_s
 import 'package:armyshop_mobile_frontend/screens/payment_screeen.dart';
 import 'package:armyshop_mobile_frontend/screens/product_detail.dart';
 import 'package:armyshop_mobile_frontend/screens/splash_screen.dart';
+import 'package:armyshop_mobile_frontend/screens/user_shopping_cart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import './screens/products_screen.dart';
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
           ProductsScreen.routeName: (context) => const PrimaryPage(),
           ProductPage.routeName: (context) => const ProductPage(),
           PaymentScreen.routeName: (context) => const PaymentScreen(),
+          UserShoppingCart.routeName: (context) => const UserShoppingCart(),
           LoginScreen.routeName: (context) => const LoginScreen(),
           RegisterScreen.routeName: (context) => const RegisterScreen(),
           LoginRegisterScreen.routeName: (context) =>
