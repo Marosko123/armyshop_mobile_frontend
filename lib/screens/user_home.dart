@@ -11,196 +11,103 @@ class UserHome extends StatefulWidget {
 }
 
 class UserHomeState extends State<UserHome> {
-  bool _isFavorite = false;
-
-  void _toggleFavorite() {
-    setState(() {
-      print('here');
-      _isFavorite = !_isFavorite;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(height: 5.0),
-        Padding(
-          padding: EdgeInsets.only(left: 5.0, right: 5.0),
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height - 50.0,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(15.0),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.2),
-                  spreadRadius: 3,
-                  blurRadius: 5,
-                  offset: Offset(0, 3), // changes position of shadow
-                ),
-              ],
-            ),
-            child: GridView.count(
-              crossAxisCount: 2,
-              primary: false,
-              crossAxisSpacing: 10.0,
-              mainAxisSpacing: 15.0,
-              childAspectRatio: 0.8,
-              children: <Widget>[
-                _buildCard(
-                    'AK 47', '\$3.99', 'assets/images/army-bg1.jpg', context),
-                _buildCard(
-                    'AK 47', '\$5.99', 'assets/images/army-bg1.jpg', context),
-                _buildCard(
-                    'AK 47', '\$1.99', 'assets/images/army-bg1.jpg', context),
-                _buildCard(
-                    'AK 47', '\$2.99', 'assets/images/army-bg1.jpg', context)
-              ],
-            ),
-          ),
+    return Container(
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('assets/images/army-bg1.jpg'),
+          fit: BoxFit.cover,
         ),
-        SizedBox(height: 15.0)
-      ],
-    );
-  }
-
-  Widget _buildCard(
-      String name, String price, String imagePath, BuildContext context) {
-    bool _isFavorite = false;
-
-    void _toggleFavorite() {
-      setState(() {
-        _isFavorite = !_isFavorite;
-      });
-    }
-
-    return Card(
-      child: InkWell(
-        onTap: () => {},
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Stack(
-              alignment: Alignment.bottomRight,
-              children: <Widget>[
-                Image.asset(
-                  imagePath,
-                  height: 150,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                ),
-                Ink(
-                  decoration: BoxDecoration(
-                    color: Colors.red,
-                    shape: BoxShape.circle,
-                  ),
-                  child: IconButton(
-                    icon: _isFavorite
-                        ? Icon(Icons.favorite)
-                        : Icon(Icons.favorite_border),
+      ),
+      child: Stack(
+        children: [
+          SafeArea(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(height: 16.0),
+                const Text(
+                  'Welcome to ArmyShop!',
+                  style: TextStyle(
+                    fontSize: 20.0,
                     color: Colors.white,
-                    onPressed: _toggleFavorite,
+                    fontWeight: FontWeight.bold,
                   ),
+                ),
+                const SizedBox(height: 5.0),
+                LayoutBuilder(
+                  builder: (BuildContext context, BoxConstraints constraints) {
+                    return GridView.count(
+                      crossAxisCount: 2,
+                      childAspectRatio: 1.0,
+                      padding: const EdgeInsets.all(4.0),
+                      mainAxisSpacing: 4.0,
+                      crossAxisSpacing: 4.0,
+                      shrinkWrap: true,
+                      children: [
+                        _buildCategory(
+                          "Weapons",
+                          'assets/images/icons/gun-pistol-icon.png',
+                        ),
+                        _buildCategory(
+                          "Transport",
+                          'assets/images/icons/tank.png',
+                        ),
+                        _buildCategory(
+                          "Clothing",
+                          'assets/images/icons/tshirt.png',
+                        ),
+                        _buildCategory(
+                          "Explosives",
+                          'assets/images/icons/bomb.png',
+                        ),
+                        _buildCategory(
+                          "Equipment",
+                          'assets/images/icons/backpack.png',
+                        ),
+                        _buildCategory(
+                          "Accessories",
+                          'assets/images/icons/dog-tag.png',
+                        ),
+                      ],
+                    );
+                  },
                 ),
               ],
             ),
-            Padding(
-              padding: EdgeInsets.all(8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    name,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    price,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey[600],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+          )
+        ],
       ),
     );
   }
 
-  // Widget _buildCard(
-  //     String name, String price, String imagePath, BuildContext context) {
-  //   bool _isFavorite = false;
-
-  //   void _toggleFavorite() {
-  //     setState(() {
-  //       _isFavorite = !_isFavorite;
-  //     });
-  //   }
-
-  //   return Card(
-  //     child: InkWell(
-  //       onTap: () => {},
-  //       child: Column(
-  //         crossAxisAlignment: CrossAxisAlignment.stretch,
-  //         children: <Widget>[
-  //           Stack(
-  //             alignment: Alignment.bottomRight,
-  //             children: <Widget>[
-  //               Image.asset(
-  //                 imagePath,
-  //                 height: 150,
-  //                 width: double.infinity,
-  //                 fit: BoxFit.cover,
-  //               ),
-  //               Ink(
-  //                 decoration: BoxDecoration(
-  //                   color: Colors.red,
-  //                   shape: BoxShape.circle,
-  //                 ),
-  //                 child: IconButton(
-  //                   icon: _isFavorite
-  //                       ? Icon(Icons.favorite)
-  //                       : Icon(Icons.favorite_border),
-  //                   color: Colors.white,
-  //                   onPressed: _toggleFavorite,
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //           Padding(
-  //             padding: EdgeInsets.all(8),
-  //             child: Column(
-  //               crossAxisAlignment: CrossAxisAlignment.start,
-  //               children: <Widget>[
-  //                 Text(
-  //                   name,
-  //                   style: TextStyle(
-  //                     fontSize: 20,
-  //                     fontWeight: FontWeight.bold,
-  //                   ),
-  //                 ),
-  //                 SizedBox(height: 8),
-  //                 Text(
-  //                   price,
-  //                   style: TextStyle(
-  //                     fontSize: 16,
-  //                     color: Colors.grey[600],
-  //                   ),
-  //                 ),
-  //               ],
-  //             ),
-  //           ),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
+  Widget _buildCategory(String name, String image) {
+    return Container(
+      margin: EdgeInsets.all(8.0),
+      padding: EdgeInsets.all(8.0),
+      width: 100,
+      height: 100,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: Offset(0, 3), // changes position of shadow
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(image, width: 48.0, height: 48.0),
+          SizedBox(height: 8.0),
+          Text(name, style: TextStyle(fontSize: 16.0)),
+        ],
+      ),
+    );
+  }
 }

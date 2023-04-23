@@ -93,13 +93,13 @@ class PrimaryPageState extends State<PrimaryPage> {
                 ],
               ),
 
-              Divider(
-                color: ArmyshopColors.dividerColor,
-                thickness: 1,
-              ),
+              // Divider(
+              //   color: ArmyshopColors.dividerColor,
+              //   thickness: 1,
+              // ),
 
               // space between login and switch
-              const SizedBox(height: 10),
+              // const SizedBox(height: 10),
               _pages[_selectedIndex],
             ],
           ),

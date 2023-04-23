@@ -74,6 +74,12 @@ flutter:
     - assets/images/army-bg2.jpg
     - assets/images/army-bg3.jpg
     - assets/images/army-bg4.jpg
+    - assets/images/icons/backpack.png
+    - assets/images/icons/bomb.png
+    - assets/images/icons/dog-tag.png
+    - assets/images/icons/gun-pistol-icon.png
+    - assets/images/icons/tank.png
+    - assets/images/icons/tshirt.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
