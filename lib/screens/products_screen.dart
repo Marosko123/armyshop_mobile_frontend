@@ -1,8 +1,11 @@
+import 'package:armyshop_mobile_frontend/models/Product.dart';
 import 'package:armyshop_mobile_frontend/screens/payment_screeen.dart';
 import 'package:armyshop_mobile_frontend/screens/product_detail.dart';
 import 'package:flutter/material.dart';
 
 import '../common/armyshop_colors.dart';
+import '../common/global_variables.dart';
+import '../common/request_handler.dart';
 
 class ProductsScreen extends StatefulWidget {
   static const routeName = '/products-screen';
@@ -22,8 +25,27 @@ class ProductsScreenState extends State<ProductsScreen> {
     });
   }
 
+  final Map<String, List<int>> categorySubcategoryMap = {
+    "weapons": [1, 2, 3, 4, 5],
+    "transport": [6, 7, 8, 9, 10],
+    "clothing": [11, 12, 13, 14, 15],
+    "explosives": [16, 17, 18, 19, 20],
+    "equipment": [21, 22, 23],
+    "accessories": [24, 25, 26],
+  };
+
   @override
   Widget build(BuildContext context) {
+    final String categoryName =
+        ModalRoute.of(context)?.settings.arguments as String? ?? 'All';
+
+    List<Product> productsToDisplay = GlobalVariables.products
+        .where((product) => categorySubcategoryMap[categoryName.toLowerCase()]!
+            .contains(int.parse(product.subcategoryId?.toString() ?? '')))
+        .toList();
+
+    print(productsToDisplay.length);
+
     return Scaffold(
         backgroundColor: ArmyshopColors.backgroundColor,
         body: SingleChildScrollView(
@@ -85,16 +107,27 @@ class ProductsScreenState extends State<ProductsScreen> {
                     crossAxisSpacing: 10.0,
                     mainAxisSpacing: 10.0,
                     childAspectRatio: 0.8,
-                    children: <Widget>[
-                      _buildCard('AK 47 flkjdsdfj fldj fdsfj', '\$3.99',
-                          'assets/images/army-bg1.jpg', context),
-                      _buildCard('AK 47', '\$5.99',
-                          'assets/images/army-bg2.jpg', context),
-                      _buildCard('AK 47', '\$1.99',
-                          'assets/images/army-bg3.jpg', context),
-                      _buildCard('AK 47', '\$2.99',
-                          'assets/images/army-bg4.jpg', context)
-                    ],
+                    children: productsToDisplay.isEmpty
+                        ? [
+                            const Center(
+                              child: Text(
+                                'No products available',
+                                style: TextStyle(fontSize: 20),
+                              ),
+                            ),
+                          ]
+                        : List.generate(
+                            productsToDisplay.length,
+                            (index) {
+                              final product = productsToDisplay[index];
+                              return _buildCard(
+                                product.name ?? '',
+                                '\$${product.price}',
+                                product.imageUrl ?? '',
+                                context,
+                              );
+                            },
+                          ),
                   ),
                 ),
               ),
@@ -156,7 +189,7 @@ class ProductsScreenState extends State<ProductsScreen> {
                       width: double.infinity,
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                          image: AssetImage(image),
+                          image: NetworkImage(image),
                           fit: BoxFit.cover,
                         ),
                         borderRadius: BorderRadius.circular(12.0),

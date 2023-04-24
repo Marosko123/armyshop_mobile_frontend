@@ -1,6 +1,10 @@
 import 'package:armyshop_mobile_frontend/screens/products_screen.dart';
 import 'package:flutter/material.dart';
 
+import '../common/global_variables.dart';
+import '../common/request_handler.dart';
+import '../models/Product.dart';
+
 class UserHome extends StatefulWidget {
   static const routeName = '/user-home-screen';
 
@@ -11,6 +15,18 @@ class UserHome extends StatefulWidget {
 }
 
 class UserHomeState extends State<UserHome> {
+
+  @override
+void initState() {
+  super.initState();
+
+  loadProducts();
+}
+
+void loadProducts() async {
+  GlobalVariables.products = (await RequestHandler.getProducts()).cast<Product>();
+}
+
   @override
   Widget build(BuildContext context) {
     return Container(

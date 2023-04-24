@@ -4,7 +4,7 @@ import '../models/message.dart';
 import '../models/user.dart';
 import 'server_requester.dart';
 import 'global_variables.dart';
-import '../models/product.dart';
+import '../models/Product.dart';
 
 class RequestHandler {
   // get the list of products

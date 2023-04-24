@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import '../models/product.dart';
+import '../models/Product.dart';
 import '../models/user.dart';
 
 class GlobalVariables {
