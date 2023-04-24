@@ -39,7 +39,8 @@ class MyApp extends StatelessWidget {
         ),
         home: const SplashScreen(),
         routes: {
-          ProductsScreen.routeName: (context) => const PrimaryPage(),
+          PrimaryPage.routeName: (context) => const PrimaryPage(),
+          ProductsScreen.routeName: (context) => const ProductsScreen(),
           ProductPage.routeName: (context) => const ProductPage(),
           PaymentScreen.routeName: (context) => const PaymentScreen(),
           UserShoppingCart.routeName: (context) => const UserShoppingCart(),

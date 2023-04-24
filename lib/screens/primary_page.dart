@@ -10,7 +10,7 @@ import '../common/armyshop_colors.dart';
 
 class PrimaryPage extends StatefulWidget {
   const PrimaryPage({Key? key}) : super(key: key);
-  static const routeName = '/products-screen';
+  static const routeName = '/primary-page';
 
   @override
   PrimaryPageState createState() => PrimaryPageState();

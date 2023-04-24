@@ -22,91 +22,95 @@ class UserHomeState extends State<UserHome> {
       ),
       child: Stack(
         children: [
-          SafeArea(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const SizedBox(height: 16.0),
-                const Text(
-                  'Welcome to ArmyShop!',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(height: 16.0),
+              const Text(
+                'Welcome to ArmyShop!',
+                style: TextStyle(
+                  fontSize: 20.0,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
                 ),
-                const SizedBox(height: 5.0),
-                LayoutBuilder(
-                  builder: (BuildContext context, BoxConstraints constraints) {
-                    return GridView.count(
-                      crossAxisCount: 2,
-                      childAspectRatio: 1.0,
-                      padding: const EdgeInsets.all(4.0),
-                      mainAxisSpacing: 4.0,
-                      crossAxisSpacing: 4.0,
-                      shrinkWrap: true,
-                      children: [
-                        _buildCategory(
-                          "Weapons",
-                          'assets/images/icons/gun-pistol-icon.png',
-                        ),
-                        _buildCategory(
-                          "Transport",
-                          'assets/images/icons/tank.png',
-                        ),
-                        _buildCategory(
-                          "Clothing",
-                          'assets/images/icons/tshirt.png',
-                        ),
-                        _buildCategory(
-                          "Explosives",
-                          'assets/images/icons/bomb.png',
-                        ),
-                        _buildCategory(
-                          "Equipment",
-                          'assets/images/icons/backpack.png',
-                        ),
-                        _buildCategory(
-                          "Accessories",
-                          'assets/images/icons/dog-tag.png',
-                        ),
-                      ],
-                    );
-                  },
-                ),
-              ],
-            ),
-          )
+              ),
+              const SizedBox(height: 5.0),
+              LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+                  return GridView.count(
+                    crossAxisCount: 2,
+                    childAspectRatio: 1.0,
+                    padding: const EdgeInsets.all(4.0),
+                    mainAxisSpacing: 4.0,
+                    crossAxisSpacing: 4.0,
+                    shrinkWrap: true,
+                    children: [
+                      _buildCategory(
+                        "Weapons",
+                        'assets/images/icons/gun-pistol-icon.png',
+                      ),
+                      _buildCategory(
+                        "Transport",
+                        'assets/images/icons/tank.png',
+                      ),
+                      _buildCategory(
+                        "Clothing",
+                        'assets/images/icons/tshirt.png',
+                      ),
+                      _buildCategory(
+                        "Explosives",
+                        'assets/images/icons/bomb.png',
+                      ),
+                      _buildCategory(
+                        "Equipment",
+                        'assets/images/icons/backpack.png',
+                      ),
+                      _buildCategory(
+                        "Accessories",
+                        'assets/images/icons/dog-tag.png',
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ],
+          ),
         ],
       ),
     );
   }
 
   Widget _buildCategory(String name, String image) {
-    return Container(
-      margin: EdgeInsets.all(8.0),
-      padding: EdgeInsets.all(8.0),
-      width: 100,
-      height: 100,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 2,
-            blurRadius: 5,
-            offset: Offset(0, 3), // changes position of shadow
-          ),
-        ],
+    return GestureDetector(
+      onTap: () => Navigator.of(context).pushNamed(
+        ProductsScreen.routeName,
+        arguments: name,
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset(image, width: 48.0, height: 48.0),
-          SizedBox(height: 8.0),
-          Text(name, style: TextStyle(fontSize: 16.0)),
-        ],
+      child: Container(
+        margin: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(8.0),
+        width: 100,
+        height: 100,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16.0),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 2,
+              blurRadius: 5,
+              offset: const Offset(0, 3), // changes position of shadow
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(image, width: 48.0, height: 48.0),
+            const SizedBox(height: 8.0),
+            Text(name, style: const TextStyle(fontSize: 16.0)),
+          ],
+        ),
       ),
     );
   }
