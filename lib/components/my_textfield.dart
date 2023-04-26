@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 
 import '../common/armyshop_colors.dart';
 import '../common/global_variables.dart';
+import 'my_popup_content.dart';
 
 class MyTextfield extends StatefulWidget {
   final IconData icon;
@@ -33,11 +33,13 @@ class _MyTextfieldState extends State<MyTextfield> {
   String tmpVal = '';
   String error = '';
   String currentLocation = 'Get My Current Location';
-  late String lat = '';
-  late String long = '';
+  late double lat = 0;
+  late double long = 0;
 
   Future<void> updateUser() async {
-    if (tmpVal.isEmpty) return;
+    if (tmpVal.isEmpty && lat == 0 && long == 0) return;
+
+    tmpVal = lat != 0 ? '$lat,$long' : tmpVal;
 
     dynamic response = await GlobalVariables.user.updateValue(
       widget.label,
@@ -60,8 +62,6 @@ class _MyTextfieldState extends State<MyTextfield> {
   }
 
   Future<Position> getLocation() async {
-    print('adresa');
-
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       error = 'Location services are disabled.';
@@ -87,6 +87,17 @@ class _MyTextfieldState extends State<MyTextfield> {
     return await Geolocator.getCurrentPosition();
   }
 
+  returnNewValueCallback(String tmpVal) {
+    this.tmpVal = tmpVal;
+    lat = 0;
+    long = 0;
+  }
+
+  returnCoordinatesCallback(double lat, double long) {
+    this.lat = lat;
+    this.long = long;
+  }
+
   Future<void> showDialogAlert(BuildContext context) async {
     return showDialog<void>(
       barrierColor: const Color.fromRGBO(0, 0, 0, 0.5),
@@ -102,96 +113,14 @@ class _MyTextfieldState extends State<MyTextfield> {
               fontWeight: FontWeight.bold,
             ),
           ),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: [
-                Text(
-                  'Enter new ${widget.label}:',
-                  style: TextStyle(color: ArmyshopColors.textColor),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        color: ArmyshopColors.dividerColor,
-                        width: 2.0,
-                      ),
-                    ),
-                  ),
-                  child: TextField(
-                    autofocus: true,
-                    style: TextStyle(color: ArmyshopColors.textColor),
-                    keyboardType:
-                        widget.isNumeric! ? TextInputType.number : null,
-                    inputFormatters: widget.isNumeric!
-                        ? <TextInputFormatter>[
-                            FilteringTextInputFormatter.allow(RegExp(r'^\d*'))
-                          ]
-                        : null,
-                    onChanged: (value) {
-                      tmpVal = value;
-                    },
-                  ),
-                ),
-                Text(
-                  error,
-                  style: const TextStyle(
-                    color: Colors.red,
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                if (widget.isAddress!) ...[
-                  const Text('Or'),
-                  SizedBox(
-                    width: 300,
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(
-                                  color: ArmyshopColors.dividerColor,
-                                  width: 2.0,
-                                ),
-                              ),
-                            ),
-                            child: Text(
-                              currentLocation,
-                              style: TextStyle(color: ArmyshopColors.textColor),
-                            ),
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            getLocation().then((value) {
-                              lat = '${value.latitude}';
-                              long = '${value.longitude}';
-                              setState(() {
-                                currentLocation = '$lat $long';
-                              });
-                            });
-                          },
-                          icon: Icon(
-                            Icons.gps_fixed,
-                            color: ArmyshopColors.textColor,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Text(
-                    'Latitude: $lat',
-                    style: TextStyle(color: ArmyshopColors.textColor),
-                  ),
-                  Text(
-                    'Longitude: $long',
-                    style: TextStyle(color: ArmyshopColors.textColor),
-                  )
-                ],
-              ],
-            ),
+          content: MyPopupContent(
+            label: widget.label,
+            icon: widget.icon,
+            value: widget.value,
+            isNumeric: widget.isNumeric,
+            isAddress: widget.isAddress,
+            returnCoordinatesCallback: returnCoordinatesCallback,
+            returnNewValueCallback: returnNewValueCallback,
           ),
           actions: [
             TextButton(
