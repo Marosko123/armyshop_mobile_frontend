@@ -61,32 +61,6 @@ class _MyTextfieldState extends State<MyTextfield> {
     setState(() {});
   }
 
-  Future<Position> getLocation() async {
-    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      error = 'Location services are disabled.';
-      return Future.error('Location services are disabled.');
-    }
-
-    LocationPermission permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        error = 'Location permissions are disabled.';
-        return Future.error('Location permissions are denied');
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      error =
-          'Location permissions are permanently denied, we cannot request permissions.';
-      return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
-    }
-
-    return await Geolocator.getCurrentPosition();
-  }
-
   returnNewValueCallback(String tmpVal) {
     this.tmpVal = tmpVal;
     lat = 0;
