@@ -17,12 +17,28 @@ class ProductsScreen extends StatefulWidget {
 }
 
 class ProductsScreenState extends State<ProductsScreen> {
-  bool isLiked = false;
+  // bool isLiked = false;
+  List<int> likedList = [];
 
-  void _toggleLike() {
-    setState(() {
-      isLiked = !isLiked;
+  // void _toggleLike() {
+  //   setState(() {
+  //     isLiked = !isLiked;
+  //   });
+  // }
+
+  void getLikedProducts() {
+    RequestHandler.getLikedProducts(1).then((value) {
+      setState(() {
+        likedList = value;
+        print(value);
+      });
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getLikedProducts();
   }
 
   final Map<String, List<int>> categorySubcategoryMap = {
@@ -120,10 +136,21 @@ class ProductsScreenState extends State<ProductsScreen> {
                             productsToDisplay.length,
                             (index) {
                               final product = productsToDisplay[index];
+                              final isLiked = likedList.contains(product.id);
                               return _buildCard(
                                 product.name ?? '',
                                 '\$${product.price}',
                                 product.imageUrl ?? '',
+                                isLiked,
+                                (liked) {
+                                  setState(() {
+                                    if (liked) {
+                                      likedList.add(product.id!);
+                                    } else {
+                                      likedList.remove(product.id!);
+                                    }
+                                  });
+                                },
                                 context,
                               );
                             },
@@ -137,8 +164,8 @@ class ProductsScreenState extends State<ProductsScreen> {
         ]))));
   }
 
-  Widget _buildCard(
-      String name, String price, String image, BuildContext context) {
+  Widget _buildCard(String name, String price, String image, bool isLiked,
+      Function(bool) onLiked, BuildContext context) {
     // set the height of the card
     double deviceWidth = MediaQuery.of(context).size.width;
     double cardHeight;
@@ -236,7 +263,9 @@ class ProductsScreenState extends State<ProductsScreen> {
                         Container(
                           padding: const EdgeInsets.only(bottom: 15.0),
                           child: IconButton(
-                            onPressed: _toggleLike,
+                            onPressed: () {
+                              onLiked(!isLiked);
+                            },
                             icon: Icon(
                               isLiked ? Icons.favorite : Icons.favorite_border,
                               color: Colors.red,

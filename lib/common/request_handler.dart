@@ -29,6 +29,27 @@ class RequestHandler {
     return products;
   }
 
+static Future<List<int>> getLikedProducts(int userId) async {
+  List<int> likedProducts = [];
+
+  final Map<String, dynamic> data =
+      await ServerRequester.request(subUrl: '/liked_products/$userId', type: 'GET');
+
+  // if (data['error'] != null) {
+  //   throw data['error'];
+  // }
+
+  final List productsList = data['products'];
+
+  for (Map m in productsList) {
+    likedProducts.add(
+      m['product_id'],
+    );
+  }
+
+  return likedProducts;
+}
+
   // login existing user
   static Future<dynamic> getUsers() async {
     final response = await ServerRequester.request(
