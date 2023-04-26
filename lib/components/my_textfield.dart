@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:geolocator/geolocator.dart';
 
 import '../common/armyshop_colors.dart';
 import '../common/global_variables.dart';
@@ -31,6 +32,9 @@ class MyTextfield extends StatefulWidget {
 class _MyTextfieldState extends State<MyTextfield> {
   String tmpVal = '';
   String error = '';
+  String currentLocation = 'Get My Current Location';
+  late String lat = '';
+  late String long = '';
 
   Future<void> updateUser() async {
     if (tmpVal.isEmpty) return;
@@ -53,6 +57,34 @@ class _MyTextfieldState extends State<MyTextfield> {
     }
 
     setState(() {});
+  }
+
+  Future<Position> getLocation() async {
+    print('adresa');
+
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      error = 'Location services are disabled.';
+      return Future.error('Location services are disabled.');
+    }
+
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        error = 'Location permissions are disabled.';
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      error =
+          'Location permissions are permanently denied, we cannot request permissions.';
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    return await Geolocator.getCurrentPosition();
   }
 
   Future<void> showDialogAlert(BuildContext context) async {
@@ -109,6 +141,55 @@ class _MyTextfieldState extends State<MyTextfield> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+                if (widget.isAddress!) ...[
+                  const Text('Or'),
+                  SizedBox(
+                    width: 300,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  color: ArmyshopColors.dividerColor,
+                                  width: 2.0,
+                                ),
+                              ),
+                            ),
+                            child: Text(
+                              currentLocation,
+                              style: TextStyle(color: ArmyshopColors.textColor),
+                            ),
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            getLocation().then((value) {
+                              lat = '${value.latitude}';
+                              long = '${value.longitude}';
+                              setState(() {
+                                currentLocation = '$lat $long';
+                              });
+                            });
+                          },
+                          icon: Icon(
+                            Icons.gps_fixed,
+                            color: ArmyshopColors.textColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Text(
+                    'Latitude: $lat',
+                    style: TextStyle(color: ArmyshopColors.textColor),
+                  ),
+                  Text(
+                    'Longitude: $long',
+                    style: TextStyle(color: ArmyshopColors.textColor),
+                  )
+                ],
               ],
             ),
           ),
