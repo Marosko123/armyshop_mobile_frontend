@@ -53,6 +53,8 @@ static Future<List<int>> getLikedProducts(int userId) async {
   //   throw data['error'];
   // }
 
+  if(data['status'] != 200) return likedProducts; // no liked products
+
   final List productsList = data['products'];
 
   for (Map m in productsList) {
@@ -63,6 +65,34 @@ static Future<List<int>> getLikedProducts(int userId) async {
 
   return likedProducts;
 }
+
+  // add to liked products
+  static Future<bool> addToLikedProducts(int userId, int productId) async {
+    final Map<String, dynamic> data = await ServerRequester.request(
+      subUrl: '/liked_products/$userId/$productId',
+      type: 'POST'
+    );
+
+    if (data['status'] == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  // remove from liked products
+  static Future<bool> removeFromLikedProducts(int userId, int productId) async {
+    final Map<String, dynamic> data = await ServerRequester.request(
+      subUrl: '/liked_products/$userId/$productId',
+      type: 'DELETE'
+    );
+
+    if (data['status'] == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   // login existing user
   static Future<dynamic> getUsers() async {

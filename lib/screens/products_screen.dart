@@ -19,6 +19,8 @@ class ProductsScreen extends StatefulWidget {
 class ProductsScreenState extends State<ProductsScreen> {
   // bool isLiked = false;
   List<int> likedList = [];
+  int userId = 1;
+  bool isLoggedIn = GlobalVariables.isUserLoggedIn;
 
   // void _toggleLike() {
   //   setState(() {
@@ -31,6 +33,44 @@ class ProductsScreenState extends State<ProductsScreen> {
       setState(() {
         likedList = value;
         print(value);
+      });
+    });
+  }
+
+  // add to liked products
+  void addToLikedProducts(int userId, int productId) {
+    if (!isLoggedIn) {
+      if (!likedList.contains(productId)) {
+        likedList.add(productId);
+      }
+      return;
+    }
+    RequestHandler.addToLikedProducts(userId, productId).then((value) {
+      setState(() {
+        if (value) {
+          if (!likedList.contains(productId)) {
+            likedList.add(productId);
+            print("product added to liked list");
+          }
+        }
+      });
+    });
+  }
+
+  // remove from liked products
+  void removeFromLikedProducts(int userId, int productId) {
+    if (!isLoggedIn) {
+      likedList.remove(productId);
+      return;
+    }
+    RequestHandler.removeFromLikedProducts(userId, productId).then((value) {
+      setState(() {
+        if (value) {
+          if (likedList.contains(productId)) {
+            likedList.remove(productId);
+            print("product removed from liked list");
+          }
+        }
       });
     });
   }
@@ -176,38 +216,29 @@ class ProductsScreenState extends State<ProductsScreen> {
                     crossAxisSpacing: 10.0,
                     mainAxisSpacing: 10.0,
                     childAspectRatio: 0.8,
-                    children: productsToDisplay.isEmpty
-                        ? [
-                            const Center(
-                              child: Text(
-                                'No products available',
-                                style: TextStyle(fontSize: 20),
-                              ),
-                            ),
-                          ]
-                        : List.generate(
-                            productsToDisplay.length,
-                            (index) {
-                              final product = productsToDisplay[index];
-                              final isLiked = likedList.contains(product.id);
-                              return _buildCard(
-                                product.name ?? '',
-                                '\$${product.price}',
-                                product.imageUrl ?? '',
-                                isLiked,
-                                (liked) {
-                                  setState(() {
-                                    if (liked) {
-                                      likedList.add(product.id!);
-                                    } else {
-                                      likedList.remove(product.id!);
-                                    }
-                                  });
-                                },
-                                context,
-                              );
-                            },
-                          ),
+                    children: List.generate(
+                      productsToDisplay.length,
+                      (index) {
+                        final product = productsToDisplay[index];
+                        final isLiked = likedList.contains(product.id);
+                        return _buildCard(
+                          product.name ?? '',
+                          '\$${product.price}',
+                          product.imageUrl ?? '',
+                          isLiked,
+                          (liked) {
+                            setState(() {
+                              if (liked) {
+                                addToLikedProducts(userId, product.id!);
+                              } else {
+                                removeFromLikedProducts(userId, product.id!);
+                              }
+                            });
+                          },
+                          context,
+                        );
+                      },
+                    ),
                   ),
                 ),
               ),

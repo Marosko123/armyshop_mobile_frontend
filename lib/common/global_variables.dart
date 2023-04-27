@@ -10,6 +10,7 @@ class GlobalVariables {
   static List<Product> products = [];
   static List<User> users = [];
   static bool isConnectedToServer = false;
+  static bool isUserLoggedIn = true;
   static User user = User(
     id: 1,
     email: 'admin@armyshop.xd',

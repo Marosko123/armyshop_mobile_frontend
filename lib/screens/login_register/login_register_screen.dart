@@ -3,6 +3,7 @@
 import 'package:armyshop_mobile_frontend/common/armyshop_colors.dart';
 import 'package:flutter/material.dart';
 
+import '../../common/global_variables.dart';
 import '../../components/switch_button.dart';
 
 import 'register_screen.dart';
@@ -85,6 +86,7 @@ class LoginRegisterScreenState extends State<LoginRegisterScreen> {
                       onTap: () {
                         setState(() {
                           _isLoginScreenOn = false;
+                          GlobalVariables.isUserLoggedIn = true;
                         });
                       },
                       isHighlighted: !_isLoginScreenOn,
@@ -94,6 +96,7 @@ class LoginRegisterScreenState extends State<LoginRegisterScreen> {
                       onTap: () {
                         setState(() {
                           _isLoginScreenOn = true;
+                          GlobalVariables.isUserLoggedIn = true;
                         });
                       },
                       isHighlighted: _isLoginScreenOn,

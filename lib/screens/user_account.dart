@@ -438,6 +438,7 @@ class UserAccountState extends State<UserAccount> {
                             telephone: '',
                             chatRooms: [],
                           );
+                          GlobalVariables.isUserLoggedIn = false;
                           setState(() {});
                         },
                         child: const Text('Yes'),

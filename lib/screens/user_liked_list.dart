@@ -3,6 +3,10 @@ import 'package:armyshop_mobile_frontend/screens/payment_screeen.dart';
 import 'package:armyshop_mobile_frontend/screens/product_detail.dart';
 import 'package:flutter/material.dart';
 
+import '../common/global_variables.dart';
+import '../common/request_handler.dart';
+import '../models/Product.dart';
+
 class UserLikedList extends StatefulWidget {
   static const routeName = '/user-liked-list-screen';
 
@@ -13,12 +17,71 @@ class UserLikedList extends StatefulWidget {
 }
 
 class UserLikedListState extends State<UserLikedList> {
-  bool isLiked = false;
+  List<int> likedList = [];
+  int userId = 1;
+  bool isLoggedIn = GlobalVariables.isUserLoggedIn;
+  List<Product> productsToDisplay = [];
 
-  void _toggleLike() {
-    setState(() {
-      isLiked = !isLiked;
+  void getLikedProducts() {
+    RequestHandler.getLikedProducts(1).then((value) {
+      setState(() {
+        likedList = value;
+        print(value);
+        // get the products from the global variable
+        productsToDisplay = GlobalVariables.products
+            .where((element) => likedList.contains(element.id))
+            .toList();
+        print(productsToDisplay.length);
+        print(productsToDisplay[0].name);
+      });
     });
+  }
+
+  // add to liked products
+  void addToLikedProducts(int userId, int productId) {
+    if (!isLoggedIn) {
+      if (!likedList.contains(productId)) {
+        likedList.add(productId);
+      }
+      return;
+    }
+    RequestHandler.addToLikedProducts(userId, productId).then((value) {
+      setState(() {
+        if (value) {
+          if (!likedList.contains(productId)) {
+            likedList.add(productId);
+            print("product added to liked list");
+          }
+        }
+      });
+    });
+  }
+
+  // remove from liked products
+  void removeFromLikedProducts(int userId, int productId) {
+    if (!isLoggedIn) {
+      likedList.remove(productId);
+      return;
+    }
+    RequestHandler.removeFromLikedProducts(userId, productId).then((value) {
+      setState(() {
+        if (value) {
+          if (likedList.contains(productId)) {
+            likedList.remove(productId);
+            print("product removed from liked list");
+          }
+        }
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (GlobalVariables.isConnectedToServer) {
+      getLikedProducts();
+    }
   }
 
   @override
@@ -49,16 +112,29 @@ class UserLikedListState extends State<UserLikedList> {
               crossAxisSpacing: 10.0,
               mainAxisSpacing: 10.0,
               childAspectRatio: 0.8,
-              children: <Widget>[
-                _buildCard('AK 47 flkjdsdfj fldj fdsfj', '\$3.99',
-                    'assets/images/army-bg1.jpg', context),
-                _buildCard(
-                    'AK 47', '\$5.99', 'assets/images/army-bg2.jpg', context),
-                _buildCard(
-                    'AK 47', '\$1.99', 'assets/images/army-bg3.jpg', context),
-                _buildCard(
-                    'AK 47', '\$2.99', 'assets/images/army-bg4.jpg', context)
-              ],
+              children: List.generate(
+                likedList.length,
+                (index) {
+                  final product = productsToDisplay[index];
+                  final isLiked = likedList.contains(product.id);
+                  return _buildCard(
+                    product.name ?? '',
+                    '\$${product.price}',
+                    product.imageUrl ?? '',
+                    isLiked,
+                    (liked) {
+                      setState(() {
+                        if (liked) {
+                          addToLikedProducts(userId, product.id!);
+                        } else {
+                          removeFromLikedProducts(userId, product.id!);
+                        }
+                      });
+                    },
+                    context,
+                  );
+                },
+              ),
             ),
           ),
         ),
@@ -67,8 +143,8 @@ class UserLikedListState extends State<UserLikedList> {
     );
   }
 
-  Widget _buildCard(
-      String name, String price, String image, BuildContext context) {
+  Widget _buildCard(String name, String price, String image, bool isLiked,
+      Function(bool) onLiked, BuildContext context) {
     // set the height of the card
     double deviceWidth = MediaQuery.of(context).size.width;
     double cardHeight;
@@ -119,7 +195,7 @@ class UserLikedListState extends State<UserLikedList> {
                       width: double.infinity,
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                          image: AssetImage(image),
+                          image: NetworkImage(image),
                           fit: BoxFit.cover,
                         ),
                         borderRadius: BorderRadius.circular(12.0),
@@ -166,7 +242,9 @@ class UserLikedListState extends State<UserLikedList> {
                         Container(
                           padding: const EdgeInsets.only(bottom: 15.0),
                           child: IconButton(
-                            onPressed: _toggleLike,
+                            onPressed: () {
+                              onLiked(!isLiked);
+                            },
                             icon: Icon(
                               isLiked ? Icons.favorite : Icons.favorite_border,
                               color: Colors.red,
