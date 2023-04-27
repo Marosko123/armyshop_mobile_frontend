@@ -112,29 +112,27 @@ class UserLikedListState extends State<UserLikedList> {
               crossAxisSpacing: 10.0,
               mainAxisSpacing: 10.0,
               childAspectRatio: 0.8,
-              children: List.generate(
-                likedList.length,
-                (index) {
-                  final product = productsToDisplay[index];
-                  final isLiked = likedList.contains(product.id);
-                  return _buildCard(
-                    product.name ?? '',
-                    '\$${product.price}',
-                    product.imageUrl ?? '',
-                    isLiked,
-                    (liked) {
-                      setState(() {
-                        if (liked) {
-                          addToLikedProducts(userId, product.id!);
-                        } else {
-                          removeFromLikedProducts(userId, product.id!);
-                        }
-                      });
-                    },
-                    context,
-                  );
-                },
-              ),
+              children: likedList.map((productId) {
+                final product =
+                    productsToDisplay.firstWhere((p) => p.id == productId);
+                final isLiked = likedList.contains(product.id);
+                return _buildCard(
+                  product.name ?? '',
+                  '\$${product.price}',
+                  product.imageUrl ?? '',
+                  isLiked,
+                  (liked) {
+                    setState(() {
+                      if (liked) {
+                        addToLikedProducts(userId, product.id!);
+                      } else {
+                        removeFromLikedProducts(userId, product.id!);
+                      }
+                    });
+                  },
+                  context,
+                );
+              }).toList(),
             ),
           ),
         ),
