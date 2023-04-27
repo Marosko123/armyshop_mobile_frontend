@@ -9,7 +9,7 @@ class GlobalVariables {
       : '10.10.67.222'; // replace IP value with your server IP
   static List<Product> products = [];
   static List<User> users = [];
-  static bool isConnectedToServer = true;
+  static bool isConnectedToServer = false;
   static User user = User(
     id: 1,
     email: 'admin@armyshop.xd',

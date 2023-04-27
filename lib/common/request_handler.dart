@@ -7,6 +7,20 @@ import 'global_variables.dart';
 import '../models/Product.dart';
 
 class RequestHandler {
+  // check connection to the server
+  static Future<bool> checkConnection() async {
+    final response = await ServerRequester.request(
+      subUrl: '/products',
+      type: 'GET',
+    );
+
+    if (response['status'] == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   // get the list of products
   static Future<List<Product>> getProducts() async {
     List<Product> products = [];

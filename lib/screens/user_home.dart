@@ -20,12 +20,13 @@ class UserHomeState extends State<UserHome> {
 void initState() {
   super.initState();
 
-  loadProducts();
+  
+  // loadProducts();
 }
 
-void loadProducts() async {
-  GlobalVariables.products = (await RequestHandler.getProducts()).cast<Product>();
-}
+// void loadProducts() async {
+//   GlobalVariables.products = (await RequestHandler.getProducts()).cast<Product>();
+// }
 
   @override
   Widget build(BuildContext context) {

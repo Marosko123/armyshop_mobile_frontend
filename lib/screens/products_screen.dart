@@ -38,7 +38,10 @@ class ProductsScreenState extends State<ProductsScreen> {
   @override
   void initState() {
     super.initState();
-    getLikedProducts();
+
+    if (GlobalVariables.isConnectedToServer) {
+      getLikedProducts();
+    }
   }
 
   final Map<String, List<int>> categorySubcategoryMap = {
@@ -55,12 +58,62 @@ class ProductsScreenState extends State<ProductsScreen> {
     final String categoryName =
         ModalRoute.of(context)?.settings.arguments as String? ?? 'All';
 
-    List<Product> productsToDisplay = GlobalVariables.products
-        .where((product) => categorySubcategoryMap[categoryName.toLowerCase()]!
-            .contains(int.parse(product.subcategoryId?.toString() ?? '')))
-        .toList();
+    List<Product> productsToDisplay = [];
+    if (categoryName != 'All') {
+      productsToDisplay = GlobalVariables.products
+          .where((product) =>
+              categorySubcategoryMap[categoryName.toLowerCase()]!
+                  .contains(int.parse(product.subcategoryId?.toString() ?? '')))
+          .toList();
+    } else {
+      productsToDisplay = GlobalVariables.products;
+    }
 
     print(productsToDisplay.length);
+
+    if (productsToDisplay.isEmpty) {
+      return Scaffold(
+          body: SingleChildScrollView(
+              child: Center(
+                  child: Column(children: [
+        const SizedBox(height: 10),
+
+        // Header
+        Row(
+          children: [
+            Align(
+              alignment: Alignment.centerLeft,
+              child: BackButton(
+                color: ArmyshopColors.textColor,
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(right: 40.0),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Products',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: ArmyshopColors.textColor,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+
+        const Center(
+          child: Text(
+            'No products available',
+            style: TextStyle(fontSize: 20),
+          ),
+        ),
+      ]))));
+    }
 
     return Scaffold(
         backgroundColor: ArmyshopColors.backgroundColor,

@@ -11,12 +11,23 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import './screens/products_screen.dart';
 import 'common/armyshop_colors.dart';
+import 'common/global_variables.dart';
+import 'common/request_handler.dart';
+import 'models/Product.dart';
 import 'screens/primary_page.dart';
 import 'screens/login_register/login_screen.dart';
 import 'screens/login_register/register_screen.dart';
 
-void main() {
+void main() async {
   ArmyshopColors.setColors();
+  // find out whether we are connected to the server, if yes, set the global variable to true
+  GlobalVariables.isConnectedToServer = await RequestHandler.checkConnection();
+
+  // after we know whether we are connected to the server, load the products
+  if (GlobalVariables.isConnectedToServer) {
+    GlobalVariables.products =
+        (await RequestHandler.getProducts()).cast<Product>();
+  }
 
   runApp(
     const MyApp(),
