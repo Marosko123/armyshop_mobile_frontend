@@ -94,6 +94,20 @@ static Future<List<int>> getLikedProducts(int userId) async {
     }
   }
 
+  // add to basket
+  static Future<bool> addToBasket(int userId, int productId) async {
+    final Map<String, dynamic> data = await ServerRequester.request(
+      subUrl: '/baskets/$userId/$productId',
+      type: 'POST'
+    );
+
+    if (data['status'] == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   // login existing user
   static Future<dynamic> getUsers() async {
     final response = await ServerRequester.request(

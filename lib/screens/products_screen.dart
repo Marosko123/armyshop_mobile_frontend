@@ -38,7 +38,7 @@ class ProductsScreenState extends State<ProductsScreen> {
   }
 
   // add to liked products
-  void addToLikedProducts(int userId, int productId) {
+  void addToLikedProducts(int productId) {
     if (!isLoggedIn) {
       if (!likedList.contains(productId)) {
         likedList.add(productId);
@@ -58,7 +58,7 @@ class ProductsScreenState extends State<ProductsScreen> {
   }
 
   // remove from liked products
-  void removeFromLikedProducts(int userId, int productId) {
+  void removeFromLikedProducts(int productId) {
     if (!isLoggedIn) {
       likedList.remove(productId);
       return;
@@ -72,6 +72,54 @@ class ProductsScreenState extends State<ProductsScreen> {
           }
         }
       });
+    });
+  }
+
+  void addToBasket(int productId) {
+    if (!isLoggedIn) {
+      return;
+    }
+    RequestHandler.addToBasket(userId, productId).then((value) {
+      setState(() {
+        if (value) {
+          print("product added to basket");
+        }
+      });
+    });
+  }
+
+  void showPopup(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return the Dialog widget
+        return SizedBox(
+          width: 300.0,
+          height: 300.0,
+          child: AlertDialog(
+            content: SizedBox(
+              height: 200.0,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Text('Product added to basket!',
+                      style: TextStyle(fontSize: 18.0)),
+                  SizedBox(height: 20.0),
+                  Text(
+                    'Go to basket to buy it!',
+                    style: TextStyle(fontSize: 16.0),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+
+    // hide the popup after 2 seconds
+    Future.delayed(const Duration(seconds: 2), () {
+      Navigator.of(context).pop();
     });
   }
 
@@ -229,12 +277,26 @@ class ProductsScreenState extends State<ProductsScreen> {
                           (liked) {
                             setState(() {
                               if (liked) {
-                                addToLikedProducts(userId, product.id!);
+                                addToLikedProducts(product.id!);
                               } else {
-                                removeFromLikedProducts(userId, product.id!);
+                                removeFromLikedProducts(product.id!);
                               }
                             });
                           },
+                          () {
+                            // add to cart
+                            setState(() {
+                              if (isLoggedIn) {
+                                addToBasket(product.id!);
+                              } else {
+                                Navigator.pushNamed(
+                                  context,
+                                  '/login-screen',
+                                );
+                              }
+                            });
+                          },
+                          product.id!,
                           context,
                         );
                       },
@@ -248,20 +310,27 @@ class ProductsScreenState extends State<ProductsScreen> {
         ]))));
   }
 
-  Widget _buildCard(String name, String price, String image, bool isLiked,
-      Function(bool) onLiked, BuildContext context) {
+  Widget _buildCard(
+      String name,
+      String price,
+      String image,
+      bool isLiked,
+      Function(bool) onLiked,
+      Function() onAddToBasket,
+      int id,
+      BuildContext context) {
     // set the height of the card
     double deviceWidth = MediaQuery.of(context).size.width;
-    double cardHeight;
+    double imgHeight;
 
     if (deviceWidth < 600) {
-      cardHeight = MediaQuery.of(context).size.height * 0.14;
+      imgHeight = MediaQuery.of(context).size.height * 0.13;
     } else if (deviceWidth < 800) {
-      cardHeight = MediaQuery.of(context).size.height * 0.26;
+      imgHeight = MediaQuery.of(context).size.height * 0.26;
     } else if (deviceWidth < 1000) {
-      cardHeight = MediaQuery.of(context).size.height * 0.40;
+      imgHeight = MediaQuery.of(context).size.height * 0.40;
     } else {
-      cardHeight = MediaQuery.of(context).size.height * 0.50;
+      imgHeight = MediaQuery.of(context).size.height * 0.50;
     }
 
     return Padding(
@@ -288,10 +357,11 @@ class ProductsScreenState extends State<ProductsScreen> {
               GestureDetector(
                 onTap: () {
                   // Navigate to the product detail page
-                  Navigator.of(context).pushNamed(ProductPage.routeName);
+                  Navigator.of(context)
+                      .pushNamed(ProductPage.routeName, arguments: id);
                 },
-                child: Container(
-                  height: cardHeight,
+                child: SizedBox(
+                  height: imgHeight,
                   width: double.infinity,
                   child: Hero(
                     tag: image,
@@ -309,7 +379,6 @@ class ProductsScreenState extends State<ProductsScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 2.0),
               Padding(
                 padding: const EdgeInsets.only(left: 15.0, right: 25.0),
                 child: Row(
@@ -363,14 +432,24 @@ class ProductsScreenState extends State<ProductsScreen> {
                   ],
                 ),
               ),
-              const SizedBox(height: 2.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Icon(
-                    Icons.shopping_basket,
-                    color: Theme.of(context).primaryColor,
-                    size: 30,
+                  Container(
+                    padding: const EdgeInsets.only(bottom: 4.0),
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.shopping_basket,
+                        color: Theme.of(context).primaryColor,
+                        size: 30,
+                      ),
+                      onPressed: () {
+                        // add to cart
+                        onAddToBasket();
+                        // show popup
+                        showPopup(context);
+                      },
+                    ),
                   ),
                   Container(
                     height: 25.0,
@@ -394,7 +473,7 @@ class ProductsScreenState extends State<ProductsScreen> {
                     ),
                   ),
                 ],
-              )
+              ),
             ],
           ),
         ),

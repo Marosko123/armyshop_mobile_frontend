@@ -4,6 +4,9 @@ import 'package:armyshop_mobile_frontend/screens/user_shopping_cart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../common/global_variables.dart';
+import '../models/Product.dart';
+
 class ProductPage extends StatefulWidget {
   static const routeName = '/product-page';
 
@@ -29,6 +32,24 @@ class ProductPageState extends State<ProductPage> {
   void initState() {
     super.initState();
     _controller.text = amount.toString();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    // get the product info
+    final id = ModalRoute.of(context)!.settings.arguments as int;
+    Product product =
+        GlobalVariables.products.firstWhere((element) => element.id == id);
+
+    // initialize the values
+    name = product.name!;
+    amount = 1;
+    price = product.price!;
+    image = product.imageUrl!;
+    description = product.description!;
+    totalPrice = product.price!;
   }
 
   @override
@@ -154,7 +175,7 @@ class ProductPageState extends State<ProductPage> {
                                   flex:
                                       2, // Set the flex property to a value greater than 1
                                   child: Text(
-                                    description,
+                                    name,
                                     style: TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold,
@@ -248,8 +269,8 @@ class ProductPageState extends State<ProductPage> {
                                                     });
                                                   } catch (e) {
                                                     setState(() {
-                                                      amount = 0;
-                                                      totalPrice = 0;
+                                                      amount = 1;
+                                                      totalPrice = price;
                                                     });
                                                   }
                                                 },
@@ -343,7 +364,7 @@ class ProductPageState extends State<ProductPage> {
                             ),
                             const SizedBox(height: 10),
                             Text(
-                              'lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc vel tincidunt lacinia, nisl nisl aliquam nisl, eu aliquam nunc nisl euismod nisl. Sed euismod, nunc vel tincidunt lacinia, nisl nisl aliquam nisl, eu aliquam nunc nisl euismod nisl.',
+                              description,
                               style: TextStyle(
                                 fontSize: 16,
                                 color: ArmyshopColors.textColor,
