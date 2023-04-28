@@ -1,9 +1,9 @@
 import 'package:armyshop_mobile_frontend/screens/products_screen.dart';
 import 'package:flutter/material.dart';
 
-import '../common/global_variables.dart';
-import '../common/request_handler.dart';
-import '../models/Product.dart';
+// import '../common/global_variables.dart';
+// import '../common/request_handler.dart';
+// import '../models/Product.dart';
 
 class UserHome extends StatefulWidget {
   static const routeName = '/user-home-screen';
@@ -15,14 +15,11 @@ class UserHome extends StatefulWidget {
 }
 
 class UserHomeState extends State<UserHome> {
-
   @override
-void initState() {
-  super.initState();
-
-  
-  // loadProducts();
-}
+  void initState() {
+    super.initState();
+    // loadProducts();
+  }
 
 // void loadProducts() async {
 //   GlobalVariables.products = (await RequestHandler.getProducts()).cast<Product>();
@@ -37,61 +34,58 @@ void initState() {
           fit: BoxFit.cover,
         ),
       ),
-      child: Stack(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const SizedBox(height: 16.0),
-              const Text(
-                'Welcome to ArmyShop!',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 5.0),
-              LayoutBuilder(
-                builder: (BuildContext context, BoxConstraints constraints) {
-                  return GridView.count(
-                    crossAxisCount: 2,
-                    childAspectRatio: 1.0,
-                    padding: const EdgeInsets.all(4.0),
-                    mainAxisSpacing: 4.0,
-                    crossAxisSpacing: 4.0,
-                    shrinkWrap: true,
-                    children: [
-                      _buildCategory(
-                        "Weapons",
-                        'assets/images/icons/gun-pistol-icon.png',
-                      ),
-                      _buildCategory(
-                        "Transport",
-                        'assets/images/icons/tank.png',
-                      ),
-                      _buildCategory(
-                        "Clothing",
-                        'assets/images/icons/tshirt.png',
-                      ),
-                      _buildCategory(
-                        "Explosives",
-                        'assets/images/icons/bomb.png',
-                      ),
-                      _buildCategory(
-                        "Equipment",
-                        'assets/images/icons/backpack.png',
-                      ),
-                      _buildCategory(
-                        "Accessories",
-                        'assets/images/icons/dog-tag.png',
-                      ),
-                    ],
-                  );
-                },
-              ),
-            ],
+          const SizedBox(height: 16.0),
+          const Text(
+            'Welcome to ArmyShop!',
+            style: TextStyle(
+              fontSize: 24.0,
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
           ),
+          const SizedBox(height: 5.0),
+          LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+              return GridView.count(
+                crossAxisCount: 2,
+                childAspectRatio: 1.0,
+                padding: const EdgeInsets.all(4.0),
+                mainAxisSpacing: 4.0,
+                crossAxisSpacing: 4.0,
+                shrinkWrap: true,
+                children: [
+                  _buildCategory(
+                    "Weapons",
+                    'assets/images/icons/gun-pistol-icon.png',
+                  ),
+                  _buildCategory(
+                    "Transport",
+                    'assets/images/icons/tank.png',
+                  ),
+                  _buildCategory(
+                    "Clothing",
+                    'assets/images/icons/tshirt.png',
+                  ),
+                  _buildCategory(
+                    "Explosives",
+                    'assets/images/icons/bomb.png',
+                  ),
+                  _buildCategory(
+                    "Equipment",
+                    'assets/images/icons/backpack.png',
+                  ),
+                  _buildCategory(
+                    "Accessories",
+                    'assets/images/icons/dog-tag.png',
+                  ),
+                ],
+              );
+            },
+          ),
+          const SizedBox(height: 10.0),
         ],
       ),
     );

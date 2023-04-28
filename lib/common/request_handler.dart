@@ -43,35 +43,33 @@ class RequestHandler {
     return products;
   }
 
-static Future<List<int>> getLikedProducts(int userId) async {
-  List<int> likedProducts = [];
+  static Future<List<int>> getLikedProducts(int userId) async {
+    List<int> likedProducts = [];
 
-  final Map<String, dynamic> data =
-      await ServerRequester.request(subUrl: '/liked_products/$userId', type: 'GET');
+    final Map<String, dynamic> data = await ServerRequester.request(
+        subUrl: '/liked_products/$userId', type: 'GET');
 
-  // if (data['error'] != null) {
-  //   throw data['error'];
-  // }
+    // if (data['error'] != null) {
+    //   throw data['error'];
+    // }
 
-  if(data['status'] != 200) return likedProducts; // no liked products
+    if (data['status'] != 200) return likedProducts; // no liked products
 
-  final List productsList = data['products'];
+    final List productsList = data['products'];
 
-  for (Map m in productsList) {
-    likedProducts.add(
-      m['product_id'],
-    );
+    for (Map m in productsList) {
+      likedProducts.add(
+        m['product_id'],
+      );
+    }
+
+    return likedProducts;
   }
-
-  return likedProducts;
-}
 
   // add to liked products
   static Future<bool> addToLikedProducts(int userId, int productId) async {
     final Map<String, dynamic> data = await ServerRequester.request(
-      subUrl: '/liked_products/$userId/$productId',
-      type: 'POST'
-    );
+        subUrl: '/liked_products/$userId/$productId', type: 'POST');
 
     if (data['status'] == 200) {
       return true;
@@ -83,9 +81,7 @@ static Future<List<int>> getLikedProducts(int userId) async {
   // remove from liked products
   static Future<bool> removeFromLikedProducts(int userId, int productId) async {
     final Map<String, dynamic> data = await ServerRequester.request(
-      subUrl: '/liked_products/$userId/$productId',
-      type: 'DELETE'
-    );
+        subUrl: '/liked_products/$userId/$productId', type: 'DELETE');
 
     if (data['status'] == 200) {
       return true;
@@ -97,15 +93,45 @@ static Future<List<int>> getLikedProducts(int userId) async {
   // add to basket
   static Future<bool> addToBasket(int userId, int productId) async {
     final Map<String, dynamic> data = await ServerRequester.request(
-      subUrl: '/baskets/$userId/$productId',
-      type: 'POST'
-    );
+        subUrl: '/baskets/$userId/$productId', type: 'POST');
 
     if (data['status'] == 200) {
       return true;
     } else {
       return false;
     }
+  }
+
+  // remove from basket
+  static Future<bool> removeFromBasket(int userId, int productId) async {
+    final Map<String, dynamic> data = await ServerRequester.request(
+        subUrl: '/baskets/$userId/$productId', type: 'DELETE');
+
+    if (data['status'] == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  // get basket of user
+  static Future<List<Map<String, dynamic>>> getBasket(int userId) async {
+    final List<Map<String, dynamic>> products = [];
+    print('object1');
+    final Map<String, dynamic> data =
+        await ServerRequester.request(subUrl: '/baskets/$userId', type: 'GET');
+    print('object');
+    if (data['status'] != 200) {
+      return products; // no products in basket
+    }
+
+    final List<dynamic> productsList = data['products'];
+
+    for (final Map<String, dynamic> m in productsList) {
+      products.add({'product_id': m['product_id'], 'quantity': m['quantity']});
+    }
+
+    return products;
   }
 
   // login existing user

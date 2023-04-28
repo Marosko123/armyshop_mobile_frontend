@@ -4,6 +4,7 @@ import 'package:armyshop_mobile_frontend/screens/product_detail.dart';
 import 'package:flutter/material.dart';
 
 import '../common/armyshop_colors.dart';
+import '../common/currencies.dart';
 import '../common/global_variables.dart';
 import '../common/request_handler.dart';
 
@@ -130,6 +131,7 @@ class ProductsScreenState extends State<ProductsScreen> {
     if (GlobalVariables.isConnectedToServer) {
       getLikedProducts();
     }
+
   }
 
   final Map<String, List<int>> categorySubcategoryMap = {
@@ -140,6 +142,7 @@ class ProductsScreenState extends State<ProductsScreen> {
     "equipment": [21, 22, 23],
     "accessories": [24, 25, 26],
   };
+
 
   @override
   Widget build(BuildContext context) {
@@ -247,11 +250,13 @@ class ProductsScreenState extends State<ProductsScreen> {
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height - 50.0,
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: ArmyshopColors.isDarkMode
+                        ? Colors.grey[900]
+                        : Colors.white,
                     borderRadius: BorderRadius.circular(15.0),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.grey.withOpacity(0.2),
+                        color: ArmyshopColors.backgroundColor.withOpacity(0.2),
                         spreadRadius: 3,
                         blurRadius: 5,
                         offset: const Offset(0, 3),
@@ -271,7 +276,7 @@ class ProductsScreenState extends State<ProductsScreen> {
                         final isLiked = likedList.contains(product.id);
                         return _buildCard(
                           product.name ?? '',
-                          '\$${product.price}',
+                          product.price!,
                           product.imageUrl ?? '',
                           isLiked,
                           (liked) {
@@ -312,7 +317,7 @@ class ProductsScreenState extends State<ProductsScreen> {
 
   Widget _buildCard(
       String name,
-      String price,
+      double price,
       String image,
       bool isLiked,
       Function(bool) onLiked,
@@ -322,9 +327,13 @@ class ProductsScreenState extends State<ProductsScreen> {
     // set the height of the card
     double deviceWidth = MediaQuery.of(context).size.width;
     double imgHeight;
+    
+    // format the price
+    final convertedPrice = Currencies.convert(price);
+    final formattedPrice = Currencies.format(convertedPrice);
 
     if (deviceWidth < 600) {
-      imgHeight = MediaQuery.of(context).size.height * 0.13;
+      imgHeight = MediaQuery.of(context).size.height * 0.14;
     } else if (deviceWidth < 800) {
       imgHeight = MediaQuery.of(context).size.height * 0.26;
     } else if (deviceWidth < 1000) {
@@ -334,8 +343,7 @@ class ProductsScreenState extends State<ProductsScreen> {
     }
 
     return Padding(
-      padding:
-          const EdgeInsets.only(top: 5.0, bottom: 5.0, left: 5.0, right: 5.0),
+      padding: const EdgeInsets.only(bottom: 5.0, left: 5.0, right: 5.0),
       child: InkWell(
         onTap: () {},
         child: Container(
@@ -343,13 +351,15 @@ class ProductsScreenState extends State<ProductsScreen> {
             borderRadius: BorderRadius.circular(15.0),
             boxShadow: [
               BoxShadow(
-                color: Colors.grey.withOpacity(0.2),
+                color: ArmyshopColors.backgroundColor,
                 spreadRadius: 3,
                 blurRadius: 5,
                 offset: const Offset(0, 3),
               ),
             ],
-            color: Colors.white,
+            color: ArmyshopColors.isDarkMode
+                ? ArmyshopColors.backgroundColor
+                : Colors.white,
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -391,8 +401,8 @@ class ProductsScreenState extends State<ProductsScreen> {
                         children: [
                           Text(
                             name,
-                            style: const TextStyle(
-                              color: Colors.black,
+                            style: TextStyle(
+                              color: ArmyshopColors.textColor,
                               fontSize: 14.0,
                               fontWeight: FontWeight.bold,
                             ),
@@ -401,13 +411,12 @@ class ProductsScreenState extends State<ProductsScreen> {
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            price,
-                            style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 12.0,
-                              // fontWeight: FontWeight.bold,
-                            ),
-                          ),
+  formattedPrice,
+  style: TextStyle(
+    color: ArmyshopColors.textColor,
+    fontSize: 12.0,
+  ),
+),
                         ],
                       ),
                     ),
@@ -467,6 +476,7 @@ class ProductsScreenState extends State<ProductsScreen> {
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: ArmyshopColors.buttonColor,
+                          foregroundColor: ArmyshopColors.buttonTextColor,
                         ),
                         child: const Text('Order'),
                       ),

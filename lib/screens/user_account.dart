@@ -8,6 +8,7 @@ import 'package:armyshop_mobile_frontend/screens/chat_rooms.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 
+import '../common/currencies.dart';
 import '../common/global_variables.dart';
 import '../models/chat_room.dart';
 import '../models/user.dart';
@@ -46,6 +47,7 @@ class UserAccountState extends State<UserAccount> {
       GlobalVariables.user.chatRooms = chatRooms;
     }
 
+    // ignore: use_build_context_synchronously
     Navigator.of(context).pushNamed(ChatRooms.routeName);
   }
 
@@ -209,7 +211,52 @@ class UserAccountState extends State<UserAccount> {
                             },
                           ),
                         ),
-                      ])
+                      ]),
+                      const SizedBox(height: 20),
+                      // currency format
+                      Row(children: [
+                        Expanded(
+                          child: Text(
+                            'Currency:',
+                            softWrap: false,
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: ArmyshopColors.textColor,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: DropdownButton<String>(
+                            value: Currencies.selectedCurrency,
+                            icon: const Icon(Icons.arrow_downward),
+                            iconSize: 16,
+                            elevation: 16,
+                            style: const TextStyle(color: Colors.deepPurple),
+                            underline: Container(
+                              height: 2,
+                              color: ArmyshopColors.textColor,
+                            ),
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                Currencies.selectedCurrency = newValue!;
+                              });
+                            },
+                            items: <String>['USD', 'EUR', 'RUB', 'UAH']
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(
+                                  value,
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: ArmyshopColors.textColor,
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      ]),
                     ],
                   ),
                 ),
