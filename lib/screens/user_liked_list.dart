@@ -19,7 +19,7 @@ class UserLikedList extends StatefulWidget {
 
 class UserLikedListState extends State<UserLikedList> {
   List<int> likedList = [];
-  int userId = 1;
+  int userId = GlobalVariables.user.id;
   bool isLoggedIn = GlobalVariables.isUserLoggedIn;
   List<Product> productsToDisplay = [];
 
@@ -94,6 +94,18 @@ class UserLikedListState extends State<UserLikedList> {
 
     if (GlobalVariables.isConnectedToServer) {
       getLikedProducts();
+    }
+  }
+
+  ImageProvider<Object> _getImageProvider(dynamic image) {
+    if (image is String &&
+        GlobalVariables.isConnectedToServer &&
+        image.isNotEmpty) {
+      return NetworkImage(image);
+    } else if (image is AssetImage) {
+      return image;
+    } else {
+      return const AssetImage('assets/images/army-bg1.jpg');
     }
   }
 
@@ -298,13 +310,13 @@ class UserLikedListState extends State<UserLikedList> {
                   height: imgHeight,
                   width: double.infinity,
                   child: Hero(
-                    tag: image,
+                    tag: 'image-$id',
                     child: Container(
                       height: double.infinity,
                       width: double.infinity,
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                          image: NetworkImage(image),
+                          image: _getImageProvider(image),
                           fit: BoxFit.cover,
                         ),
                         borderRadius: BorderRadius.circular(12.0),

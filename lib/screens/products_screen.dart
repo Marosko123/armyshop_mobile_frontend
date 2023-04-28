@@ -20,7 +20,7 @@ class ProductsScreen extends StatefulWidget {
 class ProductsScreenState extends State<ProductsScreen> {
   // bool isLiked = false;
   List<int> likedList = [];
-  int userId = 1;
+  int userId = GlobalVariables.user.id;
   bool isLoggedIn = GlobalVariables.isUserLoggedIn;
 
   // void _toggleLike() {
@@ -33,7 +33,6 @@ class ProductsScreenState extends State<ProductsScreen> {
     RequestHandler.getLikedProducts(1).then((value) {
       setState(() {
         likedList = value;
-        print(value);
       });
     });
   }
@@ -41,9 +40,11 @@ class ProductsScreenState extends State<ProductsScreen> {
   // add to liked products
   void addToLikedProducts(int productId) {
     if (!isLoggedIn) {
-      if (!likedList.contains(productId)) {
-        likedList.add(productId);
-      }
+      setState(() {
+        if (!likedList.contains(productId)) {
+          likedList.add(productId);
+        }
+      });
       return;
     }
     RequestHandler.addToLikedProducts(userId, productId).then((value) {
@@ -51,7 +52,6 @@ class ProductsScreenState extends State<ProductsScreen> {
         if (value) {
           if (!likedList.contains(productId)) {
             likedList.add(productId);
-            print("product added to liked list");
           }
         }
       });
@@ -61,7 +61,12 @@ class ProductsScreenState extends State<ProductsScreen> {
   // remove from liked products
   void removeFromLikedProducts(int productId) {
     if (!isLoggedIn) {
-      likedList.remove(productId);
+      setState(() {
+        if (likedList.contains(productId)) {
+          likedList.remove(productId);
+          print("product removed from liked list");
+        }
+      });
       return;
     }
     RequestHandler.removeFromLikedProducts(userId, productId).then((value) {
@@ -87,6 +92,18 @@ class ProductsScreenState extends State<ProductsScreen> {
         }
       });
     });
+  }
+
+  ImageProvider<Object> _getImageProvider(dynamic image) {
+    if (image is String &&
+        GlobalVariables.isConnectedToServer &&
+        image.isNotEmpty) {
+      return NetworkImage(image);
+    } else if (image is AssetImage) {
+      return image;
+    } else {
+      return const AssetImage('assets/images/army-bg1.jpg');
+    }
   }
 
   void showPopup(BuildContext context) {
@@ -371,9 +388,11 @@ class ProductsScreenState extends State<ProductsScreen> {
                         result is Map<String, dynamic> &&
                         result['refresh'] == true) {
                       setState(() {
-                        // refresh liked products
-                        likedList = [];
-                        getLikedProducts();
+                        if (GlobalVariables.isConnectedToServer) {
+                          // refresh liked products
+                          likedList = [];
+                          getLikedProducts();
+                        }
                       });
                     }
                   });
@@ -382,13 +401,13 @@ class ProductsScreenState extends State<ProductsScreen> {
                   height: imgHeight,
                   width: double.infinity,
                   child: Hero(
-                    tag: image,
+                    tag: 'image-$id',
                     child: Container(
                       height: double.infinity,
                       width: double.infinity,
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                          image: NetworkImage(image),
+                          image: _getImageProvider(image),
                           fit: BoxFit.cover,
                         ),
                         borderRadius: BorderRadius.circular(12.0),

@@ -21,7 +21,7 @@ class ProductPage extends StatefulWidget {
 class ProductPageState extends State<ProductPage> {
   // get product from database
   // Product product = Product();
-  int userId = 1;
+  int userId = GlobalVariables.user.id;
   int productId = 1;
   bool isLoggedIn = GlobalVariables.isUserLoggedIn;
   String name = 'AK 47';
@@ -58,10 +58,13 @@ class ProductPageState extends State<ProductPage> {
     name = product.name!;
     amount = 1;
     price = product.price!;
-    image = product.imageUrl!;
     description = product.description!;
     totalPrice = product.price!;
     productId = product.id!;
+
+    if (GlobalVariables.isConnectedToServer) {
+      image = product.imageUrl!;
+    }
 
     // format the price
     price = Currencies.convert(price);
@@ -122,6 +125,18 @@ class ProductPageState extends State<ProductPage> {
   void onAddToBasket(int productId, int amount) {
     // add the product to the shopping cart database
     RequestHandler.addToBasket(userId, productId, amount);
+  }
+
+  ImageProvider<Object> _getImageProvider(dynamic image) {
+    if (image is String &&
+        GlobalVariables.isConnectedToServer &&
+        image.isNotEmpty) {
+      return NetworkImage(image);
+    } else if (image is AssetImage) {
+      return image;
+    } else {
+      return const AssetImage('assets/images/army-bg1.jpg');
+    }
   }
 
   void showPopup(BuildContext context) {
@@ -219,8 +234,10 @@ class ProductPageState extends State<ProductPage> {
                         child: SizedBox(
                           height: size.height * 0.33,
                           width: size.width,
-                          child: Image.network(
-                            image,
+                          child: FadeInImage(
+                            placeholder:
+                                const AssetImage('assets/images/army-bg1.jpg'),
+                            image: _getImageProvider(image),
                             fit: BoxFit.cover,
                           ),
                         ),

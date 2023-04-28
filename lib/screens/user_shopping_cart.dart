@@ -25,7 +25,7 @@ class UserShoppingCartState extends State<UserShoppingCart> {
   List<Map<String, dynamic>> products = [];
   List<ProductWithQuantity> productsWithQuantity = [];
   List cartItems = [];
-  int userId = 1;
+  int userId = GlobalVariables.user.id;
 
   @override
   void initState() {

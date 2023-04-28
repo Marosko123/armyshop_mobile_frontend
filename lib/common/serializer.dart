@@ -31,9 +31,9 @@ class Serializer {
   }
 
   static Future<File> get _localFile async {
-    final directory = await getApplicationDocumentsDirectory();
-    final path = join(directory.path, 'products.json');
-    final file = File(path);
+    final currentDirectory = Directory.current;
+    final documentsDirectory = Directory('${currentDirectory.path}/lib/common/documents');
+    final file = File('${documentsDirectory.path}/products.json');
     if (!await file.exists()) {
       await file.create();
     }

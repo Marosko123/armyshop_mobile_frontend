@@ -31,10 +31,10 @@ void main() async {
         (await RequestHandler.getProducts()).cast<Product>();
 
     // serialize the current version of products
-    //Serializer.serialize(GlobalVariables.products);
+    Serializer.serialize(GlobalVariables.products);
   } else {
     // if we are not connected to the server, load the products from the local storage
-    //GlobalVariables.products = await Serializer.deserialize();
+    GlobalVariables.products = await Serializer.deserialize();
   }
 
   WidgetsFlutterBinding.ensureInitialized();

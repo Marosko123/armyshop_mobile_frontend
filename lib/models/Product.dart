@@ -13,7 +13,7 @@ class Product {
       'name': name,
       'description': description,
       'price': price,
-      'imageUrl': imageUrl,
+      'subcategoryId': subcategoryId,
     };
   }
 
@@ -23,7 +23,7 @@ class Product {
     price = map['price'];
     description = map['description'];
     imageUrl = map['image_url'];
-    subcategoryId = map['subcategory_id'];
+    subcategoryId = map['subcategoryId'];
     licenseNeeded = map['license_needed'] == 1;
   }
 }
