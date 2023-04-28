@@ -5,6 +5,7 @@ import 'package:armyshop_mobile_frontend/screens/user_shopping_cart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../common/currencies.dart';
 import '../common/global_variables.dart';
 import '../models/Product.dart';
 
@@ -26,6 +27,8 @@ class ProductPageState extends State<ProductPage> {
   String name = 'AK 47';
   int amount = 1;
   double price = 3.99;
+  String formattedPrice = '';
+  String formattedTotal = '';
   String image = 'assets/images/army-bg1.jpg';
   String description = 'lorem ipsum dolor sit amet';
   bool isLiked = false;
@@ -59,6 +62,11 @@ class ProductPageState extends State<ProductPage> {
     description = product.description!;
     totalPrice = product.price!;
     productId = product.id!;
+
+    // format the price
+    price = Currencies.convert(price);
+    formattedPrice = Currencies.format(price);
+    formattedTotal = Currencies.format(price);
   }
 
   @override
@@ -70,11 +78,6 @@ class ProductPageState extends State<ProductPage> {
   void _toggleLike() {
     setState(() {
       isLiked = !isLiked;
-      if (isLiked) {
-        // Add the product to the liked list database
-      } else {
-        // Remove the product from the liked list database
-      }
     });
   }
 
@@ -100,6 +103,7 @@ class ProductPageState extends State<ProductPage> {
         amount++;
         _controller.text = amount.toString();
         totalPrice = amount * price;
+        formattedTotal = Currencies.format(totalPrice);
       }
     });
   }
@@ -110,6 +114,7 @@ class ProductPageState extends State<ProductPage> {
         amount--;
         _controller.text = amount.toString();
         totalPrice = amount * price;
+        formattedTotal = Currencies.format(totalPrice);
       }
     });
   }
@@ -169,15 +174,15 @@ class ProductPageState extends State<ProductPage> {
               Row(
                 children: [
                   Align(
-      alignment: Alignment.centerLeft,
-      child: IconButton(
-        icon: Icon(Icons.arrow_back),
-        color: ArmyshopColors.textColor,
-        onPressed: () {
-          Navigator.pop(context, {'refresh': true});
-        },
-      ),
-    ),
+                    alignment: Alignment.centerLeft,
+                    child: IconButton(
+                      icon: const Icon(Icons.arrow_back),
+                      color: ArmyshopColors.textColor,
+                      onPressed: () {
+                        Navigator.pop(context, {'refresh': true});
+                      },
+                    ),
+                  ),
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.only(right: 40.0),
@@ -298,7 +303,7 @@ class ProductPageState extends State<ProductPage> {
                                         CrossAxisAlignment.center,
                                     children: [
                                       Text(
-                                        'Price for 1: \$$price',
+                                        'Price for 1: $formattedPrice',
                                         style: TextStyle(
                                           fontSize: 16,
                                           color: ArmyshopColors.textColor,
@@ -348,11 +353,17 @@ class ProductPageState extends State<ProductPage> {
                                                       amount = int.parse(value);
                                                       totalPrice =
                                                           amount * price;
+                                                      formattedTotal =
+                                                          Currencies.format(
+                                                              totalPrice);
                                                     });
                                                   } catch (e) {
                                                     setState(() {
                                                       amount = 1;
                                                       totalPrice = price;
+                                                      formattedTotal =
+                                                          Currencies.format(
+                                                              totalPrice);
                                                     });
                                                   }
                                                 },
@@ -385,7 +396,7 @@ class ProductPageState extends State<ProductPage> {
                                             ),
                                           ),
                                           Text(
-                                            '${totalPrice.toStringAsFixed(2)} \$',
+                                            formattedTotal,
                                             style: TextStyle(
                                               fontSize: 22,
                                               color: ArmyshopColors.textColor,

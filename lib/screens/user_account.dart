@@ -236,6 +236,9 @@ class UserAccountState extends State<UserAccount> {
                               height: 2,
                               color: ArmyshopColors.textColor,
                             ),
+                            dropdownColor: ArmyshopColors.isDarkMode
+                                ? ArmyshopColors.dropdownColor
+                                : ArmyshopColors.dropdownContentColor,
                             onChanged: (String? newValue) {
                               setState(() {
                                 Currencies.selectedCurrency = newValue!;

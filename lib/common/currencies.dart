@@ -9,8 +9,6 @@ class Currencies {
     'UAH': '₴',
   };
 
-  static const _apiEndpoint = 'https://api.exchangeratesapi.io/latest';
-
   static double convert(double amount) {
     // Hardcoded exchange rate values for EUR, USD, RUB, and UAH
     final exchangeRates = {

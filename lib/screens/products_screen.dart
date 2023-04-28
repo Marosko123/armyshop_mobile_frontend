@@ -341,7 +341,7 @@ class ProductsScreenState extends State<ProductsScreen> {
     }
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 5.0, left: 5.0, right: 5.0),
+      padding: const EdgeInsets.only(bottom: 5.0, left: 2.0, right: 2.0),
       child: InkWell(
         onTap: () {},
         child: Container(
