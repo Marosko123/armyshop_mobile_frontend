@@ -91,9 +91,9 @@ class RequestHandler {
   }
 
   // add to basket
-  static Future<bool> addToBasket(int userId, int productId) async {
+  static Future<bool> addToBasket(int userId, int productId, int quantity) async {
     final Map<String, dynamic> data = await ServerRequester.request(
-        subUrl: '/baskets/$userId/$productId', type: 'POST');
+        subUrl: '/baskets/$userId/$productId/$quantity', type: 'POST');
 
     if (data['status'] == 200) {
       return true;

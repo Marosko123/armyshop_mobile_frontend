@@ -80,7 +80,7 @@ class ProductsScreenState extends State<ProductsScreen> {
     if (!isLoggedIn) {
       return;
     }
-    RequestHandler.addToBasket(userId, productId).then((value) {
+    RequestHandler.addToBasket(userId, productId, 1).then((value) {
       setState(() {
         if (value) {
           print("product added to basket");
@@ -131,7 +131,6 @@ class ProductsScreenState extends State<ProductsScreen> {
     if (GlobalVariables.isConnectedToServer) {
       getLikedProducts();
     }
-
   }
 
   final Map<String, List<int>> categorySubcategoryMap = {
@@ -142,7 +141,6 @@ class ProductsScreenState extends State<ProductsScreen> {
     "equipment": [21, 22, 23],
     "accessories": [24, 25, 26],
   };
-
 
   @override
   Widget build(BuildContext context) {
@@ -327,7 +325,7 @@ class ProductsScreenState extends State<ProductsScreen> {
     // set the height of the card
     double deviceWidth = MediaQuery.of(context).size.width;
     double imgHeight;
-    
+
     // format the price
     final convertedPrice = Currencies.convert(price);
     final formattedPrice = Currencies.format(convertedPrice);
@@ -367,8 +365,18 @@ class ProductsScreenState extends State<ProductsScreen> {
               GestureDetector(
                 onTap: () {
                   // Navigate to the product detail page
-                  Navigator.of(context)
-                      .pushNamed(ProductPage.routeName, arguments: id);
+                  Navigator.of(context).pushNamed(ProductPage.routeName,
+                      arguments: {'id': id, 'liked': isLiked}).then((result) {
+                    if (result != null &&
+                        result is Map<String, dynamic> &&
+                        result['refresh'] == true) {
+                      setState(() {
+                        // refresh liked products
+                        likedList = [];
+                        getLikedProducts();
+                      });
+                    }
+                  });
                 },
                 child: SizedBox(
                   height: imgHeight,
@@ -411,12 +419,12 @@ class ProductsScreenState extends State<ProductsScreen> {
                           ),
                           const SizedBox(height: 4),
                           Text(
-  formattedPrice,
-  style: TextStyle(
-    color: ArmyshopColors.textColor,
-    fontSize: 12.0,
-  ),
-),
+                            formattedPrice,
+                            style: TextStyle(
+                              color: ArmyshopColors.textColor,
+                              fontSize: 12.0,
+                            ),
+                          ),
                         ],
                       ),
                     ),

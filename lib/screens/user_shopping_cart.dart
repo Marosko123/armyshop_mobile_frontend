@@ -1,5 +1,6 @@
 import 'package:armyshop_mobile_frontend/common/armyshop_colors.dart';
 import 'package:armyshop_mobile_frontend/common/global_variables.dart';
+import 'package:armyshop_mobile_frontend/screens/payment_screeen.dart';
 import 'package:flutter/material.dart';
 import '../common/armyshop_colors.dart';
 import 'package:provider/provider.dart';
@@ -153,7 +154,7 @@ class UserShoppingCartState extends State<UserShoppingCart> {
                                     userId, cartItems[index][4]);
                               } else {
                                 RequestHandler.addToBasket(
-                                    userId, cartItems[index][4]);
+                                    userId, cartItems[index][4], 1);
                               }
 
                               cartItems[index][2] = val;
@@ -239,19 +240,25 @@ class UserShoppingCartState extends State<UserShoppingCart> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     padding: const EdgeInsets.all(12),
-                    child: Row(
-                      children: [
-                        Text(
-                          'Pay Now',
-                          style:
-                              TextStyle(color: ArmyshopColors.buttonTextColor),
-                        ),
-                        Icon(
-                          Icons.arrow_forward_ios,
-                          size: 16,
-                          color: ArmyshopColors.buttonTextColor,
-                        ),
-                      ],
+                    child: GestureDetector(
+                      onTap: () {
+                        // Navigate to payment screen
+                        Navigator.pushNamed(context, PaymentScreen.routeName);
+                      },
+                      child: Row(
+                        children: [
+                          Text(
+                            'Pay Now',
+                            style: TextStyle(
+                                color: ArmyshopColors.buttonTextColor),
+                          ),
+                          Icon(
+                            Icons.arrow_forward_ios,
+                            size: 16,
+                            color: ArmyshopColors.buttonTextColor,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
