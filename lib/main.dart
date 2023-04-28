@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 import './screens/products_screen.dart';
 import 'common/armyshop_colors.dart';
 import 'common/global_variables.dart';
+import 'common/notifications/notification_service.dart';
 import 'common/request_handler.dart';
 import 'models/Product.dart';
 import 'screens/primary_page.dart';
@@ -29,6 +30,8 @@ void main() async {
         (await RequestHandler.getProducts()).cast<Product>();
   }
 
+  WidgetsFlutterBinding.ensureInitialized();
+  NotificationService().initNotification();
   runApp(
     const MyApp(),
   );

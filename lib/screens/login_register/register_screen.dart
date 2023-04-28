@@ -9,6 +9,8 @@ import 'package:armyshop_mobile_frontend/common/request_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../../common/notifications/notification_service.dart';
+import '../../common/notifications/notifications.dart';
 import '../../components/textfield.dart';
 import '../../common/user_authenticator.dart';
 
@@ -60,6 +62,13 @@ class RegisterScreenState extends State<RegisterScreen> {
       user = response['user'];
 
       final UserAuthenticator userAuthenticator = UserAuthenticator();
+
+      // send registration notification
+      NotificationService().scheduleNotification(
+          notification: Notifications.getRandomNotification(
+              Notifications.welcomeNotifications),
+          scheduledDate: DateTime.now().add(const Duration(seconds: 10)));
+
       // ignore: use_build_context_synchronously
       return userAuthenticator.userSuccessfullyLoggedIn(
           user: user, context: context);
