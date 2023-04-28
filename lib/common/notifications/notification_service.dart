@@ -30,7 +30,7 @@ class NotificationService {
             (NotificationResponse notificationResponse) async {});
 
     Timer.periodic(
-        const Duration(seconds: 120),
+        const Duration(seconds: 240),
         (Timer t) => showNotification(
               notification: Notifications.getRandomNotification(
                   Notifications.newPromotionNotifications),
