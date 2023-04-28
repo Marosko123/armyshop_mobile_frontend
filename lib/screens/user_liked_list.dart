@@ -32,7 +32,6 @@ class UserLikedListState extends State<UserLikedList> {
             .where((element) => likedList.contains(element.id))
             .toList();
         print(productsToDisplay.length);
-        print(productsToDisplay[0].name);
       });
     });
   }
@@ -52,6 +51,19 @@ class UserLikedListState extends State<UserLikedList> {
             likedList.add(productId);
             print("product added to liked list");
           }
+        }
+      });
+    });
+  }
+
+  void addToBasket(int productId) {
+    if (!isLoggedIn) {
+      return;
+    }
+    RequestHandler.addToBasket(userId, productId).then((value) {
+      setState(() {
+        if (value) {
+          print("product added to basket");
         }
       });
     });
@@ -84,8 +96,68 @@ class UserLikedListState extends State<UserLikedList> {
     }
   }
 
+  void showPopup(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return the Dialog widget
+        return SizedBox(
+          width: 300.0,
+          height: 300.0,
+          child: AlertDialog(
+            content: SizedBox(
+              height: 200.0,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Text('Product added to basket!',
+                      style: TextStyle(fontSize: 18.0)),
+                  SizedBox(height: 20.0),
+                  Text(
+                    'Go to basket to buy it!',
+                    style: TextStyle(fontSize: 16.0),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+
+    // hide the popup after 2 seconds
+    Future.delayed(const Duration(seconds: 2), () {
+      Navigator.of(context).pop();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    // if 0 products or not logged in, show empty list
+    if (productsToDisplay.isEmpty || !isLoggedIn) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const SizedBox(height: 20.0),
+          Text(
+            'You have no liked products',
+            style: TextStyle(fontSize: 20.0, color: ArmyshopColors.textColor),
+          ),
+          const SizedBox(height: 20.0),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).pushNamed('/products-screen');
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: ArmyshopColors.buttonColor,
+              foregroundColor: ArmyshopColors.buttonTextColor,
+            ),
+            child: const Text('Go to products'),
+          )
+        ],
+      );
+    }
+
     return Column(
       children: [
         const SizedBox(height: 5.0),
@@ -95,11 +167,12 @@ class UserLikedListState extends State<UserLikedList> {
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height - 50.0,
             decoration: BoxDecoration(
-              color: Colors.white,
+              color:
+                  ArmyshopColors.isDarkMode ? Colors.grey[900] : Colors.white,
               borderRadius: BorderRadius.circular(15.0),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.grey.withOpacity(0.2),
+                  color: ArmyshopColors.backgroundColor.withOpacity(0.2),
                   spreadRadius: 3,
                   blurRadius: 5,
                   offset: const Offset(0, 3),
@@ -130,6 +203,20 @@ class UserLikedListState extends State<UserLikedList> {
                       }
                     });
                   },
+                  () {
+                    // add to cart
+                    setState(() {
+                      if (isLoggedIn) {
+                        addToBasket(product.id!);
+                      } else {
+                        Navigator.pushNamed(
+                          context,
+                          '/login-screen',
+                        );
+                      }
+                    });
+                  },
+                  product.id!,
                   context,
                 );
               }).toList(),
@@ -141,25 +228,31 @@ class UserLikedListState extends State<UserLikedList> {
     );
   }
 
-  Widget _buildCard(String name, String price, String image, bool isLiked,
-      Function(bool) onLiked, BuildContext context) {
+  Widget _buildCard(
+      String name,
+      String price,
+      String image,
+      bool isLiked,
+      Function(bool) onLiked,
+      Function() onAddToBasket,
+      int id,
+      BuildContext context) {
     // set the height of the card
     double deviceWidth = MediaQuery.of(context).size.width;
-    double cardHeight;
+    double imgHeight;
 
     if (deviceWidth < 600) {
-      cardHeight = MediaQuery.of(context).size.height * 0.14;
+      imgHeight = MediaQuery.of(context).size.height * 0.14;
     } else if (deviceWidth < 800) {
-      cardHeight = MediaQuery.of(context).size.height * 0.26;
+      imgHeight = MediaQuery.of(context).size.height * 0.26;
     } else if (deviceWidth < 1000) {
-      cardHeight = MediaQuery.of(context).size.height * 0.40;
+      imgHeight = MediaQuery.of(context).size.height * 0.40;
     } else {
-      cardHeight = MediaQuery.of(context).size.height * 0.50;
+      imgHeight = MediaQuery.of(context).size.height * 0.50;
     }
 
     return Padding(
-      padding:
-          const EdgeInsets.only(top: 5.0, bottom: 5.0, left: 5.0, right: 5.0),
+      padding: const EdgeInsets.only(bottom: 5.0, left: 5.0, right: 5.0),
       child: InkWell(
         onTap: () {},
         child: Container(
@@ -167,13 +260,15 @@ class UserLikedListState extends State<UserLikedList> {
             borderRadius: BorderRadius.circular(15.0),
             boxShadow: [
               BoxShadow(
-                color: Colors.grey.withOpacity(0.2),
+                color: ArmyshopColors.backgroundColor,
                 spreadRadius: 3,
                 blurRadius: 5,
                 offset: const Offset(0, 3),
               ),
             ],
-            color: Colors.white,
+            color: ArmyshopColors.isDarkMode
+                ? ArmyshopColors.backgroundColor
+                : Colors.white,
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -181,10 +276,11 @@ class UserLikedListState extends State<UserLikedList> {
               GestureDetector(
                 onTap: () {
                   // Navigate to the product detail page
-                  Navigator.of(context).pushNamed(ProductPage.routeName);
+                  Navigator.of(context)
+                      .pushNamed(ProductPage.routeName, arguments: id);
                 },
-                child: Container(
-                  height: cardHeight,
+                child: SizedBox(
+                  height: imgHeight,
                   width: double.infinity,
                   child: Hero(
                     tag: image,
@@ -202,7 +298,6 @@ class UserLikedListState extends State<UserLikedList> {
                   ),
                 ),
               ),
-              const SizedBox(height: 2.0),
               Padding(
                 padding: const EdgeInsets.only(left: 15.0, right: 25.0),
                 child: Row(
@@ -215,8 +310,8 @@ class UserLikedListState extends State<UserLikedList> {
                         children: [
                           Text(
                             name,
-                            style: const TextStyle(
-                              color: Colors.black,
+                            style: TextStyle(
+                              color: ArmyshopColors.textColor,
                               fontSize: 14.0,
                               fontWeight: FontWeight.bold,
                             ),
@@ -226,8 +321,8 @@ class UserLikedListState extends State<UserLikedList> {
                           const SizedBox(height: 4),
                           Text(
                             price,
-                            style: const TextStyle(
-                              color: Colors.black,
+                            style: TextStyle(
+                              color: ArmyshopColors.textColor,
                               fontSize: 12.0,
                               // fontWeight: FontWeight.bold,
                             ),
@@ -256,14 +351,24 @@ class UserLikedListState extends State<UserLikedList> {
                   ],
                 ),
               ),
-              const SizedBox(height: 2.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Icon(
-                    Icons.shopping_basket,
-                    color: Theme.of(context).primaryColor,
-                    size: 30,
+                  Container(
+                    padding: const EdgeInsets.only(bottom: 4.0),
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.shopping_basket,
+                        color: Theme.of(context).primaryColor,
+                        size: 30,
+                      ),
+                      onPressed: () {
+                        // add to cart
+                        onAddToBasket();
+                        // show popup
+                        showPopup(context);
+                      },
+                    ),
                   ),
                   Container(
                     height: 25.0,
@@ -281,13 +386,14 @@ class UserLikedListState extends State<UserLikedList> {
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: ArmyshopColors.buttonColor,
+                          foregroundColor: ArmyshopColors.buttonTextColor,
                         ),
                         child: const Text('Order'),
                       ),
                     ),
                   ),
                 ],
-              )
+              ),
             ],
           ),
         ),
