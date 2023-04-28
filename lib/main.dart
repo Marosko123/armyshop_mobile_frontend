@@ -14,6 +14,7 @@ import 'common/armyshop_colors.dart';
 import 'common/global_variables.dart';
 import 'common/notifications/notification_service.dart';
 import 'common/request_handler.dart';
+import 'common/serializer.dart';
 import 'models/Product.dart';
 import 'screens/primary_page.dart';
 import 'screens/login_register/login_screen.dart';
@@ -28,6 +29,12 @@ void main() async {
   if (GlobalVariables.isConnectedToServer) {
     GlobalVariables.products =
         (await RequestHandler.getProducts()).cast<Product>();
+
+    // serialize the current version of products
+    //Serializer.serialize(GlobalVariables.products);
+  } else {
+    // if we are not connected to the server, load the products from the local storage
+    //GlobalVariables.products = await Serializer.deserialize();
   }
 
   WidgetsFlutterBinding.ensureInitialized();

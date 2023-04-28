@@ -32,6 +32,7 @@ class Currencies {
 
     bool billion = false;
     bool million = false;
+    bool hundredThousand = false;
 
     if (amount >= 1000000000) {
       amount = amount / 1000000000;
@@ -39,6 +40,9 @@ class Currencies {
     } else if (amount >= 1000000) {
       amount = amount / 1000000;
       million = true;
+    } else if (amount >= 100000) {
+      amount = amount / 1000;
+      hundredThousand = true;
     }
 
     amount = double.parse(amount.toStringAsFixed(2));
@@ -50,6 +54,8 @@ class Currencies {
         formattedAmount = '$formattedAmount B €';
       } else if (million) {
         formattedAmount = '$formattedAmount M €';
+      } else if (hundredThousand) {
+        formattedAmount = '$formattedAmount K €';
       } else {
         formattedAmount = '$formattedAmount €';
       }
@@ -59,6 +65,8 @@ class Currencies {
         formattedAmount = '$formattedAmount B';
       } else if (million) {
         formattedAmount = '$formattedAmount M';
+      } else if (hundredThousand) {
+        formattedAmount = '$formattedAmount K';
       }
     } else {
       formattedAmount = '${numberFormat.format(amount)} $symbol';
@@ -66,6 +74,8 @@ class Currencies {
         formattedAmount = '$formattedAmount B';
       } else if (million) {
         formattedAmount = '$formattedAmount M';
+      } else if (hundredThousand) {
+        formattedAmount = '$formattedAmount K';
       }
     }
 
