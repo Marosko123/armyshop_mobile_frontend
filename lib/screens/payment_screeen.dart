@@ -1,12 +1,14 @@
 import 'dart:async';
 
 import 'package:armyshop_mobile_frontend/common/global_variables.dart';
+import 'package:armyshop_mobile_frontend/common/notifications/notification_service.dart';
 // import 'package:armyshop_mobile_frontend/common/user_authenticator.dart';
 import 'package:armyshop_mobile_frontend/screens/primary_page.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 import '../common/armyshop_colors.dart';
+import '../common/notifications/notifications.dart';
 
 enum DeliveryMethod { standard, express, nextDay }
 
@@ -42,6 +44,12 @@ class PaymentScreenState extends State<PaymentScreen> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
+        // send successful payment notification
+        NotificationService().scheduleNotification(
+            notification: Notifications.getRandomNotification(
+                Notifications.purchaseNotifications),
+            scheduledDate: DateTime.now().add(const Duration(seconds: 10)));
+
         // return the Dialog widget
         return const AlertDialog(
           title: Text('Thank you for your order!'),
