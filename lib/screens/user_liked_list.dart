@@ -3,6 +3,7 @@ import 'package:armyshop_mobile_frontend/screens/payment_screeen.dart';
 import 'package:armyshop_mobile_frontend/screens/product_detail.dart';
 import 'package:flutter/material.dart';
 
+import '../common/currencies.dart';
 import '../common/global_variables.dart';
 import '../common/request_handler.dart';
 import '../models/Product.dart';
@@ -60,7 +61,7 @@ class UserLikedListState extends State<UserLikedList> {
     if (!isLoggedIn) {
       return;
     }
-    RequestHandler.addToBasket(userId, productId).then((value) {
+    RequestHandler.addToBasket(userId, productId, 1).then((value) {
       setState(() {
         if (value) {
           print("product added to basket");
@@ -191,7 +192,7 @@ class UserLikedListState extends State<UserLikedList> {
                 final isLiked = likedList.contains(product.id);
                 return _buildCard(
                   product.name ?? '',
-                  '\$${product.price}',
+                  product.price!,
                   product.imageUrl ?? '',
                   isLiked,
                   (liked) {
@@ -230,7 +231,7 @@ class UserLikedListState extends State<UserLikedList> {
 
   Widget _buildCard(
       String name,
-      String price,
+      double price,
       String image,
       bool isLiked,
       Function(bool) onLiked,
@@ -240,6 +241,10 @@ class UserLikedListState extends State<UserLikedList> {
     // set the height of the card
     double deviceWidth = MediaQuery.of(context).size.width;
     double imgHeight;
+
+    // format the price
+    final convertedPrice = Currencies.convert(price);
+    final formattedPrice = Currencies.format(convertedPrice);
 
     if (deviceWidth < 600) {
       imgHeight = MediaQuery.of(context).size.height * 0.14;
@@ -276,8 +281,18 @@ class UserLikedListState extends State<UserLikedList> {
               GestureDetector(
                 onTap: () {
                   // Navigate to the product detail page
-                  Navigator.of(context)
-                      .pushNamed(ProductPage.routeName, arguments: id);
+                  Navigator.of(context).pushNamed(ProductPage.routeName,
+                      arguments: {'id': id, 'liked': isLiked}).then((result) {
+                    if (result != null &&
+                        result is Map<String, dynamic> &&
+                        result['refresh'] == true) {
+                      setState(() {
+                        // refresh liked products
+                        likedList = [];
+                        getLikedProducts();
+                      });
+                    }
+                  });
                 },
                 child: SizedBox(
                   height: imgHeight,
@@ -320,7 +335,7 @@ class UserLikedListState extends State<UserLikedList> {
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            price,
+                            formattedPrice,
                             style: TextStyle(
                               color: ArmyshopColors.textColor,
                               fontSize: 12.0,

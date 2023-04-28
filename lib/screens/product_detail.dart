@@ -1,4 +1,5 @@
 import 'package:armyshop_mobile_frontend/common/armyshop_colors.dart';
+import 'package:armyshop_mobile_frontend/common/request_handler.dart';
 import 'package:armyshop_mobile_frontend/screens/payment_screeen.dart';
 import 'package:armyshop_mobile_frontend/screens/user_shopping_cart.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,9 @@ class ProductPage extends StatefulWidget {
 class ProductPageState extends State<ProductPage> {
   // get product from database
   // Product product = Product();
+  int userId = 1;
+  int productId = 1;
+  bool isLoggedIn = GlobalVariables.isUserLoggedIn;
   String name = 'AK 47';
   int amount = 1;
   double price = 3.99;
@@ -39,7 +43,11 @@ class ProductPageState extends State<ProductPage> {
     super.didChangeDependencies();
 
     // get the product info
-    final id = ModalRoute.of(context)!.settings.arguments as int;
+    final arguments =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    final id = arguments['id'];
+    isLiked = arguments['liked'] as bool;
+
     Product product =
         GlobalVariables.products.firstWhere((element) => element.id == id);
 
@@ -50,6 +58,7 @@ class ProductPageState extends State<ProductPage> {
     image = product.imageUrl!;
     description = product.description!;
     totalPrice = product.price!;
+    productId = product.id!;
   }
 
   @override
@@ -67,6 +76,22 @@ class ProductPageState extends State<ProductPage> {
         // Remove the product from the liked list database
       }
     });
+  }
+
+  // add to liked products
+  void addToLikedProducts(int productId) {
+    if (!isLoggedIn) {
+      return;
+    }
+    RequestHandler.addToLikedProducts(userId, productId);
+  }
+
+  // remove from liked products
+  void removeFromLikedProducts(int productId) {
+    if (!isLoggedIn) {
+      return;
+    }
+    RequestHandler.removeFromLikedProducts(userId, productId);
   }
 
   void _addAmount() {
@@ -89,6 +114,46 @@ class ProductPageState extends State<ProductPage> {
     });
   }
 
+  void onAddToBasket(int productId, int amount) {
+    // add the product to the shopping cart database
+    RequestHandler.addToBasket(userId, productId, amount);
+  }
+
+  void showPopup(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return the Dialog widget
+        return SizedBox(
+          width: 300.0,
+          height: 300.0,
+          child: AlertDialog(
+            content: SizedBox(
+              height: 200.0,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Text('Product added to basket!',
+                      style: TextStyle(fontSize: 18.0)),
+                  SizedBox(height: 20.0),
+                  Text(
+                    'Go to basket to buy it!',
+                    style: TextStyle(fontSize: 16.0),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+
+    // hide the popup after 2 seconds
+    Future.delayed(const Duration(seconds: 2), () {
+      Navigator.of(context).pop();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -104,11 +169,15 @@ class ProductPageState extends State<ProductPage> {
               Row(
                 children: [
                   Align(
-                    alignment: Alignment.centerLeft,
-                    child: BackButton(
-                      color: ArmyshopColors.textColor,
-                    ),
-                  ),
+      alignment: Alignment.centerLeft,
+      child: IconButton(
+        icon: Icon(Icons.arrow_back),
+        color: ArmyshopColors.textColor,
+        onPressed: () {
+          Navigator.pop(context, {'refresh': true});
+        },
+      ),
+    ),
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.only(right: 40.0),
@@ -145,8 +214,8 @@ class ProductPageState extends State<ProductPage> {
                         child: SizedBox(
                           height: size.height * 0.33,
                           width: size.width,
-                          child: Image.asset(
-                            'assets/images/army-bg1.jpg',
+                          child: Image.network(
+                            image,
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -155,9 +224,9 @@ class ProductPageState extends State<ProductPage> {
                     Container(
                       margin: EdgeInsets.only(top: size.height * 0.30),
                       height: size.height * 1.5,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
+                      decoration: BoxDecoration(
+                        color: ArmyshopColors.backgroundColor,
+                        borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(24),
                           topRight: Radius.circular(24),
                         ),
@@ -189,7 +258,16 @@ class ProductPageState extends State<ProductPage> {
                                 Container(
                                   padding: const EdgeInsets.only(bottom: 10.0),
                                   child: IconButton(
-                                    onPressed: _toggleLike,
+                                    onPressed: () {
+                                      _toggleLike();
+                                      if (isLiked) {
+                                        print('add to liked products');
+                                        addToLikedProducts(productId);
+                                      } else {
+                                        print('remove from liked products');
+                                        removeFromLikedProducts(productId);
+                                      }
+                                    },
                                     icon: Icon(
                                       isLiked
                                           ? Icons.favorite
@@ -210,7 +288,9 @@ class ProductPageState extends State<ProductPage> {
                                   padding: const EdgeInsets.all(16),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
-                                    color: Colors.grey[200],
+                                    color: ArmyshopColors.isDarkMode
+                                        ? Colors.grey[900]
+                                        : Colors.grey[200],
                                   ),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -229,7 +309,9 @@ class ProductPageState extends State<ProductPage> {
                                       Container(
                                         width: size.width * 0.35,
                                         decoration: BoxDecoration(
-                                          color: Colors.grey[400],
+                                          color: ArmyshopColors.isDarkMode
+                                              ? Colors.grey[700]
+                                              : Colors.grey[400],
                                           borderRadius:
                                               BorderRadius.circular(20.0),
                                         ),
@@ -327,9 +409,13 @@ class ProductPageState extends State<ProductPage> {
                                                 size: 30,
                                               ),
                                               onPressed: () {
-                                                // Navigate to the product detail page
-                                                Navigator.of(context).pushNamed(
-                                                    UserShoppingCart.routeName);
+                                                // get the number of products in the cart
+
+                                                // add to cart
+                                                onAddToBasket(
+                                                    productId, amount);
+                                                // show popup
+                                                showPopup(context);
                                               },
                                             ),
                                           ),
@@ -344,6 +430,8 @@ class ProductPageState extends State<ProductPage> {
                                               style: ElevatedButton.styleFrom(
                                                 backgroundColor:
                                                     ArmyshopColors.buttonColor,
+                                                foregroundColor: ArmyshopColors
+                                                    .buttonTextColor,
                                                 // onPrimary: Colors.white,
                                                 shape: RoundedRectangleBorder(
                                                   borderRadius:
@@ -351,7 +439,7 @@ class ProductPageState extends State<ProductPage> {
                                                           32.0),
                                                 ),
                                               ),
-                                              child: const Text('Order now'),
+                                              child: const Text('Order Now'),
                                             ),
                                           ),
                                           const SizedBox(width: 20),

@@ -153,7 +153,7 @@ class UserShoppingCartState extends State<UserShoppingCart> {
                                     userId, cartItems[index][4]);
                               } else {
                                 RequestHandler.addToBasket(
-                                    userId, cartItems[index][4]);
+                                    userId, cartItems[index][4], 1);
                               }
 
                               cartItems[index][2] = val;
