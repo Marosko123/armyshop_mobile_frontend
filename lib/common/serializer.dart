@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart' as path_provider;
+import 'package:path/path.dart' as path;
 
 import '../models/Product.dart';
 
@@ -20,7 +20,10 @@ class Serializer {
       final file = await _localFile;
       final json = await file.readAsString();
       final jsonList = jsonDecode(json) as List<dynamic>;
-      final products = jsonList.map((jsonProduct) => Product.fromMap(jsonProduct as Map<String, dynamic>)).toList();
+      final products = jsonList
+          .map((jsonProduct) =>
+              Product.fromMap(jsonProduct as Map<String, dynamic>))
+          .toList();
       return products;
     } catch (e) {
       // Handle the scenario where the app is not connected to the internet
@@ -30,12 +33,17 @@ class Serializer {
     }
   }
 
-  static Future<File> get _localFile async {
-    final currentDirectory = Directory.current;
-    final documentsDirectory = Directory('${currentDirectory.path}/lib/common/documents');
-    final file = File('${documentsDirectory.path}/products.json');
+  static Future<dynamic> get _localFile async {
+    final appDir = await path_provider.getApplicationDocumentsDirectory();
+
+    // construct a file path relative to the app's internal storage directory
+    final documentsPath =
+        path.join(appDir.path, "common", "documents", "products.json");
+
+    // write data to the file at the documentsPath location
+    final file = File(documentsPath);
     if (!await file.exists()) {
-      await file.create();
+      await file.create(recursive: true);
     }
     return file;
   }
@@ -44,8 +52,10 @@ class Serializer {
     final file = await _localFile;
     final json = await file.readAsString();
     final jsonList = jsonDecode(json) as List<dynamic>;
-    final products = jsonList.map((jsonProduct) => Product.fromMap(jsonProduct as Map<String, dynamic>)).toList();
+    final products = jsonList
+        .map((jsonProduct) =>
+            Product.fromMap(jsonProduct as Map<String, dynamic>))
+        .toList();
     return products;
   }
 }
-

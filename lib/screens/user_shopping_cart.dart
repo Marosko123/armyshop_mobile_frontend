@@ -74,9 +74,21 @@ class UserShoppingCartState extends State<UserShoppingCart> {
     });
 
     if (totalPrice == 0) {
-      return const Text(
-        'Your cart is empty',
-        style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const SizedBox(height: 250),
+          Center(
+            child: Text(
+              'Your shopping cart is empty',
+              style: TextStyle(
+                color: ArmyshopColors.textColor,
+                fontWeight: FontWeight.bold,
+                fontSize: 24,
+              ),
+            ),
+          ),
+        ],
       );
     }
 

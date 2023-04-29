@@ -39,7 +39,7 @@ class ProductsScreenState extends State<ProductsScreen> {
 
   // add to liked products
   void addToLikedProducts(int productId) {
-    if (!isLoggedIn) {
+    if (!isLoggedIn || !GlobalVariables.isConnectedToServer) {
       setState(() {
         if (!likedList.contains(productId)) {
           likedList.add(productId);
@@ -60,7 +60,7 @@ class ProductsScreenState extends State<ProductsScreen> {
 
   // remove from liked products
   void removeFromLikedProducts(int productId) {
-    if (!isLoggedIn) {
+    if (!isLoggedIn || !GlobalVariables.isConnectedToServer) {
       setState(() {
         if (likedList.contains(productId)) {
           likedList.remove(productId);
@@ -82,13 +82,21 @@ class ProductsScreenState extends State<ProductsScreen> {
   }
 
   void addToBasket(int productId) {
+    if (!GlobalVariables.isConnectedToServer) {
+      showPopup(context, 'You are offline', 'Please check your connection');
+      return;
+    }
     if (!isLoggedIn) {
+      showPopup(
+          context, 'You are not logged in', 'Log in to add products to basket');
       return;
     }
     RequestHandler.addToBasket(userId, productId, 1).then((value) {
       setState(() {
         if (value) {
-          print("product added to basket");
+          // show popup
+          showPopup(
+              context, 'Product added to basket!', 'Go to basket to buy it!');
         }
       });
     });
@@ -106,7 +114,7 @@ class ProductsScreenState extends State<ProductsScreen> {
     }
   }
 
-  void showPopup(BuildContext context) {
+  void showPopup(BuildContext context, String title, String content) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -119,13 +127,12 @@ class ProductsScreenState extends State<ProductsScreen> {
               height: 200.0,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Text('Product added to basket!',
-                      style: TextStyle(fontSize: 18.0)),
-                  SizedBox(height: 20.0),
+                children: [
+                  Text(title, style: const TextStyle(fontSize: 18.0)),
+                  const SizedBox(height: 20.0),
                   Text(
-                    'Go to basket to buy it!',
-                    style: TextStyle(fontSize: 16.0),
+                    content,
+                    style: const TextStyle(fontSize: 16.0),
                   ),
                 ],
               ),
@@ -348,7 +355,7 @@ class ProductsScreenState extends State<ProductsScreen> {
     final formattedPrice = Currencies.format(convertedPrice);
 
     if (deviceWidth < 600) {
-      imgHeight = MediaQuery.of(context).size.height * 0.14;
+      imgHeight = MediaQuery.of(context).size.height * 0.16;
     } else if (deviceWidth < 800) {
       imgHeight = MediaQuery.of(context).size.height * 0.26;
     } else if (deviceWidth < 1000) {
@@ -477,27 +484,35 @@ class ProductsScreenState extends State<ProductsScreen> {
                       icon: Icon(
                         Icons.shopping_basket,
                         color: Theme.of(context).primaryColor,
-                        size: 30,
+                        size: 35,
                       ),
                       onPressed: () {
                         // add to cart
                         onAddToBasket();
-                        // show popup
-                        showPopup(context);
                       },
                     ),
                   ),
                   Container(
-                    height: 25.0,
+                    height: 30.0,
                     width: 70.0,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15.0),
+                      borderRadius: BorderRadius.circular(12.0),
                       color: Colors.grey.withOpacity(0.2),
                     ),
                     child: Center(
                       child: ElevatedButton(
                         onPressed: () {
-                          // Navigate to the product detail page
+                          if (!GlobalVariables.isConnectedToServer) {
+                            showPopup(context, 'You are offline',
+                                'Please check your connection');
+                            return;
+                          }
+                          if (!isLoggedIn) {
+                            showPopup(context, 'You are not logged in',
+                                'Log in to add products to basket');
+                            return;
+                          }
+                          // Navigate to the payment page
                           Navigator.of(context)
                               .pushNamed(PaymentScreen.routeName);
                         },

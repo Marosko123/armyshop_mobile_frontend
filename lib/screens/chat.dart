@@ -2,12 +2,14 @@ import 'dart:async';
 
 import 'package:armyshop_mobile_frontend/common/global_variables.dart';
 import 'package:armyshop_mobile_frontend/common/user_authenticator.dart';
+import 'package:armyshop_mobile_frontend/common/users_serializer.dart';
 import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
 
 import '../common/armyshop_colors.dart';
 import '../common/converters.dart';
+import '../common/message_serializer.dart';
 import '../common/request_handler.dart';
 import '../models/chat_room.dart';
 import '../models/message.dart';
@@ -34,29 +36,65 @@ class ChatState extends State<Chat> {
     super.initState();
     _chatRoom = widget.chatRoom;
     getMessages();
-    RequestHandler.getUsers();
+    loadUsers();
 
     _timer = Timer.periodic(const Duration(milliseconds: 3000), (timer) async {
       await getMessages(getOnlyUnreadMessages: true);
     });
   }
 
-  Future<void> getMessages({bool getOnlyUnreadMessages = false}) async {
-    final response = await RequestHandler.getMessages(
-        GlobalVariables.user.id, _chatRoom.roomId, getOnlyUnreadMessages);
+  void loadUsers() async {
+    if (GlobalVariables.isConnectedToServer) {
+      RequestHandler.getUsers();
+      UsersSerializer.serialize(GlobalVariables.users);
+    } else {
+      GlobalVariables.users = await UsersSerializer.deserialize();
+      setState(() {});
+    }
+  }
 
-    if (response['status'] == 200) {
-      print(response['messages']);
-      dynamic arrOfMessages = response['messages'];
-      for (var x in arrOfMessages) {
-        _messages.add(Message(
-          senderId: x['sender_id'],
-          roomId: x['room_id'],
-          message: x['message'],
-          date: DateTime.fromMillisecondsSinceEpoch(x['date'] * 1000),
-          isSentByMe: GlobalVariables.user.id == x['sender_id'],
-        ));
+  // Future<void> getMessages({bool getOnlyUnreadMessages = false}) async {
+  //   final response = await RequestHandler.getMessages(
+  //       GlobalVariables.user.id, _chatRoom.roomId, getOnlyUnreadMessages);
+
+  //   if (response['status'] == 200) {
+  //     print(response['messages']);
+  //     dynamic arrOfMessages = response['messages'];
+  //     for (var x in arrOfMessages) {
+  //       _messages.add(Message(
+  //         senderId: x['sender_id'],
+  //         roomId: x['room_id'],
+  //         message: x['message'],
+  //         date: DateTime.fromMillisecondsSinceEpoch(x['date'] * 1000),
+  //         isSentByMe: GlobalVariables.user.id == x['sender_id'],
+  //       ));
+  //     }
+  //   }
+
+  //   setState(() {});
+  // }
+
+  Future<void> getMessages({bool getOnlyUnreadMessages = false}) async {
+    if (GlobalVariables.isConnectedToServer) {
+      final response = await RequestHandler.getMessages(
+          GlobalVariables.user.id, _chatRoom.roomId, getOnlyUnreadMessages);
+
+      if (response['status'] == 200) {
+        print(response['messages']);
+        dynamic arrOfMessages = response['messages'];
+        for (var x in arrOfMessages) {
+          _messages.add(Message(
+            senderId: x['sender_id'],
+            roomId: x['room_id'],
+            message: x['message'],
+            date: DateTime.fromMillisecondsSinceEpoch(x['date'] * 1000),
+            isSentByMe: GlobalVariables.user.id == x['sender_id'],
+          ));
+        }
       }
+    } else {
+      final messages = await MessageSerializer.deserialize(_chatRoom.roomId);
+      _messages.addAll(messages);
     }
 
     setState(() {});

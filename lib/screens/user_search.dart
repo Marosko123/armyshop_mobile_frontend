@@ -1,3 +1,4 @@
+import 'package:armyshop_mobile_frontend/common/armyshop_colors.dart';
 import 'package:armyshop_mobile_frontend/screens/product_detail.dart';
 import 'package:flutter/material.dart';
 
@@ -58,7 +59,9 @@ class UserSearchState extends State<UserSearch> {
                 borderSide: BorderSide.none,
               ),
               filled: true,
-              fillColor: Colors.grey[200],
+              fillColor: ArmyshopColors.isDarkMode
+                  ? Colors.grey[800]
+                  : Colors.grey[200],
               prefixIcon: const Icon(Icons.search),
             ),
           ),
@@ -75,9 +78,12 @@ class UserSearchState extends State<UserSearch> {
                   onTap: () {
                     // Navigate to the product detail page
                     Navigator.of(context).pushNamed(ProductPage.routeName,
-                        arguments: {'id': searchResults[index].id!});
+                        arguments: {'id': searchResults[index].id});
                   },
                   child: Card(
+                    color: ArmyshopColors.isDarkMode
+                        ? Colors.grey[800]
+                        : Colors.grey[200],
                     child: Column(
                       children: <Widget>[
                         Container(
@@ -93,11 +99,13 @@ class UserSearchState extends State<UserSearch> {
                           ),
                         ),
                         const SizedBox(
-                          height: 10,
+                          height: 15,
                         ),
                         Text(searchResults[index].name!,
-                            style: const TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.bold)),
+                            style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                color: ArmyshopColors.textColor)),
                       ],
                     ),
                   ),

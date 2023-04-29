@@ -25,6 +25,10 @@ void main() async {
   // find out whether we are connected to the server, if yes, set the global variable to true
   GlobalVariables.isConnectedToServer = await RequestHandler.checkConnection();
 
+  
+
+  WidgetsFlutterBinding.ensureInitialized();
+
   // after we know whether we are connected to the server, load the products
   if (GlobalVariables.isConnectedToServer) {
     GlobalVariables.products =
@@ -36,8 +40,7 @@ void main() async {
     // if we are not connected to the server, load the products from the local storage
     GlobalVariables.products = await Serializer.deserialize();
   }
-
-  WidgetsFlutterBinding.ensureInitialized();
+  
   NotificationService().initNotification();
   runApp(
     const MyApp(),

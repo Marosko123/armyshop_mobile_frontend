@@ -41,7 +41,7 @@ class ProductPageState extends State<ProductPage> {
     _controller.text = amount.toString();
   }
 
-  Future<List<int>> getLiked() async {
+  Future<List<int>> getLiked(int userId) async {
     return await RequestHandler.getLikedProducts(userId);
   }
 
@@ -60,9 +60,10 @@ class ProductPageState extends State<ProductPage> {
       isLiked = arguments['liked'] as bool;
     } else if (GlobalVariables.isConnectedToServer) {
       // get liked products of user from db
-      List<int> likedProducts = await getLiked();
+      //List<int> likedProducts = await getLiked(GlobalVariables.user.id);
       // check if the product is liked
-      likedProducts.contains(id) ? isLiked = true : isLiked = false;
+      //likedProducts.contains(id) ? isLiked = true : isLiked = false;
+      isLiked = false;
     }
 
     Product product =
@@ -137,8 +138,19 @@ class ProductPageState extends State<ProductPage> {
   }
 
   void onAddToBasket(int productId, int amount) {
+    if (!GlobalVariables.isConnectedToServer) {
+      showPopup(context, 'You are offline', 'Please check your connection');
+      return;
+    }
+    if (!isLoggedIn) {
+      showPopup(
+          context, 'You are not logged in', 'Log in to add products to basket');
+      return;
+    }
     // add the product to the shopping cart database
     RequestHandler.addToBasket(userId, productId, amount);
+    // show popup
+    showPopup(context, 'Product added to basket!', 'Go to basket to buy it!');
   }
 
   ImageProvider<Object> _getImageProvider(dynamic image) {
@@ -153,7 +165,7 @@ class ProductPageState extends State<ProductPage> {
     }
   }
 
-  void showPopup(BuildContext context) {
+  void showPopup(BuildContext context, String title, String content) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -166,13 +178,12 @@ class ProductPageState extends State<ProductPage> {
               height: 200.0,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Text('Product added to basket!',
-                      style: TextStyle(fontSize: 18.0)),
-                  SizedBox(height: 20.0),
+                children: [
+                  Text(title, style: const TextStyle(fontSize: 18.0)),
+                  const SizedBox(height: 20.0),
                   Text(
-                    'Go to basket to buy it!',
-                    style: TextStyle(fontSize: 16.0),
+                    content,
+                    style: const TextStyle(fontSize: 16.0),
                   ),
                 ],
               ),
@@ -456,8 +467,6 @@ class ProductPageState extends State<ProductPage> {
                                                 // add to cart
                                                 onAddToBasket(
                                                     productId, amount);
-                                                // show popup
-                                                showPopup(context);
                                               },
                                             ),
                                           ),
@@ -465,6 +474,21 @@ class ProductPageState extends State<ProductPage> {
                                           Expanded(
                                             child: ElevatedButton(
                                               onPressed: () {
+                                                if (!GlobalVariables
+                                                    .isConnectedToServer) {
+                                                  showPopup(
+                                                      context,
+                                                      'You are offline',
+                                                      'Please check your connection');
+                                                  return;
+                                                }
+                                                if (!isLoggedIn) {
+                                                  showPopup(
+                                                      context,
+                                                      'You are not logged in',
+                                                      'Log in to add products to basket');
+                                                  return;
+                                                }
                                                 // Navigate to the product detail page
                                                 Navigator.of(context).pushNamed(
                                                     PaymentScreen.routeName);
