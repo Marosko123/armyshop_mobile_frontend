@@ -41,15 +41,29 @@ class ProductPageState extends State<ProductPage> {
     _controller.text = amount.toString();
   }
 
+  Future<List<int>> getLiked() async {
+    return await RequestHandler.getLikedProducts(userId);
+  }
+
   @override
-  void didChangeDependencies() {
+  void didChangeDependencies() async {
     super.didChangeDependencies();
 
     // get the product info
     final arguments =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-    final id = arguments['id'];
-    isLiked = arguments['liked'] as bool;
+    int id = 1;
+    if (arguments.containsKey('id')) {
+      id = arguments['id'];
+    }
+    if (arguments.containsKey('liked')) {
+      isLiked = arguments['liked'] as bool;
+    } else if (GlobalVariables.isConnectedToServer) {
+      // get liked products of user from db
+      List<int> likedProducts = await getLiked();
+      // check if the product is liked
+      likedProducts.contains(id) ? isLiked = true : isLiked = false;
+    }
 
     Product product =
         GlobalVariables.products.firstWhere((element) => element.id == id);
@@ -218,7 +232,7 @@ class ProductPageState extends State<ProductPage> {
               ),
 
               SizedBox(
-                height: size.height * 1.5,
+                height: size.height * 1.3,
                 child: Stack(
                   children: <Widget>[
                     Positioned(
@@ -283,10 +297,10 @@ class ProductPageState extends State<ProductPage> {
                                     onPressed: () {
                                       _toggleLike();
                                       if (isLiked) {
-                                        print('add to liked products');
+                                        //print('add to liked products');
                                         addToLikedProducts(productId);
                                       } else {
-                                        print('remove from liked products');
+                                        //print('remove from liked products');
                                         removeFromLikedProducts(productId);
                                       }
                                     },
@@ -350,7 +364,7 @@ class ProductPageState extends State<ProductPage> {
                                               ),
                                             ),
                                             SizedBox(
-                                              width: 30,
+                                              width: 25,
                                               child: TextFormField(
                                                 controller: _controller,
                                                 style: const TextStyle(
@@ -425,7 +439,7 @@ class ProductPageState extends State<ProductPage> {
                                       const SizedBox(height: 10),
                                       Row(
                                         children: [
-                                          const SizedBox(width: 50),
+                                          const SizedBox(width: 30),
                                           Container(
                                             padding: const EdgeInsets.only(
                                                 bottom: 10.0),
@@ -447,7 +461,7 @@ class ProductPageState extends State<ProductPage> {
                                               },
                                             ),
                                           ),
-                                          const SizedBox(width: 30),
+                                          const SizedBox(width: 20),
                                           Expanded(
                                             child: ElevatedButton(
                                               onPressed: () {
@@ -470,7 +484,7 @@ class ProductPageState extends State<ProductPage> {
                                               child: const Text('Order Now'),
                                             ),
                                           ),
-                                          const SizedBox(width: 20),
+                                          const SizedBox(width: 30),
                                         ],
                                       ),
                                     ],

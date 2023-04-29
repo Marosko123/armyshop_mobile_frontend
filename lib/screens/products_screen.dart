@@ -283,7 +283,7 @@ class ProductsScreenState extends State<ProductsScreen> {
                     primary: false,
                     crossAxisSpacing: 10.0,
                     mainAxisSpacing: 10.0,
-                    childAspectRatio: 0.8,
+                    childAspectRatio: 0.7,
                     children: List.generate(
                       productsToDisplay.length,
                       (index) {
@@ -348,7 +348,7 @@ class ProductsScreenState extends State<ProductsScreen> {
     final formattedPrice = Currencies.format(convertedPrice);
 
     if (deviceWidth < 600) {
-      imgHeight = MediaQuery.of(context).size.height * 0.12;
+      imgHeight = MediaQuery.of(context).size.height * 0.14;
     } else if (deviceWidth < 800) {
       imgHeight = MediaQuery.of(context).size.height * 0.26;
     } else if (deviceWidth < 1000) {
@@ -377,7 +377,7 @@ class ProductsScreenState extends State<ProductsScreen> {
                 : Colors.white,
           ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               GestureDetector(
                 onTap: () {
@@ -417,7 +417,7 @@ class ProductsScreenState extends State<ProductsScreen> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 15.0, right: 25.0),
+                padding: const EdgeInsets.only(left: 15.0, right: 15.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -450,7 +450,7 @@ class ProductsScreenState extends State<ProductsScreen> {
                     Column(
                       children: [
                         Container(
-                          padding: const EdgeInsets.only(bottom: 15.0),
+                          padding: const EdgeInsets.only(bottom: 10.0),
                           child: IconButton(
                             onPressed: () {
                               onLiked(!isLiked);
@@ -458,7 +458,7 @@ class ProductsScreenState extends State<ProductsScreen> {
                             icon: Icon(
                               isLiked ? Icons.favorite : Icons.favorite_border,
                               color: Colors.red,
-                              size: 40,
+                              size: 35,
                               // color: isLiked ? Colors.red : Colors.grey,
                             ),
                           ),
@@ -472,7 +472,7 @@ class ProductsScreenState extends State<ProductsScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Container(
-                    padding: const EdgeInsets.only(bottom: 4.0),
+                    padding: const EdgeInsets.only(bottom: 5.0),
                     child: IconButton(
                       icon: Icon(
                         Icons.shopping_basket,
@@ -505,7 +505,8 @@ class ProductsScreenState extends State<ProductsScreen> {
                           backgroundColor: ArmyshopColors.buttonColor,
                           foregroundColor: ArmyshopColors.buttonTextColor,
                         ),
-                        child: const Text('Order'),
+                        child:
+                            const Text('Order', style: TextStyle(fontSize: 12)),
                       ),
                     ),
                   ),

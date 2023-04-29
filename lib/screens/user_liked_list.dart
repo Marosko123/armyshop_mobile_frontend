@@ -269,7 +269,7 @@ class UserLikedListState extends State<UserLikedList> {
     }
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 5.0, left: 5.0, right: 5.0),
+      padding: const EdgeInsets.only(bottom: 5.0),
       child: InkWell(
         onTap: () {},
         child: Container(
@@ -288,7 +288,7 @@ class UserLikedListState extends State<UserLikedList> {
                 : Colors.white,
           ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               GestureDetector(
                 onTap: () {
@@ -326,7 +326,7 @@ class UserLikedListState extends State<UserLikedList> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 15.0, right: 25.0),
+                padding: const EdgeInsets.only(left: 15.0, right: 15.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -360,7 +360,7 @@ class UserLikedListState extends State<UserLikedList> {
                     Column(
                       children: [
                         Container(
-                          padding: const EdgeInsets.only(bottom: 15.0),
+                          padding: const EdgeInsets.only(bottom: 10.0),
                           child: IconButton(
                             onPressed: () {
                               onLiked(!isLiked);
@@ -368,7 +368,7 @@ class UserLikedListState extends State<UserLikedList> {
                             icon: Icon(
                               isLiked ? Icons.favorite : Icons.favorite_border,
                               color: Colors.red,
-                              size: 40,
+                              size: 35,
                               // color: isLiked ? Colors.red : Colors.grey,
                             ),
                           ),
@@ -381,25 +381,22 @@ class UserLikedListState extends State<UserLikedList> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Container(
-                    padding: const EdgeInsets.only(bottom: 4.0),
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.shopping_basket,
-                        color: Theme.of(context).primaryColor,
-                        size: 30,
-                      ),
-                      onPressed: () {
-                        // add to cart
-                        onAddToBasket();
-                        // show popup
-                        showPopup(context);
-                      },
+                  IconButton(
+                    icon: Icon(
+                      Icons.shopping_basket,
+                      color: Theme.of(context).primaryColor,
+                      size: 25,
                     ),
+                    onPressed: () {
+                      // add to cart
+                      onAddToBasket();
+                      // show popup
+                      showPopup(context);
+                    },
                   ),
                   Container(
-                    height: 25.0,
-                    width: 70.0,
+                    height: 20.0,
+                    width: 65.0,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15.0),
                       color: Colors.grey.withOpacity(0.2),
@@ -415,7 +412,8 @@ class UserLikedListState extends State<UserLikedList> {
                           backgroundColor: ArmyshopColors.buttonColor,
                           foregroundColor: ArmyshopColors.buttonTextColor,
                         ),
-                        child: const Text('Order'),
+                        child:
+                            const Text('Order', style: TextStyle(fontSize: 12)),
                       ),
                     ),
                   ),
