@@ -197,7 +197,7 @@ class UserLikedListState extends State<UserLikedList> {
               primary: false,
               crossAxisSpacing: 10.0,
               mainAxisSpacing: 10.0,
-              childAspectRatio: 0.8,
+              childAspectRatio: 0.73,
               children: likedList.map((productId) {
                 final product =
                     productsToDisplay.firstWhere((p) => p.id == productId);
@@ -259,7 +259,7 @@ class UserLikedListState extends State<UserLikedList> {
     final formattedPrice = Currencies.format(convertedPrice);
 
     if (deviceWidth < 600) {
-      imgHeight = MediaQuery.of(context).size.height * 0.12;
+      imgHeight = MediaQuery.of(context).size.height * 0.16;
     } else if (deviceWidth < 800) {
       imgHeight = MediaQuery.of(context).size.height * 0.26;
     } else if (deviceWidth < 1000) {
@@ -288,7 +288,7 @@ class UserLikedListState extends State<UserLikedList> {
                 : Colors.white,
           ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               GestureDetector(
                 onTap: () {
@@ -381,22 +381,23 @@ class UserLikedListState extends State<UserLikedList> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  IconButton(
-                    icon: Icon(
-                      Icons.shopping_basket,
-                      color: Theme.of(context).primaryColor,
-                      size: 25,
+                  Container(
+                    padding: const EdgeInsets.only(bottom: 10.0),
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.shopping_basket,
+                        color: Theme.of(context).primaryColor,
+                        size: 35,
+                      ),
+                      onPressed: () {
+                        // add to cart
+                        onAddToBasket();
+                      },
                     ),
-                    onPressed: () {
-                      // add to cart
-                      onAddToBasket();
-                      // show popup
-                      showPopup(context);
-                    },
                   ),
                   Container(
-                    height: 20.0,
-                    width: 65.0,
+                    height: 30.0,
+                    width: 70.0,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15.0),
                       color: Colors.grey.withOpacity(0.2),

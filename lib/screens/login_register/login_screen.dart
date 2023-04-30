@@ -44,11 +44,18 @@ class LoginScreenState extends State<LoginScreen> {
 
     if (response['status'] == 200 || response['status'] == 'success') {
       user = response['user'];
-      // Set the token
-      GlobalVariables.token = response['token'];
+
       // ignore: use_build_context_synchronously
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString('token', response['token']);
+      
+      // Set the token
+      if(response['token'] != null) {
+        GlobalVariables.token = response['token'];
+        prefs.setString('token', response['token']);
+      } else {
+        prefs.setString('token', '');
+      }
+      
       // ignore: use_build_context_synchronously  
       final UserAuthenticator userAuthenticator = UserAuthenticator();
       // ignore: use_build_context_synchronously

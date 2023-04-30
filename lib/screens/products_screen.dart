@@ -30,7 +30,7 @@ class ProductsScreenState extends State<ProductsScreen> {
   // }
 
   void getLikedProducts() {
-    RequestHandler.getLikedProducts(1).then((value) {
+    RequestHandler.getLikedProducts(GlobalVariables.user.id).then((value) {
       setState(() {
         likedList = value;
       });
@@ -86,8 +86,7 @@ class ProductsScreenState extends State<ProductsScreen> {
       return;
     }
     if (!isLoggedIn) {
-      showPopup(
-          context, 'You are not logged in', 'Log in to add to basket');
+      showPopup(context, 'You are not logged in', 'Log in to add to basket');
       return;
     }
     RequestHandler.addToBasket(userId, productId, 1).then((value) {
@@ -150,6 +149,10 @@ class ProductsScreenState extends State<ProductsScreen> {
   @override
   void initState() {
     super.initState();
+    print(GlobalVariables.token);
+    print(isLoggedIn);
+    print(GlobalVariables.user.id);
+    print(GlobalVariables.isConnectedToServer);
 
     if (GlobalVariables.isConnectedToServer) {
       getLikedProducts();
@@ -289,7 +292,7 @@ class ProductsScreenState extends State<ProductsScreen> {
                     primary: false,
                     crossAxisSpacing: 10.0,
                     mainAxisSpacing: 10.0,
-                    childAspectRatio: 0.7,
+                    childAspectRatio: 0.73,
                     children: List.generate(
                       productsToDisplay.length,
                       (index) {
@@ -471,7 +474,7 @@ class ProductsScreenState extends State<ProductsScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Container(
-                    padding: const EdgeInsets.only(bottom: 5.0),
+                    padding: const EdgeInsets.only(bottom: 10.0),
                     child: IconButton(
                       icon: Icon(
                         Icons.shopping_basket,

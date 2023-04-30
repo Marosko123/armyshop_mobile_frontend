@@ -43,7 +43,9 @@ class RequestHandler {
     List<int> likedProducts = [];
 
     final Map<String, dynamic> data = await ServerRequester.request(
-        subUrl: '/liked_products/$userId', type: 'GET', token: GlobalVariables.token);
+        subUrl: '/liked_products/$userId',
+        type: 'GET',
+        token: GlobalVariables.token);
 
     // if (data['error'] != null) {
     //   throw data['error'];
@@ -65,7 +67,9 @@ class RequestHandler {
   // add to liked products
   static Future<bool> addToLikedProducts(int userId, int productId) async {
     final Map<String, dynamic> data = await ServerRequester.request(
-        subUrl: '/liked_products/$userId/$productId', type: 'POST', token: GlobalVariables.token);
+        subUrl: '/liked_products/$userId/$productId',
+        type: 'POST',
+        token: GlobalVariables.token);
 
     if (data['status'] == 200) {
       return true;
@@ -77,7 +81,9 @@ class RequestHandler {
   // remove from liked products
   static Future<bool> removeFromLikedProducts(int userId, int productId) async {
     final Map<String, dynamic> data = await ServerRequester.request(
-        subUrl: '/liked_products/$userId/$productId', type: 'DELETE', token: GlobalVariables.token);
+        subUrl: '/liked_products/$userId/$productId',
+        type: 'DELETE',
+        token: GlobalVariables.token);
 
     if (data['status'] == 200) {
       return true;
@@ -90,7 +96,9 @@ class RequestHandler {
   static Future<bool> addToBasket(
       int userId, int productId, int quantity) async {
     final Map<String, dynamic> data = await ServerRequester.request(
-        subUrl: '/baskets/$userId/$productId/$quantity', type: 'POST', token: GlobalVariables.token);
+        subUrl: '/baskets/$userId/$productId/$quantity',
+        type: 'POST',
+        token: GlobalVariables.token);
 
     if (data['status'] == 200) {
       return true;
@@ -102,7 +110,9 @@ class RequestHandler {
   // remove from basket
   static Future<bool> removeFromBasket(int userId, int productId) async {
     final Map<String, dynamic> data = await ServerRequester.request(
-        subUrl: '/baskets/$userId/$productId', type: 'DELETE', token: GlobalVariables.token);
+        subUrl: '/baskets/$userId/$productId',
+        type: 'DELETE',
+        token: GlobalVariables.token);
 
     if (data['status'] == 200) {
       return true;
@@ -115,8 +125,8 @@ class RequestHandler {
   static Future<List<Map<String, dynamic>>> getBasket(int userId) async {
     final List<Map<String, dynamic>> products = [];
     print('object1');
-    final Map<String, dynamic> data =
-        await ServerRequester.request(subUrl: '/baskets/$userId', type: 'GET', token: GlobalVariables.token);
+    final Map<String, dynamic> data = await ServerRequester.request(
+        subUrl: '/baskets/$userId', type: 'GET', token: GlobalVariables.token);
     print('object');
     if (data['status'] != 200) {
       return products; // no products in basket
@@ -134,9 +144,7 @@ class RequestHandler {
   // get existing users
   static Future<dynamic> getUsers() async {
     final response = await ServerRequester.request(
-      subUrl: '/users',
-      type: 'GET',
-    );
+        subUrl: '/users', type: 'GET', token: GlobalVariables.token);
 
     if (response['status'] == 200) {
       final usersList = response['users'];
@@ -172,7 +180,7 @@ class RequestHandler {
     String password,
   ) async {
     final data = await ServerRequester.request(
-      subUrl: '/login',
+      subUrl: '/login_user',
       type: 'POST',
       dataToSend: {
         'email': email,
@@ -207,9 +215,9 @@ class RequestHandler {
   // create new chat room
   static Future<dynamic> getChatRooms() async {
     final data = await ServerRequester.request(
-      subUrl: '/chat_rooms/${GlobalVariables.user.id}',
-      type: 'GET',
-    );
+        subUrl: '/chat_rooms/${GlobalVariables.user.id}',
+        type: 'GET',
+        token: GlobalVariables.token);
 
     return data;
   }
@@ -217,10 +225,10 @@ class RequestHandler {
   // create new chat room
   static Future<dynamic> createChatRoom(dynamic dataToSend) async {
     final data = await ServerRequester.request(
-      subUrl: '/chat_rooms',
-      type: 'POST',
-      dataToSend: dataToSend,
-    );
+        subUrl: '/chat_rooms',
+        type: 'POST',
+        dataToSend: dataToSend,
+        token: GlobalVariables.token);
 
     return data;
   }
@@ -229,11 +237,11 @@ class RequestHandler {
   static Future<dynamic> getMessages(
       int userId, int roomId, bool getOnlyUnreadMessages) async {
     final data = await ServerRequester.request(
-      subUrl: getOnlyUnreadMessages
-          ? '/messages/unread/user/$userId/room/$roomId'
-          : '/messages/user/$userId/room/$roomId',
-      type: 'GET',
-    );
+        subUrl: getOnlyUnreadMessages
+            ? '/messages/unread/user/$userId/room/$roomId'
+            : '/messages/user/$userId/room/$roomId',
+        type: 'GET',
+        token: GlobalVariables.token);
 
     if (data['error'] != null) {
       print(data['error']);
@@ -245,14 +253,14 @@ class RequestHandler {
   // get messages from room of user
   static Future<dynamic> sendMessage(Message message) async {
     final data = await ServerRequester.request(
-      subUrl: '/messages',
-      type: 'POST',
-      dataToSend: {
-        'sender_id': message.senderId,
-        'room_id': message.roomId,
-        'message': message.message,
-      },
-    );
+        subUrl: '/messages',
+        type: 'POST',
+        dataToSend: {
+          'sender_id': message.senderId,
+          'room_id': message.roomId,
+          'message': message.message,
+        },
+        token: GlobalVariables.token);
 
     if (data['error'] != null) {
       print(data['error']);
