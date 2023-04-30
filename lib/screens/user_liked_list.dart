@@ -6,6 +6,7 @@ import 'package:armyshop_mobile_frontend/screens/product_detail.dart';
 import 'package:flutter/material.dart';
 
 import '../common/currencies.dart';
+import '../common/dialogs.dart';
 import '../common/global_variables.dart';
 import '../common/request_handler.dart';
 import '../models/product.dart';
@@ -109,41 +110,6 @@ class UserLikedListState extends State<UserLikedList> {
     } else {
       return const AssetImage('assets/images/army-bg1.jpg');
     }
-  }
-
-  void showPopup(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        // return the Dialog widget
-        return SizedBox(
-          width: 300.0,
-          height: 300.0,
-          child: AlertDialog(
-            content: SizedBox(
-              height: 200.0,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Text('Product added to basket!',
-                      style: TextStyle(fontSize: 18.0)),
-                  SizedBox(height: 20.0),
-                  Text(
-                    'Go to basket to buy it!',
-                    style: TextStyle(fontSize: 16.0),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-
-    // hide the popup after 2 seconds
-    Future.delayed(const Duration(seconds: 2), () {
-      Navigator.of(context).pop();
-    });
   }
 
   @override
@@ -393,7 +359,8 @@ class UserLikedListState extends State<UserLikedList> {
                       // add to cart
                       onAddToBasket();
                       // show popup
-                      showPopup(context);
+                      Dialogs.showPopup(context, 'Product added to basket!',
+                          'Go to basket to buy it!');
                     },
                   ),
                   Container(

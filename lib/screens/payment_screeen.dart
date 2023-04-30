@@ -1,16 +1,10 @@
 // ignore_for_file: avoid_print
 
-import 'dart:async';
-
 import 'package:armyshop_mobile_frontend/common/global_variables.dart';
-import 'package:armyshop_mobile_frontend/common/notifications/notification_service.dart';
-// import 'package:armyshop_mobile_frontend/common/user_authenticator.dart';
-import 'package:armyshop_mobile_frontend/screens/primary_page.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 import '../common/armyshop_colors.dart';
-import '../common/notifications/notifications.dart';
+import '../common/dialogs.dart';
 
 enum DeliveryMethod { standard, express, nextDay }
 
@@ -40,30 +34,6 @@ class PaymentScreenState extends State<PaymentScreen> {
     _emailController.text = GlobalVariables.user.email;
     _addressController.text = GlobalVariables.user.address;
     _phoneController.text = GlobalVariables.user.telephone.toString();
-  }
-
-  void showPopup(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        // send successful payment notification
-        NotificationService().scheduleNotification(
-            notification: Notifications.getRandomNotification(
-                Notifications.purchaseNotifications),
-            scheduledDate: DateTime.now().add(const Duration(seconds: 10)));
-
-        // return the Dialog widget
-        return const AlertDialog(
-          title: Text('Thank you for your order!'),
-          content: Text('You will be redirected in 2 seconds'),
-        );
-      },
-    );
-
-    // redirect to another page after 2 seconds
-    Future.delayed(const Duration(seconds: 2), () {
-      Navigator.of(context).popAndPushNamed(PrimaryPage.routeName);
-    });
   }
 
   @override
@@ -187,7 +157,7 @@ class PaymentScreenState extends State<PaymentScreen> {
                   print('Last Name: ${_lastNameController.text}');
                   print('Email: ${_emailController.text}');
                   print('Phone: ${_phoneController.text}');
-                  showPopup(context);
+                  Dialogs.showSuccessfulPaymentPopup(context);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: ArmyshopColors.buttonColor,

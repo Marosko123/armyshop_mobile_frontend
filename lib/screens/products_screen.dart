@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 
 import '../common/armyshop_colors.dart';
 import '../common/currencies.dart';
+import '../common/dialogs.dart';
 import '../common/global_variables.dart';
 import '../common/request_handler.dart';
 
@@ -42,11 +43,13 @@ class ProductsScreenState extends State<ProductsScreen> {
   // add to liked products
   void addToLikedProducts(int productId) {
     if (!GlobalVariables.isConnectedToServer) {
-      showPopup(context, 'You are offline', 'Please check your connection');
+      Dialogs.showPopup(
+          context, 'You are offline', 'Please check your connection');
       return;
     }
     if (!isLoggedIn) {
-      showPopup(context, 'You are not logged in', 'Log in to like products');
+      Dialogs.showPopup(
+          context, 'You are not logged in', 'Log in to like products');
       return;
     }
     RequestHandler.addToLikedProducts(userId, productId).then((value) {
@@ -63,11 +66,13 @@ class ProductsScreenState extends State<ProductsScreen> {
   // remove from liked products
   void removeFromLikedProducts(int productId) {
     if (!GlobalVariables.isConnectedToServer) {
-      showPopup(context, 'You are offline', 'Please check your connection');
+      Dialogs.showPopup(
+          context, 'You are offline', 'Please check your connection');
       return;
     }
     if (!isLoggedIn) {
-      showPopup(context, 'You are not logged in', 'Log in to like products');
+      Dialogs.showPopup(
+          context, 'You are not logged in', 'Log in to like products');
       return;
     }
     RequestHandler.removeFromLikedProducts(userId, productId).then((value) {
@@ -84,18 +89,20 @@ class ProductsScreenState extends State<ProductsScreen> {
 
   void addToBasket(int productId) {
     if (!GlobalVariables.isConnectedToServer) {
-      showPopup(context, 'You are offline', 'Please check your connection');
+      Dialogs.showPopup(
+          context, 'You are offline', 'Please check your connection');
       return;
     }
     if (!isLoggedIn) {
-      showPopup(context, 'You are not logged in', 'Log in to add to basket');
+      Dialogs.showPopup(
+          context, 'You are not logged in', 'Log in to add to basket');
       return;
     }
     RequestHandler.addToBasket(userId, productId, 1).then((value) {
       setState(() {
         if (value) {
           // show popup
-          showPopup(
+          Dialogs.showPopup(
               context, 'Product added to basket!', 'Go to basket to buy it!');
         }
       });
@@ -112,40 +119,6 @@ class ProductsScreenState extends State<ProductsScreen> {
     } else {
       return const AssetImage('assets/images/army-bg1.jpg');
     }
-  }
-
-  void showPopup(BuildContext context, String title, String content) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        // return the Dialog widget
-        return SizedBox(
-          width: 300.0,
-          height: 300.0,
-          child: AlertDialog(
-            content: SizedBox(
-              height: 200.0,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(title, style: const TextStyle(fontSize: 18.0)),
-                  const SizedBox(height: 20.0),
-                  Text(
-                    content,
-                    style: const TextStyle(fontSize: 16.0),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-
-    // hide the popup after 2 seconds
-    Future.delayed(const Duration(seconds: 2), () {
-      Navigator.of(context).pop();
-    });
   }
 
   @override
@@ -496,12 +469,12 @@ class ProductsScreenState extends State<ProductsScreen> {
                       child: ElevatedButton(
                         onPressed: () {
                           if (!GlobalVariables.isConnectedToServer) {
-                            showPopup(context, 'You are offline',
+                            Dialogs.showPopup(context, 'You are offline',
                                 'Please check your connection');
                             return;
                           }
                           if (!isLoggedIn) {
-                            showPopup(context, 'You are not logged in',
+                            Dialogs.showPopup(context, 'You are not logged in',
                                 'Log in to order products');
                             return;
                           }
