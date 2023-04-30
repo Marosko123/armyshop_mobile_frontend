@@ -155,7 +155,13 @@ class UserAccountState extends State<UserAccount> {
                 MyButton(
                   text: 'Log In',
                   onTap: () {
-                    GlobalVariables.tmpData = {};
+                    GlobalVariables.tmpData = {
+                      'email': '',
+                      'password1': '',
+                      'password2': '',
+                      'previousScreen': '',
+                      'picture': '',
+                    };
                     GlobalVariables.user.licensePicture = '';
 
                     Navigator.of(context)

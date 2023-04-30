@@ -268,4 +268,20 @@ class RequestHandler {
 
     return data;
   }
+
+  // get messages from room of user
+  static Future<dynamic> updateUser(
+      int id, String keySnakeCase, String value) async {
+    final data = await ServerRequester.request(
+        type: 'PATCH',
+        subUrl: '/users/$id',
+        dataToSend: {keySnakeCase: value},
+        token: GlobalVariables.token);
+
+    if (data['error'] != null) {
+      print(data['error']);
+    }
+
+    return data;
+  }
 }

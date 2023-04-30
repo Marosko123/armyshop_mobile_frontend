@@ -110,6 +110,7 @@ class _MyTextfieldState extends State<MyTextfield> {
             isImage: widget.isImage,
             returnCoordinatesCallback: returnCoordinatesCallback,
             returnNewValueCallback: returnNewValueCallback,
+            error: error,
           ),
           actions: [
             TextButton(

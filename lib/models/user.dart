@@ -1,4 +1,4 @@
-import 'package:armyshop_mobile_frontend/common/server_handling/server_requester.dart';
+import 'package:armyshop_mobile_frontend/common/server_handling/request_handler.dart';
 import 'package:armyshop_mobile_frontend/models/chat_room.dart';
 
 import '../common/converters.dart';
@@ -77,10 +77,7 @@ class User {
 
     final setter = propertyMap[keyCamelCase];
     if (setter != null) {
-      final response = await ServerRequester.request(
-          type: 'PATCH',
-          subUrl: '/users/$id',
-          dataToSend: {keySnakeCase: value});
+      final response = await RequestHandler.updateUser(id, keySnakeCase, value);
 
       if (response['status'] == 200) {
         setter();

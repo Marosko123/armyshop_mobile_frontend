@@ -267,7 +267,7 @@ class ProductsScreenState extends State<ProductsScreen> {
                     primary: false,
                     crossAxisSpacing: 10.0,
                     mainAxisSpacing: 10.0,
-                    childAspectRatio: 0.73,
+                    childAspectRatio: 0.70,
                     children: List.generate(
                       productsToDisplay.length,
                       (index) {

@@ -18,23 +18,18 @@ class PaymentScreen extends StatefulWidget {
 }
 
 class PaymentScreenState extends State<PaymentScreen> {
-  final _firstNameController = TextEditingController();
-  final _lastNameController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _addressController = TextEditingController();
-  final _phoneController = TextEditingController();
+  final _firstNameController =
+      TextEditingController(text: GlobalVariables.user.firstName);
+  final _lastNameController =
+      TextEditingController(text: GlobalVariables.user.lastName);
+  final _emailController =
+      TextEditingController(text: GlobalVariables.user.email);
+  final _addressController =
+      TextEditingController(text: GlobalVariables.user.address);
+  final _phoneController =
+      TextEditingController(text: GlobalVariables.user.telephone.toString());
 
   DeliveryMethod? _deliveryMethod = DeliveryMethod.standard;
-
-  @override
-  void initState() {
-    super.initState();
-    _firstNameController.text = GlobalVariables.user.firstName;
-    _lastNameController.text = GlobalVariables.user.lastName;
-    _emailController.text = GlobalVariables.user.email;
-    _addressController.text = GlobalVariables.user.address;
-    _phoneController.text = GlobalVariables.user.telephone.toString();
-  }
 
   @override
   Widget build(BuildContext context) {

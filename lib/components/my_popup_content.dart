@@ -14,6 +14,7 @@ class MyPopupContent extends StatefulWidget {
   final IconData icon;
   final String label;
   final String? value;
+  final String? error;
   final bool? isNumeric;
   final bool? isImage;
   final bool? isAddress;
@@ -29,7 +30,8 @@ class MyPopupContent extends StatefulWidget {
       required this.returnNewValueCallback,
       this.isNumeric = false,
       this.isImage = false,
-      this.isAddress = false})
+      this.isAddress = false,
+      this.error = ''})
       : super(key: key);
 
   @override
@@ -40,7 +42,7 @@ class MyPopupContent extends StatefulWidget {
 
 class _MyPopupContentState extends State<MyPopupContent> {
   String error = '';
-  String currentLocation = 'Get My Current Location';
+  String locationError = '';
   late double lat = 0;
   late double long = 0;
   late Future<File> imageFile;
@@ -49,19 +51,25 @@ class _MyPopupContentState extends State<MyPopupContent> {
   void initState() {
     super.initState();
 
+    error = widget.error!;
+
     if (widget.isImage! && GlobalVariables.user.licensePicture.isNotEmpty) {
       imageFile = base64ToFile(GlobalVariables.user.licensePicture);
     } else if (widget.isImage! &&
-        GlobalVariables.tmpData != null &&
+        GlobalVariables.tmpData['picture'] != null &&
         GlobalVariables.tmpData['picture'].isNotEmpty) {
       imageFile = base64ToFile(GlobalVariables.tmpData['picture']);
     }
   }
 
   Future<Position> getLocation() async {
+    lat = 0;
+    long = 0;
+
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      error = 'Location services are disabled.';
+      locationError = 'Location services are disabled.';
+      setState(() {});
       return Future.error('Location services are disabled.');
     }
 
@@ -69,18 +77,21 @@ class _MyPopupContentState extends State<MyPopupContent> {
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        error = 'Location permissions are disabled.';
+        locationError = 'Location permissions are disabled.';
+        setState(() {});
         return Future.error('Location permissions are denied');
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
-      error =
+      locationError =
           'Location permissions are permanently denied, we cannot request permissions.';
+      setState(() {});
       return Future.error(
           'Location permissions are permanently denied, we cannot request permissions.');
     }
 
+    locationError = '';
     return await Geolocator.getCurrentPosition();
   }
 
@@ -100,11 +111,11 @@ class _MyPopupContentState extends State<MyPopupContent> {
     return SingleChildScrollView(
       child: ListBody(
         children: [
-          Text(
-            'Your current ${widget.label}:',
-            style: TextStyle(color: ArmyshopColors.textColor),
-          ),
           if (widget.isImage!) ...[
+            Text(
+              'Your current ${widget.label}:',
+              style: TextStyle(color: ArmyshopColors.textColor),
+            ),
             if (GlobalVariables.user.licensePicture.isNotEmpty ||
                 GlobalVariables.tmpData['picture'].isNotEmpty)
               FutureBuilder<File>(
@@ -220,7 +231,7 @@ class _MyPopupContentState extends State<MyPopupContent> {
                           ),
                         ),
                         child: Text(
-                          currentLocation,
+                          'Get My Current Location',
                           style: TextStyle(color: ArmyshopColors.textColor),
                         ),
                       ),
@@ -242,6 +253,15 @@ class _MyPopupContentState extends State<MyPopupContent> {
                   ],
                 ),
               ),
+              if (locationError.isNotEmpty)
+                Text(
+                  locationError,
+                  style: const TextStyle(
+                    color: Colors.red,
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               if (lat != 0 && long != 0) ...[
                 Text(
                   'Latitude: $lat',

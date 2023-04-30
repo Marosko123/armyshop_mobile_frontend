@@ -141,7 +141,9 @@ class RegisterScreenState extends State<RegisterScreen> {
                 GlobalVariables.tmpData = {
                   'email': emailController.text,
                   'password1': passwordController1.text,
-                  'password2': passwordController2.text
+                  'password2': passwordController2.text,
+                  'previousScreen': '',
+                  'picture': '',
                 };
 
                 Navigator.push(
