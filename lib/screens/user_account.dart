@@ -30,6 +30,8 @@ class UserAccountState extends State<UserAccount> {
   bool isLoggedIn = false;
 
   Future<void> openChatRooms() async {
+    if (GlobalVariables.user.isEmpty()) return;
+
     dynamic response = await RequestHandler.getChatRooms();
 
     if (response['status'] == 200) {
@@ -452,7 +454,7 @@ class UserAccountState extends State<UserAccount> {
                           color: ArmyshopColors.textColor,
                         ),
                       ),
-                      MyButton(text: 'Chat with us', onTap: openChatRooms),
+                      MyButton(text: 'Chat With Us', onTap: openChatRooms),
                     ],
                   ),
                 ),
