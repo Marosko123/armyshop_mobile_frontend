@@ -46,16 +46,16 @@ class LoginScreenState extends State<LoginScreen> {
 
       // ignore: use_build_context_synchronously
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      
+
       // Set the token
-      if(response['token'] != null) {
+      if (response['token'] != null) {
         GlobalVariables.token = response['token'];
         prefs.setString('token', response['token']);
       } else {
         prefs.setString('token', '');
       }
-      
-      // ignore: use_build_context_synchronously  
+
+      // ignore: use_build_context_synchronously
       final UserAuthenticator userAuthenticator = UserAuthenticator();
       // ignore: use_build_context_synchronously
       return userAuthenticator.userSuccessfullyLoggedIn(
