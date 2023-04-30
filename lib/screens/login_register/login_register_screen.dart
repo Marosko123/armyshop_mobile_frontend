@@ -23,7 +23,7 @@ class LoginRegisterScreenState extends State<LoginRegisterScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  bool _isLoginScreenOn = true;
+  bool _isLoginScreenOn = GlobalVariables.user.licensePicture.isEmpty;
 
   void login() {
     print(emailController.text);

@@ -28,10 +28,6 @@ class RequestHandler {
     final Map<String, dynamic> data =
         await ServerRequester.request(subUrl: '/products', type: 'GET');
 
-    // if (data['error'] != null) {
-    //   throw data['error'];
-    // }
-
     final List productsList = data['products'];
 
     for (Map m in productsList) {
@@ -91,7 +87,8 @@ class RequestHandler {
   }
 
   // add to basket
-  static Future<bool> addToBasket(int userId, int productId, int quantity) async {
+  static Future<bool> addToBasket(
+      int userId, int productId, int quantity) async {
     final Map<String, dynamic> data = await ServerRequester.request(
         subUrl: '/baskets/$userId/$productId/$quantity', type: 'POST', token: GlobalVariables.token);
 
@@ -134,7 +131,7 @@ class RequestHandler {
     return products;
   }
 
-  // login existing user
+  // get existing users
   static Future<dynamic> getUsers() async {
     final response = await ServerRequester.request(
       subUrl: '/users',
@@ -183,10 +180,6 @@ class RequestHandler {
       },
     );
 
-    // if (data['error'] != null) {
-    //   throw data['error'];
-    // }
-
     return data;
   }
 
@@ -208,10 +201,6 @@ class RequestHandler {
       },
     );
 
-    // if (data['error'] != null) {
-    //   throw data['error'];
-    // }
-
     return data;
   }
 
@@ -221,10 +210,6 @@ class RequestHandler {
       subUrl: '/chat_rooms/${GlobalVariables.user.id}',
       type: 'GET',
     );
-
-    // if (data['error'] != null) {
-    //   throw data['error'];
-    // }
 
     return data;
   }
@@ -236,10 +221,6 @@ class RequestHandler {
       type: 'POST',
       dataToSend: dataToSend,
     );
-
-    // if (data['error'] != null) {
-    //   throw data['error'];
-    // }
 
     return data;
   }

@@ -13,15 +13,22 @@ class GlobalVariables {
   static bool isUserLoggedIn = true;
   static String token = '';
   static User user = User(
-    id: 1,
-    email: 'admin@armyshop.xd',
-    firstName: 'Adminko',
-    lastName: 'Adminer',
-    age: 99,
-    address: 'FIIT STU',
+    id: 0,
+    email: '',
+    firstName: '',
+    lastName: '',
+    age: 0,
+    address: '',
     licensePicture: '',
-    isLicenseValid: true,
-    telephone: '911',
+    isLicenseValid: false,
+    telephone: '',
     chatRooms: [],
   );
+  static dynamic tmpData = {
+    'email': '',
+    'password1': '',
+    'password2': '',
+    'previousScreen': '',
+    'picture': '',
+  };
 }

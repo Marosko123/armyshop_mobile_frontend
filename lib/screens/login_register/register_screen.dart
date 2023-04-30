@@ -1,16 +1,13 @@
 // ignore_for_file: avoid_print
 
-import 'dart:io';
-
 import 'package:armyshop_mobile_frontend/common/armyshop_colors.dart';
+import 'package:armyshop_mobile_frontend/common/global_variables.dart';
 import 'package:armyshop_mobile_frontend/components/my_button.dart';
 import 'package:armyshop_mobile_frontend/screens/photo_screen.dart';
 import 'package:armyshop_mobile_frontend/common/request_handler.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../common/global_variables.dart';
 import '../../common/notifications/notification_service.dart';
 import '../../common/notifications/notifications.dart';
 import '../../components/textfield.dart';
@@ -26,32 +23,27 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class RegisterScreenState extends State<RegisterScreen> {
-  bool? someValue;
   String errorText = '';
 
-  final emailController = TextEditingController();
-  final passwordController1 = TextEditingController();
-  final passwordController2 = TextEditingController();
-  bool? _hasMilitaryPassport = false;
+  final emailController =
+      TextEditingController(text: GlobalVariables.tmpData['email']);
+  final passwordController1 =
+      TextEditingController(text: GlobalVariables.tmpData['password1']);
+  final passwordController2 =
+      TextEditingController(text: GlobalVariables.tmpData['password2']);
 
   Future<void> register() async {
     dynamic user;
     dynamic response;
-
-    final directory = await getApplicationDocumentsDirectory();
-    final imagePath = '${directory.path}/military_passport.png';
-
-    File imageFileFromDevice = File(imagePath);
-
-    List<int> imageBytes = await imageFileFromDevice.readAsBytes();
-    String hexBytes = imageBytes.map((i) => i.toRadixString(16)).join();
 
     try {
       response = await RequestHandler.register(
         emailController.text,
         passwordController1.text,
         passwordController2.text,
-        hexBytes.isEmpty ? '' : hexBytes,
+        GlobalVariables.user.licensePicture.isEmpty
+            ? ''
+            : GlobalVariables.user.licensePicture,
       );
     } catch (e) {
       print(e);
@@ -139,9 +131,14 @@ class RegisterScreenState extends State<RegisterScreen> {
                   color: ArmyshopColors.textColor,
                 ),
               ),
-              value: someValue ?? _hasMilitaryPassport,
+              value: GlobalVariables.user.licensePicture.isNotEmpty,
               onChanged: (newValue) {
-                _hasMilitaryPassport = newValue;
+                GlobalVariables.tmpData = {
+                  'email': emailController.text,
+                  'password1': passwordController1.text,
+                  'password2': passwordController2.text
+                };
+
                 Navigator.push(
                   context,
                   MaterialPageRoute(
