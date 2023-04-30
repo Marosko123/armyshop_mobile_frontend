@@ -1,4 +1,4 @@
-import 'package:armyshop_mobile_frontend/common/server_requester.dart';
+import 'package:armyshop_mobile_frontend/common/server_handling/server_requester.dart';
 import 'package:armyshop_mobile_frontend/models/chat_room.dart';
 
 import '../common/converters.dart';

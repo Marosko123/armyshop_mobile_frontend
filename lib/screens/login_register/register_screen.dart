@@ -4,7 +4,7 @@ import 'package:armyshop_mobile_frontend/common/armyshop_colors.dart';
 import 'package:armyshop_mobile_frontend/common/global_variables.dart';
 import 'package:armyshop_mobile_frontend/components/my_button.dart';
 import 'package:armyshop_mobile_frontend/screens/photo_screen.dart';
-import 'package:armyshop_mobile_frontend/common/request_handler.dart';
+import 'package:armyshop_mobile_frontend/common/server_handling/request_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

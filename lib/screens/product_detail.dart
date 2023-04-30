@@ -1,5 +1,5 @@
 import 'package:armyshop_mobile_frontend/common/armyshop_colors.dart';
-import 'package:armyshop_mobile_frontend/common/request_handler.dart';
+import 'package:armyshop_mobile_frontend/common/server_handling/request_handler.dart';
 import 'package:armyshop_mobile_frontend/screens/payment_screeen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

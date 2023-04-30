@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import '../common/currencies.dart';
 import '../common/dialogs.dart';
 import '../common/global_variables.dart';
-import '../common/request_handler.dart';
+import '../common/server_handling/request_handler.dart';
 import '../models/product.dart';
 
 class UserLikedList extends StatefulWidget {

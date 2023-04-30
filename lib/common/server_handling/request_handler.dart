@@ -1,10 +1,10 @@
 // ignore_for_file: avoid_print
 
-import '../models/message.dart';
-import '../models/user.dart';
+import '../../models/message.dart';
+import '../../models/user.dart';
 import 'server_requester.dart';
-import 'global_variables.dart';
-import '../models/product.dart';
+import '../global_variables.dart';
+import '../../models/product.dart';
 
 class RequestHandler {
   // check connection to the server

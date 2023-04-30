@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:path/path.dart' as path;
 
-import '../models/product.dart';
+import '../../models/product.dart';
 
 // Code to serialize and deserialize products
 

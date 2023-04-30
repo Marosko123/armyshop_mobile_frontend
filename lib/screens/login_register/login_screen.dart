@@ -8,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../common/dialogs.dart';
 import '../../common/global_variables.dart';
 import '../../components/textfield.dart';
-import '../../common/request_handler.dart';
+import '../../common/server_handling/request_handler.dart';
 
 class LoginScreen extends StatefulWidget {
   static const routeName = '/login-screen';

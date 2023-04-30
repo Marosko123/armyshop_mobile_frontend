@@ -9,7 +9,7 @@ import '../common/armyshop_colors.dart';
 import '../common/currencies.dart';
 import '../common/dialogs.dart';
 import '../common/global_variables.dart';
-import '../common/request_handler.dart';
+import '../common/server_handling/request_handler.dart';
 
 class ProductsScreen extends StatefulWidget {
   static const routeName = '/products-screen';

@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:armyshop_mobile_frontend/common/global_variables.dart';
-import 'package:armyshop_mobile_frontend/common/request_handler.dart';
+import 'package:armyshop_mobile_frontend/common/server_handling/request_handler.dart';
 import 'package:armyshop_mobile_frontend/components/my_button.dart';
 import 'package:armyshop_mobile_frontend/components/my_scroll_list.dart';
 import 'package:armyshop_mobile_frontend/models/chat_room.dart';
@@ -9,7 +9,7 @@ import 'package:armyshop_mobile_frontend/screens/chat.dart';
 import 'package:flutter/material.dart';
 
 import '../common/armyshop_colors.dart';
-import '../common/users_serializer.dart';
+import '../common/serialisation/users_serializer.dart';
 import '../models/user.dart';
 
 class ChatRooms extends StatefulWidget {
@@ -96,7 +96,7 @@ class ChatRoomsState extends State<ChatRooms> {
   }
 
   Future<void> showDialogAlert(BuildContext context) async {
-    if(GlobalVariables.isConnectedToServer) {
+    if (GlobalVariables.isConnectedToServer) {
       users = await RequestHandler.getUsers();
     } else {
       users = await UsersSerializer.deserialize();
@@ -238,7 +238,7 @@ class ChatRoomsState extends State<ChatRooms> {
                     alignment: Alignment.centerRight,
                     child: GestureDetector(
                       onTap: () {
-                        if(GlobalVariables.isConnectedToServer) {
+                        if (GlobalVariables.isConnectedToServer) {
                           createChatRoom(context);
                         }
                       },

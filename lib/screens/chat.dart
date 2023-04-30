@@ -4,15 +4,15 @@ import 'dart:async';
 
 import 'package:armyshop_mobile_frontend/common/global_variables.dart';
 import 'package:armyshop_mobile_frontend/common/user_authenticator.dart';
-import 'package:armyshop_mobile_frontend/common/users_serializer.dart';
+import 'package:armyshop_mobile_frontend/common/serialisation/users_serializer.dart';
 import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
 
 import '../common/armyshop_colors.dart';
 import '../common/converters.dart';
-import '../common/message_serializer.dart';
-import '../common/request_handler.dart';
+import '../common/serialisation/message_serializer.dart';
+import '../common/server_handling/request_handler.dart';
 import '../models/chat_room.dart';
 import '../models/message.dart';
 

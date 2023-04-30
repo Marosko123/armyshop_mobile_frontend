@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import '../models/user.dart';
+import '../../models/user.dart';
 
 class UsersSerializer {
   static Future<void> serialize(List<User> users) async {

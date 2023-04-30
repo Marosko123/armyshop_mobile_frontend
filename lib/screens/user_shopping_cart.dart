@@ -5,7 +5,7 @@ import 'package:armyshop_mobile_frontend/common/global_variables.dart';
 import 'package:armyshop_mobile_frontend/screens/payment_screeen.dart';
 import 'package:flutter/material.dart';
 
-import '../common/request_handler.dart';
+import '../common/server_handling/request_handler.dart';
 import '../components/numeric_step_button.dart';
 import '../models/product.dart';
 import '../models/product_with_quantity.dart';
