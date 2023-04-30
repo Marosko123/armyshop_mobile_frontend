@@ -39,12 +39,12 @@ class ProductsScreenState extends State<ProductsScreen> {
 
   // add to liked products
   void addToLikedProducts(int productId) {
-    if (!isLoggedIn || !GlobalVariables.isConnectedToServer) {
-      setState(() {
-        if (!likedList.contains(productId)) {
-          likedList.add(productId);
-        }
-      });
+    if (!GlobalVariables.isConnectedToServer) {
+      showPopup(context, 'You are offline', 'Please check your connection');
+      return;
+    }
+    if (!isLoggedIn) {
+      showPopup(context, 'You are not logged in', 'Log in to like products');
       return;
     }
     RequestHandler.addToLikedProducts(userId, productId).then((value) {
@@ -60,13 +60,12 @@ class ProductsScreenState extends State<ProductsScreen> {
 
   // remove from liked products
   void removeFromLikedProducts(int productId) {
-    if (!isLoggedIn || !GlobalVariables.isConnectedToServer) {
-      setState(() {
-        if (likedList.contains(productId)) {
-          likedList.remove(productId);
-          print("product removed from liked list");
-        }
-      });
+    if (!GlobalVariables.isConnectedToServer) {
+      showPopup(context, 'You are offline', 'Please check your connection');
+      return;
+    }
+    if (!isLoggedIn) {
+      showPopup(context, 'You are not logged in', 'Log in to like products');
       return;
     }
     RequestHandler.removeFromLikedProducts(userId, productId).then((value) {
@@ -88,7 +87,7 @@ class ProductsScreenState extends State<ProductsScreen> {
     }
     if (!isLoggedIn) {
       showPopup(
-          context, 'You are not logged in', 'Log in to add products to basket');
+          context, 'You are not logged in', 'Log in to add to basket');
       return;
     }
     RequestHandler.addToBasket(userId, productId, 1).then((value) {
@@ -313,14 +312,7 @@ class ProductsScreenState extends State<ProductsScreen> {
                           () {
                             // add to cart
                             setState(() {
-                              if (isLoggedIn) {
-                                addToBasket(product.id!);
-                              } else {
-                                Navigator.pushNamed(
-                                  context,
-                                  '/login-screen',
-                                );
-                              }
+                              addToBasket(product.id!);
                             });
                           },
                           product.id!,
@@ -509,7 +501,7 @@ class ProductsScreenState extends State<ProductsScreen> {
                           }
                           if (!isLoggedIn) {
                             showPopup(context, 'You are not logged in',
-                                'Log in to add products to basket');
+                                'Log in to order products');
                             return;
                           }
                           // Navigate to the payment page

@@ -101,17 +101,29 @@ class ProductPageState extends State<ProductPage> {
 
   // add to liked products
   void addToLikedProducts(int productId) {
-    if (!isLoggedIn) {
+    if (!GlobalVariables.isConnectedToServer) {
+      showPopup(context, 'You are offline', 'Please check your connection');
       return;
     }
+    if (!isLoggedIn) {
+      showPopup(context, 'You are not logged in', 'Log in to like products');
+      return;
+    }
+    _toggleLike();
     RequestHandler.addToLikedProducts(userId, productId);
   }
 
   // remove from liked products
   void removeFromLikedProducts(int productId) {
-    if (!isLoggedIn) {
+    if (!GlobalVariables.isConnectedToServer) {
+      showPopup(context, 'You are offline', 'Please check your connection');
       return;
     }
+    if (!isLoggedIn) {
+      showPopup(context, 'You are not logged in', 'Log in to like products');
+      return;
+    }
+    _toggleLike();
     RequestHandler.removeFromLikedProducts(userId, productId);
   }
 
@@ -144,7 +156,7 @@ class ProductPageState extends State<ProductPage> {
     }
     if (!isLoggedIn) {
       showPopup(
-          context, 'You are not logged in', 'Log in to add products to basket');
+          context, 'You are not logged in', 'Log in to add to basket');
       return;
     }
     // add the product to the shopping cart database
@@ -306,7 +318,6 @@ class ProductPageState extends State<ProductPage> {
                                   padding: const EdgeInsets.only(bottom: 10.0),
                                   child: IconButton(
                                     onPressed: () {
-                                      _toggleLike();
                                       if (isLiked) {
                                         //print('add to liked products');
                                         addToLikedProducts(productId);
@@ -486,7 +497,7 @@ class ProductPageState extends State<ProductPage> {
                                                   showPopup(
                                                       context,
                                                       'You are not logged in',
-                                                      'Log in to add products to basket');
+                                                      'Log in to order products');
                                                   return;
                                                 }
                                                 // Navigate to the product detail page

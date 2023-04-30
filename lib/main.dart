@@ -46,8 +46,9 @@ void main() async {
 
   String? token = prefs.getString('token');
   print('token: $token');
-  if (token != null) {
+  if (token != null && token != '') {
     GlobalVariables.token = token;
+    GlobalVariables.isUserLoggedIn = true;
   }
 
   NotificationService().initNotification();

@@ -10,7 +10,7 @@ class GlobalVariables {
   static List<Product> products = [];
   static List<User> users = [];
   static bool isConnectedToServer = false;
-  static bool isUserLoggedIn = true;
+  static bool isUserLoggedIn = false;
   static String token = '';
   static User user = User(
     id: 0,
