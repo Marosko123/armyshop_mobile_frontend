@@ -3,13 +3,12 @@
 import 'package:armyshop_mobile_frontend/components/my_button.dart';
 import 'package:armyshop_mobile_frontend/common/user_authenticator.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../common/auth_state.dart';
+import '../../common/dialogs.dart';
 import '../../common/global_variables.dart';
 import '../../components/textfield.dart';
-import '../../common/request_handler.dart';
+import '../../common/server_handling/request_handler.dart';
 
 class LoginScreen extends StatefulWidget {
   static const routeName = '/login-screen';
@@ -68,6 +67,10 @@ class LoginScreenState extends State<LoginScreen> {
       errorText = errors.entries.first.value[0];
     } else if (response['status'] == 401) {
       errorText = response['message'];
+    } else if (response['error'].isNotEmpty) {
+      // ignore: use_build_context_synchronously
+      Dialogs.showPopup(
+          context, 'You are offline', 'Please check your connection');
     }
 
     setState(() {});

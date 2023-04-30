@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import '../models/message.dart';
+import '../../models/message.dart';
 
 class MessageSerializer {
   static Future<void> serialize(List<Message> messages, int roomId) async {
@@ -16,7 +16,10 @@ class MessageSerializer {
       final file = await _localFile(roomId);
       final json = await file.readAsString();
       final jsonList = jsonDecode(json) as List<dynamic>;
-      final messages = jsonList.map((jsonMessage) => Message.fromMap(jsonMessage as Map<String, dynamic>)).toList();
+      final messages = jsonList
+          .map((jsonMessage) =>
+              Message.fromMap(jsonMessage as Map<String, dynamic>))
+          .toList();
       return messages;
     } catch (e) {
       // Handle the scenario where the app is not connected to the internet
@@ -28,7 +31,8 @@ class MessageSerializer {
 
   static Future<File> _localFile(int roomId) async {
     final currentDirectory = Directory.current;
-    final documentsDirectory = Directory('${currentDirectory.path}/lib/common/documents');
+    final documentsDirectory =
+        Directory('${currentDirectory.path}/lib/common/documents');
     final file = File('${documentsDirectory.path}/messages_$roomId.json');
     if (!await file.exists()) {
       await file.create();
@@ -40,7 +44,10 @@ class MessageSerializer {
     final file = await _localFile(roomId);
     final json = await file.readAsString();
     final jsonList = jsonDecode(json) as List<dynamic>;
-    final messages = jsonList.map((jsonMessage) => Message.fromMap(jsonMessage as Map<String, dynamic>)).toList();
+    final messages = jsonList
+        .map((jsonMessage) =>
+            Message.fromMap(jsonMessage as Map<String, dynamic>))
+        .toList();
     return messages;
   }
 }

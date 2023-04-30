@@ -4,10 +4,11 @@ import 'package:armyshop_mobile_frontend/common/armyshop_colors.dart';
 import 'package:armyshop_mobile_frontend/common/global_variables.dart';
 import 'package:armyshop_mobile_frontend/components/my_button.dart';
 import 'package:armyshop_mobile_frontend/screens/photo_screen.dart';
-import 'package:armyshop_mobile_frontend/common/request_handler.dart';
+import 'package:armyshop_mobile_frontend/common/server_handling/request_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../common/dialogs.dart';
 import '../../common/notifications/notification_service.dart';
 import '../../common/notifications/notifications.dart';
 import '../../components/textfield.dart';
@@ -61,7 +62,7 @@ class RegisterScreenState extends State<RegisterScreen> {
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('token', response['token']);
-      
+
       // send registration notification
       NotificationService().scheduleNotification(
           notification: Notifications.getRandomNotification(
@@ -76,6 +77,10 @@ class RegisterScreenState extends State<RegisterScreen> {
     if (response['status'] == 422 || response['status'] == 409) {
       final errors = response['errors'];
       errorText = errors.entries.first.value[0];
+    } else if (response['error'].isNotEmpty) {
+      // ignore: use_build_context_synchronously
+      Dialogs.showPopup(
+          context, 'You are offline', 'Please check your connection');
     }
 
     setState(() {});

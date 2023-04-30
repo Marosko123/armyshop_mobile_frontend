@@ -8,7 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../common/global_variables.dart';
 import '../components/my_button.dart';
-import '../common/request_handler.dart';
+import '../common/server_handling/request_handler.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
