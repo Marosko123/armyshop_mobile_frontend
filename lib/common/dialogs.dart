@@ -10,22 +10,25 @@ class Dialogs {
       context: context,
       builder: (BuildContext context) {
         // return the Dialog widget
-        return SizedBox(
-          width: 300.0,
-          height: 300.0,
-          child: AlertDialog(
-            content: SizedBox(
-              height: 200.0,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(title, style: const TextStyle(fontSize: 18.0)),
-                  const SizedBox(height: 20.0),
-                  Text(
-                    content,
-                    style: const TextStyle(fontSize: 16.0),
-                  ),
-                ],
+        return GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          child: SizedBox(
+            width: 300.0,
+            height: 300.0,
+            child: AlertDialog(
+              content: SizedBox(
+                height: 200.0,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(title, style: const TextStyle(fontSize: 18.0)),
+                    const SizedBox(height: 20.0),
+                    Text(
+                      content,
+                      style: const TextStyle(fontSize: 16.0),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -49,10 +52,13 @@ class Dialogs {
                 Notifications.purchaseNotifications),
             scheduledDate: DateTime.now().add(const Duration(seconds: 10)));
 
-        // return the Dialog widget
-        return const AlertDialog(
-          title: Text('Thank you for your order!'),
-          content: Text('You will be redirected in 2 seconds'),
+        // return the Dialog widget wrapped with GestureDetector
+        return GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          child: const AlertDialog(
+            title: Text('Thank you for your order!'),
+            content: Text('You will be redirected in 2 seconds'),
+          ),
         );
       },
     );
