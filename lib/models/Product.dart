@@ -7,6 +7,16 @@ class Product {
   String? subcategoryId;
   bool? licenseNeeded;
 
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'name': name,
+      'description': description,
+      'price': price,
+      'subcategory_id': subcategoryId,
+    };
+  }
+
   Product.fromMap(Map<dynamic, dynamic> map) {
     id = map['id'];
     name = map['name'];

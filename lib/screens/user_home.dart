@@ -85,7 +85,7 @@ class UserHomeState extends State<UserHome> {
               );
             },
           ),
-          const SizedBox(height: 10.0),
+          const SizedBox(height: 30.0),
         ],
       ),
     );

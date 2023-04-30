@@ -35,7 +35,7 @@ class _NumericStepButtonState extends State<NumericStepButton> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 16,
+      height: 30,
       width: 111,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -49,7 +49,7 @@ class _NumericStepButtonState extends State<NumericStepButton> {
             padding: const EdgeInsets.symmetric(
               horizontal: 0,
             ),
-            iconSize: 12.0,
+            iconSize: 18.0,
             color: Theme.of(context).primaryColor,
             onPressed: () {
               setState(() {
@@ -77,7 +77,7 @@ class _NumericStepButtonState extends State<NumericStepButton> {
             padding: const EdgeInsets.symmetric(
               horizontal: 0,
             ),
-            iconSize: 12.0,
+            iconSize: 18.0,
             color: Theme.of(context).primaryColor,
             onPressed: () {
               setState(() {

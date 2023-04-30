@@ -19,7 +19,7 @@ class UserLikedList extends StatefulWidget {
 
 class UserLikedListState extends State<UserLikedList> {
   List<int> likedList = [];
-  int userId = 1;
+  int userId = GlobalVariables.user.id;
   bool isLoggedIn = GlobalVariables.isUserLoggedIn;
   List<Product> productsToDisplay = [];
 
@@ -94,6 +94,18 @@ class UserLikedListState extends State<UserLikedList> {
 
     if (GlobalVariables.isConnectedToServer) {
       getLikedProducts();
+    }
+  }
+
+  ImageProvider<Object> _getImageProvider(dynamic image) {
+    if (image is String &&
+        GlobalVariables.isConnectedToServer &&
+        image.isNotEmpty) {
+      return NetworkImage(image);
+    } else if (image is AssetImage) {
+      return image;
+    } else {
+      return const AssetImage('assets/images/army-bg1.jpg');
     }
   }
 
@@ -247,7 +259,7 @@ class UserLikedListState extends State<UserLikedList> {
     final formattedPrice = Currencies.format(convertedPrice);
 
     if (deviceWidth < 600) {
-      imgHeight = MediaQuery.of(context).size.height * 0.14;
+      imgHeight = MediaQuery.of(context).size.height * 0.12;
     } else if (deviceWidth < 800) {
       imgHeight = MediaQuery.of(context).size.height * 0.26;
     } else if (deviceWidth < 1000) {
@@ -257,7 +269,7 @@ class UserLikedListState extends State<UserLikedList> {
     }
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 5.0, left: 5.0, right: 5.0),
+      padding: const EdgeInsets.only(bottom: 5.0),
       child: InkWell(
         onTap: () {},
         child: Container(
@@ -276,7 +288,7 @@ class UserLikedListState extends State<UserLikedList> {
                 : Colors.white,
           ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               GestureDetector(
                 onTap: () {
@@ -298,13 +310,13 @@ class UserLikedListState extends State<UserLikedList> {
                   height: imgHeight,
                   width: double.infinity,
                   child: Hero(
-                    tag: image,
+                    tag: 'image-$id',
                     child: Container(
                       height: double.infinity,
                       width: double.infinity,
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                          image: NetworkImage(image),
+                          image: _getImageProvider(image),
                           fit: BoxFit.cover,
                         ),
                         borderRadius: BorderRadius.circular(12.0),
@@ -314,7 +326,7 @@ class UserLikedListState extends State<UserLikedList> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 15.0, right: 25.0),
+                padding: const EdgeInsets.only(left: 15.0, right: 15.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -348,7 +360,7 @@ class UserLikedListState extends State<UserLikedList> {
                     Column(
                       children: [
                         Container(
-                          padding: const EdgeInsets.only(bottom: 15.0),
+                          padding: const EdgeInsets.only(bottom: 10.0),
                           child: IconButton(
                             onPressed: () {
                               onLiked(!isLiked);
@@ -356,7 +368,7 @@ class UserLikedListState extends State<UserLikedList> {
                             icon: Icon(
                               isLiked ? Icons.favorite : Icons.favorite_border,
                               color: Colors.red,
-                              size: 40,
+                              size: 35,
                               // color: isLiked ? Colors.red : Colors.grey,
                             ),
                           ),
@@ -369,25 +381,22 @@ class UserLikedListState extends State<UserLikedList> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Container(
-                    padding: const EdgeInsets.only(bottom: 4.0),
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.shopping_basket,
-                        color: Theme.of(context).primaryColor,
-                        size: 30,
-                      ),
-                      onPressed: () {
-                        // add to cart
-                        onAddToBasket();
-                        // show popup
-                        showPopup(context);
-                      },
+                  IconButton(
+                    icon: Icon(
+                      Icons.shopping_basket,
+                      color: Theme.of(context).primaryColor,
+                      size: 25,
                     ),
+                    onPressed: () {
+                      // add to cart
+                      onAddToBasket();
+                      // show popup
+                      showPopup(context);
+                    },
                   ),
                   Container(
-                    height: 25.0,
-                    width: 70.0,
+                    height: 20.0,
+                    width: 65.0,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15.0),
                       color: Colors.grey.withOpacity(0.2),
@@ -403,7 +412,8 @@ class UserLikedListState extends State<UserLikedList> {
                           backgroundColor: ArmyshopColors.buttonColor,
                           foregroundColor: ArmyshopColors.buttonTextColor,
                         ),
-                        child: const Text('Order'),
+                        child:
+                            const Text('Order', style: TextStyle(fontSize: 12)),
                       ),
                     ),
                   ),

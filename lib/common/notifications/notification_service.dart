@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:armyshop_mobile_frontend/common/notifications/notifications.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -10,6 +11,9 @@ class NotificationService {
       FlutterLocalNotificationsPlugin();
 
   Future<void> initNotification() async {
+    if (Platform.isWindows) {
+      return;
+    }
     tz.initializeTimeZones();
     tz.setLocalLocation(tz.getLocation('Europe/Warsaw'));
 
@@ -48,6 +52,9 @@ class NotificationService {
   }
 
   Future showNotification({required Notification notification}) async {
+    if (Platform.isWindows) {
+      return;
+    }
     return notificationsPlugin.show(
         0, notification.title, notification.body, await notificationDetails());
   }

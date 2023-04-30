@@ -41,7 +41,24 @@ class User {
       'licensePicture': licensePicture,
       'isLicenseValid': isLicenseValid,
       'telephone': telephone,
+      'chatRooms': chatRooms.map((room) => room.toMap()).toList(),
     };
+  }
+
+  factory User.fromMap(Map<String, dynamic> map) {
+    return User(
+      id: map['id'],
+      email: map['email'],
+      firstName: map['firstName'],
+      lastName: map['lastName'],
+      age: map['age'],
+      address: map['address'],
+      licensePicture: map['licensePicture'],
+      isLicenseValid: map['isLicenseValid'],
+      telephone: map['telephone'],
+      chatRooms: List<ChatRoom>.from(
+          map['chatRooms']?.map((x) => ChatRoom.fromMap(x))),
+    );
   }
 
   Future<dynamic> updateValue(String key, dynamic value) async {

@@ -9,6 +9,7 @@ import 'package:armyshop_mobile_frontend/screens/chat.dart';
 import 'package:flutter/material.dart';
 
 import '../common/armyshop_colors.dart';
+import '../common/users_serializer.dart';
 import '../models/user.dart';
 
 class ChatRooms extends StatefulWidget {
@@ -95,7 +96,11 @@ class ChatRoomsState extends State<ChatRooms> {
   }
 
   Future<void> showDialogAlert(BuildContext context) async {
-    users = await RequestHandler.getUsers();
+    if(GlobalVariables.isConnectedToServer) {
+      users = await RequestHandler.getUsers();
+    } else {
+      users = await UsersSerializer.deserialize();
+    }
 
     if (users.isEmpty) {
       return;
@@ -233,7 +238,9 @@ class ChatRoomsState extends State<ChatRooms> {
                     alignment: Alignment.centerRight,
                     child: GestureDetector(
                       onTap: () {
-                        createChatRoom(context);
+                        if(GlobalVariables.isConnectedToServer) {
+                          createChatRoom(context);
+                        }
                       },
                       child: Icon(
                         Icons.add,

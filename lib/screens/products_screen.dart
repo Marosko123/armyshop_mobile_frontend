@@ -20,7 +20,7 @@ class ProductsScreen extends StatefulWidget {
 class ProductsScreenState extends State<ProductsScreen> {
   // bool isLiked = false;
   List<int> likedList = [];
-  int userId = 1;
+  int userId = GlobalVariables.user.id;
   bool isLoggedIn = GlobalVariables.isUserLoggedIn;
 
   // void _toggleLike() {
@@ -33,17 +33,18 @@ class ProductsScreenState extends State<ProductsScreen> {
     RequestHandler.getLikedProducts(1).then((value) {
       setState(() {
         likedList = value;
-        print(value);
       });
     });
   }
 
   // add to liked products
   void addToLikedProducts(int productId) {
-    if (!isLoggedIn) {
-      if (!likedList.contains(productId)) {
-        likedList.add(productId);
-      }
+    if (!isLoggedIn || !GlobalVariables.isConnectedToServer) {
+      setState(() {
+        if (!likedList.contains(productId)) {
+          likedList.add(productId);
+        }
+      });
       return;
     }
     RequestHandler.addToLikedProducts(userId, productId).then((value) {
@@ -51,7 +52,6 @@ class ProductsScreenState extends State<ProductsScreen> {
         if (value) {
           if (!likedList.contains(productId)) {
             likedList.add(productId);
-            print("product added to liked list");
           }
         }
       });
@@ -60,8 +60,13 @@ class ProductsScreenState extends State<ProductsScreen> {
 
   // remove from liked products
   void removeFromLikedProducts(int productId) {
-    if (!isLoggedIn) {
-      likedList.remove(productId);
+    if (!isLoggedIn || !GlobalVariables.isConnectedToServer) {
+      setState(() {
+        if (likedList.contains(productId)) {
+          likedList.remove(productId);
+          print("product removed from liked list");
+        }
+      });
       return;
     }
     RequestHandler.removeFromLikedProducts(userId, productId).then((value) {
@@ -77,19 +82,39 @@ class ProductsScreenState extends State<ProductsScreen> {
   }
 
   void addToBasket(int productId) {
+    if (!GlobalVariables.isConnectedToServer) {
+      showPopup(context, 'You are offline', 'Please check your connection');
+      return;
+    }
     if (!isLoggedIn) {
+      showPopup(
+          context, 'You are not logged in', 'Log in to add products to basket');
       return;
     }
     RequestHandler.addToBasket(userId, productId, 1).then((value) {
       setState(() {
         if (value) {
-          print("product added to basket");
+          // show popup
+          showPopup(
+              context, 'Product added to basket!', 'Go to basket to buy it!');
         }
       });
     });
   }
 
-  void showPopup(BuildContext context) {
+  ImageProvider<Object> _getImageProvider(dynamic image) {
+    if (image is String &&
+        GlobalVariables.isConnectedToServer &&
+        image.isNotEmpty) {
+      return NetworkImage(image);
+    } else if (image is AssetImage) {
+      return image;
+    } else {
+      return const AssetImage('assets/images/army-bg1.jpg');
+    }
+  }
+
+  void showPopup(BuildContext context, String title, String content) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -102,13 +127,12 @@ class ProductsScreenState extends State<ProductsScreen> {
               height: 200.0,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Text('Product added to basket!',
-                      style: TextStyle(fontSize: 18.0)),
-                  SizedBox(height: 20.0),
+                children: [
+                  Text(title, style: const TextStyle(fontSize: 18.0)),
+                  const SizedBox(height: 20.0),
                   Text(
-                    'Go to basket to buy it!',
-                    style: TextStyle(fontSize: 16.0),
+                    content,
+                    style: const TextStyle(fontSize: 16.0),
                   ),
                 ],
               ),
@@ -266,7 +290,7 @@ class ProductsScreenState extends State<ProductsScreen> {
                     primary: false,
                     crossAxisSpacing: 10.0,
                     mainAxisSpacing: 10.0,
-                    childAspectRatio: 0.8,
+                    childAspectRatio: 0.7,
                     children: List.generate(
                       productsToDisplay.length,
                       (index) {
@@ -331,7 +355,7 @@ class ProductsScreenState extends State<ProductsScreen> {
     final formattedPrice = Currencies.format(convertedPrice);
 
     if (deviceWidth < 600) {
-      imgHeight = MediaQuery.of(context).size.height * 0.14;
+      imgHeight = MediaQuery.of(context).size.height * 0.16;
     } else if (deviceWidth < 800) {
       imgHeight = MediaQuery.of(context).size.height * 0.26;
     } else if (deviceWidth < 1000) {
@@ -341,7 +365,7 @@ class ProductsScreenState extends State<ProductsScreen> {
     }
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 5.0, left: 5.0, right: 5.0),
+      padding: const EdgeInsets.only(bottom: 5.0, left: 2.0, right: 2.0),
       child: InkWell(
         onTap: () {},
         child: Container(
@@ -360,7 +384,7 @@ class ProductsScreenState extends State<ProductsScreen> {
                 : Colors.white,
           ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               GestureDetector(
                 onTap: () {
@@ -371,9 +395,11 @@ class ProductsScreenState extends State<ProductsScreen> {
                         result is Map<String, dynamic> &&
                         result['refresh'] == true) {
                       setState(() {
-                        // refresh liked products
-                        likedList = [];
-                        getLikedProducts();
+                        if (GlobalVariables.isConnectedToServer) {
+                          // refresh liked products
+                          likedList = [];
+                          getLikedProducts();
+                        }
                       });
                     }
                   });
@@ -382,13 +408,13 @@ class ProductsScreenState extends State<ProductsScreen> {
                   height: imgHeight,
                   width: double.infinity,
                   child: Hero(
-                    tag: image,
+                    tag: 'image-$id',
                     child: Container(
                       height: double.infinity,
                       width: double.infinity,
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                          image: NetworkImage(image),
+                          image: _getImageProvider(image),
                           fit: BoxFit.cover,
                         ),
                         borderRadius: BorderRadius.circular(12.0),
@@ -398,7 +424,7 @@ class ProductsScreenState extends State<ProductsScreen> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 15.0, right: 25.0),
+                padding: const EdgeInsets.only(left: 15.0, right: 15.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -431,7 +457,7 @@ class ProductsScreenState extends State<ProductsScreen> {
                     Column(
                       children: [
                         Container(
-                          padding: const EdgeInsets.only(bottom: 15.0),
+                          padding: const EdgeInsets.only(bottom: 10.0),
                           child: IconButton(
                             onPressed: () {
                               onLiked(!isLiked);
@@ -439,7 +465,7 @@ class ProductsScreenState extends State<ProductsScreen> {
                             icon: Icon(
                               isLiked ? Icons.favorite : Icons.favorite_border,
                               color: Colors.red,
-                              size: 40,
+                              size: 35,
                               // color: isLiked ? Colors.red : Colors.grey,
                             ),
                           ),
@@ -453,32 +479,40 @@ class ProductsScreenState extends State<ProductsScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Container(
-                    padding: const EdgeInsets.only(bottom: 4.0),
+                    padding: const EdgeInsets.only(bottom: 5.0),
                     child: IconButton(
                       icon: Icon(
                         Icons.shopping_basket,
                         color: Theme.of(context).primaryColor,
-                        size: 30,
+                        size: 35,
                       ),
                       onPressed: () {
                         // add to cart
                         onAddToBasket();
-                        // show popup
-                        showPopup(context);
                       },
                     ),
                   ),
                   Container(
-                    height: 25.0,
+                    height: 30.0,
                     width: 70.0,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15.0),
+                      borderRadius: BorderRadius.circular(12.0),
                       color: Colors.grey.withOpacity(0.2),
                     ),
                     child: Center(
                       child: ElevatedButton(
                         onPressed: () {
-                          // Navigate to the product detail page
+                          if (!GlobalVariables.isConnectedToServer) {
+                            showPopup(context, 'You are offline',
+                                'Please check your connection');
+                            return;
+                          }
+                          if (!isLoggedIn) {
+                            showPopup(context, 'You are not logged in',
+                                'Log in to add products to basket');
+                            return;
+                          }
+                          // Navigate to the payment page
                           Navigator.of(context)
                               .pushNamed(PaymentScreen.routeName);
                         },
@@ -486,7 +520,8 @@ class ProductsScreenState extends State<ProductsScreen> {
                           backgroundColor: ArmyshopColors.buttonColor,
                           foregroundColor: ArmyshopColors.buttonTextColor,
                         ),
-                        child: const Text('Order'),
+                        child:
+                            const Text('Order', style: TextStyle(fontSize: 12)),
                       ),
                     ),
                   ),

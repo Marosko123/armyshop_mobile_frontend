@@ -5,6 +5,7 @@ import 'package:armyshop_mobile_frontend/screens/user_shopping_cart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../common/currencies.dart';
 import '../common/global_variables.dart';
 import '../models/Product.dart';
 
@@ -20,12 +21,14 @@ class ProductPage extends StatefulWidget {
 class ProductPageState extends State<ProductPage> {
   // get product from database
   // Product product = Product();
-  int userId = 1;
+  int userId = GlobalVariables.user.id;
   int productId = 1;
   bool isLoggedIn = GlobalVariables.isUserLoggedIn;
   String name = 'AK 47';
   int amount = 1;
   double price = 3.99;
+  String formattedPrice = '';
+  String formattedTotal = '';
   String image = 'assets/images/army-bg1.jpg';
   String description = 'lorem ipsum dolor sit amet';
   bool isLiked = false;
@@ -38,15 +41,30 @@ class ProductPageState extends State<ProductPage> {
     _controller.text = amount.toString();
   }
 
+  Future<List<int>> getLiked(int userId) async {
+    return await RequestHandler.getLikedProducts(userId);
+  }
+
   @override
-  void didChangeDependencies() {
+  void didChangeDependencies() async {
     super.didChangeDependencies();
 
     // get the product info
     final arguments =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-    final id = arguments['id'];
-    isLiked = arguments['liked'] as bool;
+    int id = 1;
+    if (arguments.containsKey('id')) {
+      id = arguments['id'];
+    }
+    if (arguments.containsKey('liked')) {
+      isLiked = arguments['liked'] as bool;
+    } else if (GlobalVariables.isConnectedToServer) {
+      // get liked products of user from db
+      //List<int> likedProducts = await getLiked(GlobalVariables.user.id);
+      // check if the product is liked
+      //likedProducts.contains(id) ? isLiked = true : isLiked = false;
+      isLiked = false;
+    }
 
     Product product =
         GlobalVariables.products.firstWhere((element) => element.id == id);
@@ -55,10 +73,18 @@ class ProductPageState extends State<ProductPage> {
     name = product.name!;
     amount = 1;
     price = product.price!;
-    image = product.imageUrl!;
     description = product.description!;
     totalPrice = product.price!;
     productId = product.id!;
+
+    if (GlobalVariables.isConnectedToServer) {
+      image = product.imageUrl!;
+    }
+
+    // format the price
+    price = Currencies.convert(price);
+    formattedPrice = Currencies.format(price);
+    formattedTotal = Currencies.format(price);
   }
 
   @override
@@ -70,11 +96,6 @@ class ProductPageState extends State<ProductPage> {
   void _toggleLike() {
     setState(() {
       isLiked = !isLiked;
-      if (isLiked) {
-        // Add the product to the liked list database
-      } else {
-        // Remove the product from the liked list database
-      }
     });
   }
 
@@ -100,6 +121,7 @@ class ProductPageState extends State<ProductPage> {
         amount++;
         _controller.text = amount.toString();
         totalPrice = amount * price;
+        formattedTotal = Currencies.format(totalPrice);
       }
     });
   }
@@ -110,16 +132,40 @@ class ProductPageState extends State<ProductPage> {
         amount--;
         _controller.text = amount.toString();
         totalPrice = amount * price;
+        formattedTotal = Currencies.format(totalPrice);
       }
     });
   }
 
   void onAddToBasket(int productId, int amount) {
+    if (!GlobalVariables.isConnectedToServer) {
+      showPopup(context, 'You are offline', 'Please check your connection');
+      return;
+    }
+    if (!isLoggedIn) {
+      showPopup(
+          context, 'You are not logged in', 'Log in to add products to basket');
+      return;
+    }
     // add the product to the shopping cart database
     RequestHandler.addToBasket(userId, productId, amount);
+    // show popup
+    showPopup(context, 'Product added to basket!', 'Go to basket to buy it!');
   }
 
-  void showPopup(BuildContext context) {
+  ImageProvider<Object> _getImageProvider(dynamic image) {
+    if (image is String &&
+        GlobalVariables.isConnectedToServer &&
+        image.isNotEmpty) {
+      return NetworkImage(image);
+    } else if (image is AssetImage) {
+      return image;
+    } else {
+      return const AssetImage('assets/images/army-bg1.jpg');
+    }
+  }
+
+  void showPopup(BuildContext context, String title, String content) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -132,13 +178,12 @@ class ProductPageState extends State<ProductPage> {
               height: 200.0,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Text('Product added to basket!',
-                      style: TextStyle(fontSize: 18.0)),
-                  SizedBox(height: 20.0),
+                children: [
+                  Text(title, style: const TextStyle(fontSize: 18.0)),
+                  const SizedBox(height: 20.0),
                   Text(
-                    'Go to basket to buy it!',
-                    style: TextStyle(fontSize: 16.0),
+                    content,
+                    style: const TextStyle(fontSize: 16.0),
                   ),
                 ],
               ),
@@ -169,15 +214,15 @@ class ProductPageState extends State<ProductPage> {
               Row(
                 children: [
                   Align(
-      alignment: Alignment.centerLeft,
-      child: IconButton(
-        icon: Icon(Icons.arrow_back),
-        color: ArmyshopColors.textColor,
-        onPressed: () {
-          Navigator.pop(context, {'refresh': true});
-        },
-      ),
-    ),
+                    alignment: Alignment.centerLeft,
+                    child: IconButton(
+                      icon: const Icon(Icons.arrow_back),
+                      color: ArmyshopColors.textColor,
+                      onPressed: () {
+                        Navigator.pop(context, {'refresh': true});
+                      },
+                    ),
+                  ),
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.only(right: 40.0),
@@ -198,7 +243,7 @@ class ProductPageState extends State<ProductPage> {
               ),
 
               SizedBox(
-                height: size.height * 1.5,
+                height: size.height * 1.3,
                 child: Stack(
                   children: <Widget>[
                     Positioned(
@@ -214,8 +259,10 @@ class ProductPageState extends State<ProductPage> {
                         child: SizedBox(
                           height: size.height * 0.33,
                           width: size.width,
-                          child: Image.network(
-                            image,
+                          child: FadeInImage(
+                            placeholder:
+                                const AssetImage('assets/images/army-bg1.jpg'),
+                            image: _getImageProvider(image),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -261,10 +308,10 @@ class ProductPageState extends State<ProductPage> {
                                     onPressed: () {
                                       _toggleLike();
                                       if (isLiked) {
-                                        print('add to liked products');
+                                        //print('add to liked products');
                                         addToLikedProducts(productId);
                                       } else {
-                                        print('remove from liked products');
+                                        //print('remove from liked products');
                                         removeFromLikedProducts(productId);
                                       }
                                     },
@@ -298,7 +345,7 @@ class ProductPageState extends State<ProductPage> {
                                         CrossAxisAlignment.center,
                                     children: [
                                       Text(
-                                        'Price for 1: \$$price',
+                                        'Price for 1: $formattedPrice',
                                         style: TextStyle(
                                           fontSize: 16,
                                           color: ArmyshopColors.textColor,
@@ -328,7 +375,7 @@ class ProductPageState extends State<ProductPage> {
                                               ),
                                             ),
                                             SizedBox(
-                                              width: 30,
+                                              width: 25,
                                               child: TextFormField(
                                                 controller: _controller,
                                                 style: const TextStyle(
@@ -348,11 +395,17 @@ class ProductPageState extends State<ProductPage> {
                                                       amount = int.parse(value);
                                                       totalPrice =
                                                           amount * price;
+                                                      formattedTotal =
+                                                          Currencies.format(
+                                                              totalPrice);
                                                     });
                                                   } catch (e) {
                                                     setState(() {
                                                       amount = 1;
                                                       totalPrice = price;
+                                                      formattedTotal =
+                                                          Currencies.format(
+                                                              totalPrice);
                                                     });
                                                   }
                                                 },
@@ -385,7 +438,7 @@ class ProductPageState extends State<ProductPage> {
                                             ),
                                           ),
                                           Text(
-                                            '${totalPrice.toStringAsFixed(2)} \$',
+                                            formattedTotal,
                                             style: TextStyle(
                                               fontSize: 22,
                                               color: ArmyshopColors.textColor,
@@ -397,7 +450,7 @@ class ProductPageState extends State<ProductPage> {
                                       const SizedBox(height: 10),
                                       Row(
                                         children: [
-                                          const SizedBox(width: 50),
+                                          const SizedBox(width: 30),
                                           Container(
                                             padding: const EdgeInsets.only(
                                                 bottom: 10.0),
@@ -414,15 +467,28 @@ class ProductPageState extends State<ProductPage> {
                                                 // add to cart
                                                 onAddToBasket(
                                                     productId, amount);
-                                                // show popup
-                                                showPopup(context);
                                               },
                                             ),
                                           ),
-                                          const SizedBox(width: 30),
+                                          const SizedBox(width: 20),
                                           Expanded(
                                             child: ElevatedButton(
                                               onPressed: () {
+                                                if (!GlobalVariables
+                                                    .isConnectedToServer) {
+                                                  showPopup(
+                                                      context,
+                                                      'You are offline',
+                                                      'Please check your connection');
+                                                  return;
+                                                }
+                                                if (!isLoggedIn) {
+                                                  showPopup(
+                                                      context,
+                                                      'You are not logged in',
+                                                      'Log in to add products to basket');
+                                                  return;
+                                                }
                                                 // Navigate to the product detail page
                                                 Navigator.of(context).pushNamed(
                                                     PaymentScreen.routeName);
@@ -442,7 +508,7 @@ class ProductPageState extends State<ProductPage> {
                                               child: const Text('Order Now'),
                                             ),
                                           ),
-                                          const SizedBox(width: 20),
+                                          const SizedBox(width: 30),
                                         ],
                                       ),
                                     ],
