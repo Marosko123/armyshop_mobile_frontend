@@ -11,6 +11,7 @@ class GlobalVariables {
   static List<User> users = [];
   static bool isConnectedToServer = false;
   static bool isUserLoggedIn = true;
+  static String token = '';
   static User user = User(
     id: 0,
     email: '',

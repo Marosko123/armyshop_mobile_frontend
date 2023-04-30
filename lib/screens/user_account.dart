@@ -7,6 +7,7 @@ import 'package:armyshop_mobile_frontend/components/my_textfield.dart';
 import 'package:armyshop_mobile_frontend/screens/chat_rooms.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../common/currencies.dart';
 import '../common/global_variables.dart';
@@ -490,6 +491,10 @@ class UserAccountState extends State<UserAccount> {
                       TextButton(
                         onPressed: () {
                           Navigator.of(context).pop();
+                          GlobalVariables.token = '';
+                          SharedPreferences.getInstance().then((prefs) {
+                            prefs.setString('token', '');
+                          });
                           GlobalVariables.user = User(
                             id: 0,
                             email: '',

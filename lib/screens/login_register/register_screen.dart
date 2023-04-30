@@ -6,6 +6,7 @@ import 'package:armyshop_mobile_frontend/components/my_button.dart';
 import 'package:armyshop_mobile_frontend/screens/photo_screen.dart';
 import 'package:armyshop_mobile_frontend/common/request_handler.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../common/notifications/notification_service.dart';
 import '../../common/notifications/notifications.dart';
@@ -53,9 +54,14 @@ class RegisterScreenState extends State<RegisterScreen> {
 
     if (response['status'] == 200 || response['status'] == 'success') {
       user = response['user'];
+      // Set the token
+      GlobalVariables.token = response['token'];
 
       final UserAuthenticator userAuthenticator = UserAuthenticator();
 
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('token', response['token']);
+      
       // send registration notification
       NotificationService().scheduleNotification(
           notification: Notifications.getRandomNotification(

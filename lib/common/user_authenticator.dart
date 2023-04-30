@@ -35,7 +35,7 @@ class UserAuthenticator {
       telephone: user['telephone'] ?? '',
       chatRooms: chatRooms,
     );
-
+    
     // Navigate to the PrimaryPage and remove all previous routes from the stack
     Navigator.pushAndRemoveUntil(
       context,

@@ -2,13 +2,10 @@ import 'package:armyshop_mobile_frontend/common/armyshop_colors.dart';
 import 'package:armyshop_mobile_frontend/common/global_variables.dart';
 import 'package:armyshop_mobile_frontend/screens/payment_screeen.dart';
 import 'package:flutter/material.dart';
-import '../common/armyshop_colors.dart';
-import 'package:provider/provider.dart';
 
 import '../common/request_handler.dart';
 import '../components/numeric_step_button.dart';
 import '../models/Product.dart';
-import '../models/cart_model.dart';
 import '../models/product_with_quantity.dart';
 
 class UserShoppingCart extends StatefulWidget {
@@ -26,6 +23,7 @@ class UserShoppingCartState extends State<UserShoppingCart> {
   List<ProductWithQuantity> productsWithQuantity = [];
   List cartItems = [];
   int userId = GlobalVariables.user.id;
+  String token = GlobalVariables.token;
 
   @override
   void initState() {
