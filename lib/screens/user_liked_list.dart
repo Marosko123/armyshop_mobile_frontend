@@ -352,18 +352,19 @@ class UserLikedListState extends State<UserLikedList> {
                   Container(
                     padding: const EdgeInsets.only(bottom: 10.0),
                     child: IconButton(
-                    icon: Icon(
-                      Icons.shopping_basket,
-                      color: Theme.of(context).primaryColor,
-                      size: 25,
+                      icon: Icon(
+                        Icons.shopping_basket,
+                        color: Theme.of(context).primaryColor,
+                        size: 25,
+                      ),
+                      onPressed: () {
+                        // add to cart
+                        onAddToBasket();
+                        // show popup
+                        Dialogs.showPopup(context, 'Product added to basket!',
+                            'Go to basket to buy it!');
+                      },
                     ),
-                    onPressed: () {
-                      // add to cart
-                      onAddToBasket();
-                      // show popup
-                      Dialogs.showPopup(context, 'Product added to basket!',
-                          'Go to basket to buy it!');
-                    },
                   ),
                   Container(
                     height: 30.0,
