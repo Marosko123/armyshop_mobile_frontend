@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:armyshop_mobile_frontend/common/server_requester.dart';
 import 'package:armyshop_mobile_frontend/models/chat_room.dart';
 

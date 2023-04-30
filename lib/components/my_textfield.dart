@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 
 import '../common/armyshop_colors.dart';
 import '../common/global_variables.dart';
@@ -11,6 +10,7 @@ class MyTextfield extends StatefulWidget {
   final String? value;
   final bool? isNumeric;
   final bool? isAddress;
+  final bool? isImage;
   final Function saveCallback;
 
   const MyTextfield(
@@ -20,6 +20,7 @@ class MyTextfield extends StatefulWidget {
       required this.value,
       required this.saveCallback,
       this.isNumeric = false,
+      this.isImage = false,
       this.isAddress = false})
       : super(key: key);
 
@@ -37,9 +38,18 @@ class _MyTextfieldState extends State<MyTextfield> {
   late double long = 0;
 
   Future<void> updateUser() async {
-    if (tmpVal.isEmpty && lat == 0 && long == 0) return;
+    if (tmpVal.isEmpty &&
+        lat == 0 &&
+        long == 0 &&
+        GlobalVariables.tmpData['picture'].isEmpty) return;
 
-    tmpVal = lat != 0 ? '$lat,$long' : tmpVal;
+    tmpVal = lat != 0
+        ? '$lat,$long'
+        : GlobalVariables.tmpData['picture'].isEmpty
+            ? tmpVal
+            : GlobalVariables.tmpData['picture'];
+
+    GlobalVariables.tmpData['picture'] = '';
 
     dynamic response = await GlobalVariables.user.updateValue(
       widget.label,
@@ -53,7 +63,11 @@ class _MyTextfieldState extends State<MyTextfield> {
       widget.saveCallback();
       error = '';
     } else {
-      error = response['errors'].entries.first.value[0];
+      try {
+        error = response['errors'].entries.first.value[0];
+      } catch (e) {
+        error = response['error'];
+      }
       // ignore: use_build_context_synchronously
       showDialogAlert(context);
     }
@@ -93,6 +107,7 @@ class _MyTextfieldState extends State<MyTextfield> {
             value: widget.value,
             isNumeric: widget.isNumeric,
             isAddress: widget.isAddress,
+            isImage: widget.isImage,
             returnCoordinatesCallback: returnCoordinatesCallback,
             returnNewValueCallback: returnNewValueCallback,
           ),
@@ -101,7 +116,9 @@ class _MyTextfieldState extends State<MyTextfield> {
               child: const Text('Cancel'),
               onPressed: () {
                 error = '';
+                GlobalVariables.tmpData['picture'] = '';
                 Navigator.of(context).pop();
+                setState(() {});
               },
             ),
             TextButton(

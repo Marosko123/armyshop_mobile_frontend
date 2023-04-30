@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
@@ -48,10 +50,8 @@ class ServerRequester {
       GlobalVariables.isConnectedToServer = true;
       return json.decode(response.body);
     } catch (e) {
-      // ignore: avoid_print
       print(e);
       GlobalVariables.isConnectedToServer = false;
-      // throw e;
       return {'error': 'Server is not responding'};
     }
   }

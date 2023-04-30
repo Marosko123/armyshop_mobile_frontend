@@ -1,14 +1,16 @@
 // ignore_for_file: avoid_print
 
 import 'dart:io';
+import 'dart:convert';
 
 import 'package:armyshop_mobile_frontend/screens/login_register/login_register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
+
+import '../common/global_variables.dart';
 
 class PhotoScreen extends StatefulWidget {
-  const PhotoScreen({super.key});
+  const PhotoScreen({super.key, String? parent});
 
   @override
   PhotoScreenState createState() => PhotoScreenState();
@@ -26,12 +28,20 @@ class PhotoScreenState extends State<PhotoScreen> {
   }
 
   void submitPhoto() async {
-    final directory = await getApplicationDocumentsDirectory();
-    final imagePath = '${directory.path}/military_passport.png';
+    List<int> imageBytes = await imageFile!.readAsBytes();
+    String militaryPassport = base64Encode(imageBytes);
 
-    await imageFile!.copy(imagePath);
+    if (GlobalVariables.tmpData['previousScreen'] == 'MyProfileScreen') {
+      GlobalVariables.tmpData['previousScreen'] = '';
+      GlobalVariables.tmpData['picture'] = militaryPassport;
 
-    // TODO: after photo publishing set the military_passport_checkbox to true
+      // ignore: use_build_context_synchronously
+      Navigator.pop(context, militaryPassport);
+      return;
+    }
+
+    GlobalVariables.user.licensePicture = militaryPassport;
+
     // ignore: use_build_context_synchronously
     Navigator.push(
       context,

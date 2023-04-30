@@ -152,6 +152,9 @@ class UserAccountState extends State<UserAccount> {
                 MyButton(
                   text: 'Log In',
                   onTap: () {
+                    GlobalVariables.tmpData = {};
+                    GlobalVariables.user.licensePicture = '';
+
                     Navigator.of(context)
                         .pushNamed(LoginRegisterScreen.routeName);
                   },
@@ -367,6 +370,15 @@ class UserAccountState extends State<UserAccount> {
                           icon: Icons.phone_outlined,
                           label: 'Telephone',
                           value: GlobalVariables.user.telephone,
+                          saveCallback: () {
+                            setState(() {});
+                          },
+                        ),
+                        MyTextfield(
+                          icon: Icons.image_outlined,
+                          label: 'License Picture',
+                          value: 'Image',
+                          isImage: true,
                           saveCallback: () {
                             setState(() {});
                           },
