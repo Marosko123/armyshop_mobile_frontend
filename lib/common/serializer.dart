@@ -37,8 +37,13 @@ class Serializer {
     final appDir = await path_provider.getApplicationDocumentsDirectory();
 
     // construct a file path relative to the app's internal storage directory
-    final documentsPath =
+    String documentsPath =
         path.join(appDir.path, "common", "documents", "products.json");
+      
+    if(Platform.isWindows) {
+      final currentDirectory = Directory.current.path;
+      documentsPath = path.join(currentDirectory, 'lib', 'common', 'documents', 'products.json');
+    }
 
     // write data to the file at the documentsPath location
     final file = File(documentsPath);

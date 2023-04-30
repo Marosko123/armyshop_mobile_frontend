@@ -9,8 +9,10 @@ import 'package:armyshop_mobile_frontend/screens/splash_screen.dart';
 import 'package:armyshop_mobile_frontend/screens/user_shopping_cart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import './screens/products_screen.dart';
 import 'common/armyshop_colors.dart';
+import 'common/auth_state.dart';
 import 'common/global_variables.dart';
 import 'common/notifications/notification_service.dart';
 import 'common/request_handler.dart';
@@ -25,8 +27,6 @@ void main() async {
   // find out whether we are connected to the server, if yes, set the global variable to true
   GlobalVariables.isConnectedToServer = await RequestHandler.checkConnection();
 
-  
-
   WidgetsFlutterBinding.ensureInitialized();
 
   // after we know whether we are connected to the server, load the products
@@ -40,10 +40,23 @@ void main() async {
     // if we are not connected to the server, load the products from the local storage
     GlobalVariables.products = await Serializer.deserialize();
   }
-  
+  // GlobalVariables.token = '2|qorVl9sirTLOZOpn1vlLjYi5eDsY4inlTgwyaiZ4';
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  //prefs.setString('token', GlobalVariables.token);
+
+  String? token = prefs.getString('token');
+  print('token: $token');
+  if (token != null) {
+    GlobalVariables.token = token;
+  }
+
   NotificationService().initNotification();
+
   runApp(
-    const MyApp(),
+    ChangeNotifierProvider(
+      create: (_) => AuthState(),
+      child: const MyApp(),
+    ),
   );
 }
 
