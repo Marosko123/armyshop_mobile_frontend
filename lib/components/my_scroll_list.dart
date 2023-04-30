@@ -15,6 +15,7 @@ class MyScrollList extends StatefulWidget {
   @override
   // ignore: no_logic_in_create_state
   State<MyScrollList> createState() {
+    // ignore: unused_local_variable
     for (var element in users) {
       isCheckedList.add(false);
     }

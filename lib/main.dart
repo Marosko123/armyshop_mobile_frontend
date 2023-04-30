@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:armyshop_mobile_frontend/models/cart_model.dart';
 import 'package:armyshop_mobile_frontend/models/chat_room.dart';
 import 'package:armyshop_mobile_frontend/screens/chat.dart';
@@ -17,7 +19,7 @@ import 'common/global_variables.dart';
 import 'common/notifications/notification_service.dart';
 import 'common/request_handler.dart';
 import 'common/serializer.dart';
-import 'models/Product.dart';
+import 'models/product.dart';
 import 'screens/primary_page.dart';
 import 'screens/login_register/login_screen.dart';
 import 'screens/login_register/register_screen.dart';

@@ -1,13 +1,12 @@
 import 'package:armyshop_mobile_frontend/common/armyshop_colors.dart';
 import 'package:armyshop_mobile_frontend/common/request_handler.dart';
 import 'package:armyshop_mobile_frontend/screens/payment_screeen.dart';
-import 'package:armyshop_mobile_frontend/screens/user_shopping_cart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../common/currencies.dart';
 import '../common/global_variables.dart';
-import '../models/Product.dart';
+import '../models/product.dart';
 
 class ProductPage extends StatefulWidget {
   static const routeName = '/product-page';
@@ -155,8 +154,7 @@ class ProductPageState extends State<ProductPage> {
       return;
     }
     if (!isLoggedIn) {
-      showPopup(
-          context, 'You are not logged in', 'Log in to add to basket');
+      showPopup(context, 'You are not logged in', 'Log in to add to basket');
       return;
     }
     // add the product to the shopping cart database

@@ -1,4 +1,6 @@
-import 'package:armyshop_mobile_frontend/models/Product.dart';
+// ignore_for_file: avoid_print
+
+import 'package:armyshop_mobile_frontend/models/product.dart';
 import 'package:armyshop_mobile_frontend/screens/payment_screeen.dart';
 import 'package:armyshop_mobile_frontend/screens/product_detail.dart';
 import 'package:flutter/material.dart';
@@ -86,8 +88,7 @@ class ProductsScreenState extends State<ProductsScreen> {
       return;
     }
     if (!isLoggedIn) {
-      showPopup(
-          context, 'You are not logged in', 'Log in to add to basket');
+      showPopup(context, 'You are not logged in', 'Log in to add to basket');
       return;
     }
     RequestHandler.addToBasket(userId, productId, 1).then((value) {

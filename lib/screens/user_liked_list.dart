@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:armyshop_mobile_frontend/common/armyshop_colors.dart';
 import 'package:armyshop_mobile_frontend/screens/payment_screeen.dart';
 import 'package:armyshop_mobile_frontend/screens/product_detail.dart';
@@ -6,7 +8,7 @@ import 'package:flutter/material.dart';
 import '../common/currencies.dart';
 import '../common/global_variables.dart';
 import '../common/request_handler.dart';
-import '../models/Product.dart';
+import '../models/product.dart';
 
 class UserLikedList extends StatefulWidget {
   static const routeName = '/user-liked-list-screen';

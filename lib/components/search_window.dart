@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class SearchWindow extends StatelessWidget {
   final Function(String) searchProducts;
 
-  const SearchWindow({required this.searchProducts});
+  const SearchWindow({super.key, required this.searchProducts});
 
   @override
   Widget build(BuildContext context) {

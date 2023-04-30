@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:async';
 
 import 'package:armyshop_mobile_frontend/common/global_variables.dart';

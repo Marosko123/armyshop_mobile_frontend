@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:path/path.dart' as path;
 
-import '../models/Product.dart';
+import '../models/product.dart';
 
 // Code to serialize and deserialize products
 
@@ -39,10 +39,11 @@ class Serializer {
     // construct a file path relative to the app's internal storage directory
     String documentsPath =
         path.join(appDir.path, "common", "documents", "products.json");
-      
-    if(Platform.isWindows) {
+
+    if (Platform.isWindows) {
       final currentDirectory = Directory.current.path;
-      documentsPath = path.join(currentDirectory, 'lib', 'common', 'documents', 'products.json');
+      documentsPath = path.join(
+          currentDirectory, 'lib', 'common', 'documents', 'products.json');
     }
 
     // write data to the file at the documentsPath location

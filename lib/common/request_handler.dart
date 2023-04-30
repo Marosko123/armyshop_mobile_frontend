@@ -4,7 +4,7 @@ import '../models/message.dart';
 import '../models/user.dart';
 import 'server_requester.dart';
 import 'global_variables.dart';
-import '../models/Product.dart';
+import '../models/product.dart';
 
 class RequestHandler {
   // check connection to the server
@@ -43,7 +43,9 @@ class RequestHandler {
     List<int> likedProducts = [];
 
     final Map<String, dynamic> data = await ServerRequester.request(
-        subUrl: '/liked_products/$userId', type: 'GET', token: GlobalVariables.token);
+        subUrl: '/liked_products/$userId',
+        type: 'GET',
+        token: GlobalVariables.token);
 
     // if (data['error'] != null) {
     //   throw data['error'];
@@ -65,7 +67,9 @@ class RequestHandler {
   // add to liked products
   static Future<bool> addToLikedProducts(int userId, int productId) async {
     final Map<String, dynamic> data = await ServerRequester.request(
-        subUrl: '/liked_products/$userId/$productId', type: 'POST', token: GlobalVariables.token);
+        subUrl: '/liked_products/$userId/$productId',
+        type: 'POST',
+        token: GlobalVariables.token);
 
     if (data['status'] == 200) {
       return true;
@@ -77,7 +81,9 @@ class RequestHandler {
   // remove from liked products
   static Future<bool> removeFromLikedProducts(int userId, int productId) async {
     final Map<String, dynamic> data = await ServerRequester.request(
-        subUrl: '/liked_products/$userId/$productId', type: 'DELETE', token: GlobalVariables.token);
+        subUrl: '/liked_products/$userId/$productId',
+        type: 'DELETE',
+        token: GlobalVariables.token);
 
     if (data['status'] == 200) {
       return true;
@@ -90,7 +96,9 @@ class RequestHandler {
   static Future<bool> addToBasket(
       int userId, int productId, int quantity) async {
     final Map<String, dynamic> data = await ServerRequester.request(
-        subUrl: '/baskets/$userId/$productId/$quantity', type: 'POST', token: GlobalVariables.token);
+        subUrl: '/baskets/$userId/$productId/$quantity',
+        type: 'POST',
+        token: GlobalVariables.token);
 
     if (data['status'] == 200) {
       return true;
@@ -102,7 +110,9 @@ class RequestHandler {
   // remove from basket
   static Future<bool> removeFromBasket(int userId, int productId) async {
     final Map<String, dynamic> data = await ServerRequester.request(
-        subUrl: '/baskets/$userId/$productId', type: 'DELETE', token: GlobalVariables.token);
+        subUrl: '/baskets/$userId/$productId',
+        type: 'DELETE',
+        token: GlobalVariables.token);
 
     if (data['status'] == 200) {
       return true;
@@ -115,8 +125,8 @@ class RequestHandler {
   static Future<List<Map<String, dynamic>>> getBasket(int userId) async {
     final List<Map<String, dynamic>> products = [];
     print('object1');
-    final Map<String, dynamic> data =
-        await ServerRequester.request(subUrl: '/baskets/$userId', type: 'GET', token: GlobalVariables.token);
+    final Map<String, dynamic> data = await ServerRequester.request(
+        subUrl: '/baskets/$userId', type: 'GET', token: GlobalVariables.token);
     print('object');
     if (data['status'] != 200) {
       return products; // no products in basket

@@ -30,8 +30,6 @@ class LoginRegisterScreenState extends State<LoginRegisterScreen> {
     print(passwordController.text);
   }
 
-  //TODO: Ulozit prihlaseneho uzivatela, autentifikacia a button Forgot password?
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

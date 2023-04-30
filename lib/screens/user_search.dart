@@ -3,8 +3,7 @@ import 'package:armyshop_mobile_frontend/screens/product_detail.dart';
 import 'package:flutter/material.dart';
 
 import '../common/global_variables.dart';
-import '../components/search_window.dart';
-import '../models/Product.dart';
+import '../models/product.dart';
 
 class UserSearch extends StatefulWidget {
   static const routeName = '/user-search';
