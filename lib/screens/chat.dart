@@ -163,17 +163,7 @@ class ChatState extends State<Chat> {
                     ),
                   ),
                 ),
-              ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: GestureDetector(
-                  onTap: editChat,
-                  child: Icon(
-                    Icons.settings,
-                    color: ArmyshopColors.textColor,
-                  ),
-                ),
-              ),
+              )
             ],
           ),
 
