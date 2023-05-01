@@ -35,10 +35,10 @@ class _NumericStepButtonState extends State<NumericStepButton> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 30,
+      height: 15,
       width: 111,
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           IconButton(

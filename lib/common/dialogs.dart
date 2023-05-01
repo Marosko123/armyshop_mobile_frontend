@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:armyshop_mobile_frontend/screens/primary_page.dart';
 import 'package:flutter/material.dart';
 
@@ -47,10 +49,12 @@ class Dialogs {
       context: context,
       builder: (BuildContext context) {
         // send successful payment notification
-        NotificationService().scheduleNotification(
-            notification: Notifications.getRandomNotification(
-                Notifications.purchaseNotifications),
-            scheduledDate: DateTime.now().add(const Duration(seconds: 10)));
+        if (!Platform.isWindows) {
+          NotificationService().scheduleNotification(
+              notification: Notifications.getRandomNotification(
+                  Notifications.purchaseNotifications),
+              scheduledDate: DateTime.now().add(const Duration(seconds: 10)));
+        }
 
         // return the Dialog widget wrapped with GestureDetector
         return GestureDetector(

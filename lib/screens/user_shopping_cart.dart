@@ -134,22 +134,26 @@ class UserShoppingCartState extends State<UserShoppingCart> {
                               style: TextStyle(
                                 color: ArmyshopColors.textColor,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 16,
+                                fontSize: 13,
                               ),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
                             ),
                             const SizedBox(height: 4),
                             Text(
                               'Price For One:',
                               style: TextStyle(
                                 color: ArmyshopColors.textColor,
-                                fontSize: 10,
+                                fontSize: 9,
                               ),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
                             ),
                             Text(
                               '\$${cartItems[index][1]}',
                               style: TextStyle(
                                 color: ArmyshopColors.textColor,
-                                fontSize: 14,
+                                fontSize: 12,
                               ),
                             ),
                           ],
