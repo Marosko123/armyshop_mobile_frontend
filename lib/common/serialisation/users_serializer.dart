@@ -24,7 +24,7 @@ class UsersSerializer {
   static Future<File> _localFile() async {
     final currentDirectory = Directory.current;
     final documentsDirectory =
-        Directory('${currentDirectory.path}/lib/common/documents');
+        Directory('${currentDirectory.path}lib/common/documents');
     final file = File('${documentsDirectory.path}/users.json');
     if (!await file.exists()) {
       await file.create();

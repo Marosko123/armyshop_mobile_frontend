@@ -98,9 +98,10 @@ class ChatRoomsState extends State<ChatRooms> {
   Future<void> showDialogAlert(BuildContext context) async {
     if (GlobalVariables.isConnectedToServer) {
       users = await RequestHandler.getUsers();
-    } else {
-      users = await UsersSerializer.deserialize();
     }
+    //else {
+    //   users = await UsersSerializer.deserialize();
+    // }
 
     if (users.isEmpty) {
       return;

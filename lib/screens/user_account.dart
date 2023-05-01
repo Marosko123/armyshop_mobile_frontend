@@ -68,8 +68,8 @@ class UserAccountState extends State<UserAccount> {
       children: [
         if (!GlobalVariables.user.isEmpty()) ...[
           Icon(
-            Icons.account_circle_sharp,
-            color: Colors.green[700],
+            Icons.account_circle_outlined,
+            color: ArmyshopColors.textColor,
             size: MediaQuery.of(context).size.width * 0.4,
           ),
 
@@ -173,7 +173,7 @@ class UserAccountState extends State<UserAccount> {
           )
         ],
         Padding(
-          padding: const EdgeInsets.only(left: 30, right: 30, top: 200),
+          padding: const EdgeInsets.only(left: 30, right: 30, top: 100),
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5),
