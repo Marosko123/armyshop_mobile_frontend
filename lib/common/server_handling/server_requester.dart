@@ -60,9 +60,4 @@ class ServerRequester {
       return {'error': 'Server is not responding'};
     }
   }
-
-  static Map<String, String>? _headers(String? token) {
-    if (token == null) return null;
-    return <String, String>{'Authorization': 'Bearer $token'};
-  }
 }

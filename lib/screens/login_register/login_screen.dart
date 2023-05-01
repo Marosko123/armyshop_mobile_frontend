@@ -1,5 +1,7 @@
 // ignore_for_file: avoid_print
 
+import 'dart:convert';
+
 import 'package:armyshop_mobile_frontend/components/my_button.dart';
 import 'package:armyshop_mobile_frontend/common/user_authenticator.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +11,8 @@ import '../../common/dialogs.dart';
 import '../../common/global_variables.dart';
 import '../../components/textfield.dart';
 import '../../common/server_handling/request_handler.dart';
+import '../../models/chat_room.dart';
+import '../../models/user.dart';
 
 class LoginScreen extends StatefulWidget {
   static const routeName = '/login-screen';
@@ -47,12 +51,27 @@ class LoginScreenState extends State<LoginScreen> {
       // ignore: use_build_context_synchronously
       SharedPreferences prefs = await SharedPreferences.getInstance();
 
+      GlobalVariables.isUserLoggedIn = true;
+
       // Set the token
       if (response['token'] != null) {
         GlobalVariables.token = response['token'];
         prefs.setString('token', response['token']);
       } else {
         prefs.setString('token', '');
+      }
+
+      // Set the user
+      if (user != null) {
+        User userObject = User.fromMap(user);
+        if (userObject.chatRooms[0].roomId == -1) {
+          userObject.chatRooms = [];
+        }
+
+        GlobalVariables.user = userObject;
+        prefs.setInt('user_id', GlobalVariables.user.id);
+      } else {
+        prefs.setInt('user_id', 0);
       }
 
       // ignore: use_build_context_synchronously

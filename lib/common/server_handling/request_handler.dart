@@ -174,6 +174,43 @@ class RequestHandler {
     return GlobalVariables.users;
   }
 
+  // get user by id
+  static Future<User> getUserById(int id) async {
+    final response = await ServerRequester.request(
+        subUrl: '/users/$id', type: 'GET', token: GlobalVariables.token);
+
+    if (response['status'] == 200) {
+      final Map u = response['user'];
+
+      return User(
+        id: u['id'],
+        email: u['email'],
+        firstName: u['first_name'],
+        lastName: u['last_name'],
+        age: u['age'] ?? 0,
+        address: u['address'] ?? '',
+        licensePicture: '',
+        isLicenseValid: false,
+        telephone: u['telephone'] ?? '',
+        chatRooms: [],
+      );
+    } else {
+      return User(
+        id: 0,
+        email: '',
+        firstName: '',
+        lastName: '',
+        age: 0,
+        address: '',
+        licensePicture: '',
+        isLicenseValid: false,
+        telephone: '',
+        chatRooms: [],
+      );
+      ;
+    }
+  }
+
   // login existing user
   static Future<dynamic> login(
     String email,

@@ -20,6 +20,7 @@ import 'common/notifications/notification_service.dart';
 import 'common/server_handling/request_handler.dart';
 import 'common/serialisation/serializer.dart';
 import 'models/product.dart';
+import 'models/user.dart';
 import 'screens/primary_page.dart';
 import 'screens/login_register/login_screen.dart';
 import 'screens/login_register/register_screen.dart';
@@ -31,6 +32,7 @@ void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
 
+  SharedPreferences prefs = await SharedPreferences.getInstance();
   // after we know whether we are connected to the server, load the products
   if (GlobalVariables.isConnectedToServer) {
     GlobalVariables.products =
@@ -38,20 +40,41 @@ void main() async {
 
     // serialize the current version of products
     Serializer.serialize(GlobalVariables.products);
+
+    int? id = prefs.getInt('user_id');
+    if (id != null && id != 0) {
+      GlobalVariables.user = await RequestHandler.getUserById(id);
+      if (GlobalVariables.user.id != 0) {
+        GlobalVariables.isUserLoggedIn = true;
+      }
+
+      String? token = prefs.getString('token');
+      print('token: $token');
+      if (token != null && token != '') {
+        GlobalVariables.token = token;
+      } else {
+        GlobalVariables.token = '';
+        GlobalVariables.user = User(
+          id: 0,
+          email: '',
+          firstName: '',
+          lastName: '',
+          age: 0,
+          address: '',
+          licensePicture: '',
+          isLicenseValid: false,
+          telephone: '',
+          chatRooms: [],
+        );
+      }
+    }
   } else {
     // if we are not connected to the server, load the products from the local storage
     GlobalVariables.products = await Serializer.deserialize();
   }
   // GlobalVariables.token = '2|qorVl9sirTLOZOpn1vlLjYi5eDsY4inlTgwyaiZ4';
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  //prefs.setString('token', GlobalVariables.token);
 
-  String? token = prefs.getString('token');
-  print('token: $token');
-  if (token != null && token != '') {
-    GlobalVariables.token = token;
-    GlobalVariables.isUserLoggedIn = true;
-  }
+  //prefs.setString('token', GlobalVariables.token);
 
   NotificationService().initNotification();
 

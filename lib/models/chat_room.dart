@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:armyshop_mobile_frontend/models/user.dart';
 
 class ChatRoom {
@@ -23,11 +25,24 @@ class ChatRoom {
   }
 
   factory ChatRoom.fromMap(Map<String, dynamic> map) {
+    if (map.isEmpty) {
+      return ChatRoom(
+        roomId: -1,
+        creatorId: 0,
+        roomName: '',
+        members: [],
+      );
+    }
+
+    List<int> members = [];
+    if (map['members'] != null) {
+      members = List<int>.from(json.decode(map['members'])['user_ids']);
+    }
     return ChatRoom(
-      roomId: map['room_id'],
+      roomId: map['id'],
       creatorId: map['creator_id'],
       roomName: map['room_name'],
-      members: List<User>.from(map['members'].map((user) => User.fromMap(user))),
+      members: members
     );
   }
 }

@@ -32,11 +32,11 @@ class User {
     return {
       'id': id,
       'email': email,
-      'firstName': firstName,
-      'lastName': lastName,
+      'first_name': firstName,
+      'last_name': lastName,
       'age': age,
       'address': address,
-      'licensePicture': licensePicture,
+      'license_picture': licensePicture,
       'isLicenseValid': isLicenseValid,
       'telephone': telephone,
       'chatRooms': chatRooms.map((room) => room.toMap()).toList(),
@@ -47,15 +47,15 @@ class User {
     return User(
       id: map['id'],
       email: map['email'],
-      firstName: map['firstName'],
-      lastName: map['lastName'],
+      firstName: map['first_name'],
+      lastName: map['last_name'],
       age: map['age'],
       address: map['address'],
-      licensePicture: map['licensePicture'],
-      isLicenseValid: map['isLicenseValid'],
+      licensePicture: map['license_picture'],
+      isLicenseValid: map['is_license_valid'] == 1,
       telephone: map['telephone'],
       chatRooms: List<ChatRoom>.from(
-          map['chatRooms']?.map((x) => ChatRoom.fromMap(x))),
+          map['chat_rooms']?.map((x) => ChatRoom.fromMap(x))),
     );
   }
 

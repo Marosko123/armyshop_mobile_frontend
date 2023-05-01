@@ -19,6 +19,9 @@ class Serializer {
     try {
       final file = await _localFile;
       final json = await file.readAsString();
+      if (json.isEmpty) {
+        return [];
+      }
       final jsonList = jsonDecode(json) as List<dynamic>;
       final products = jsonList
           .map((jsonProduct) =>

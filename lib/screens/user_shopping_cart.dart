@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'package:armyshop_mobile_frontend/common/armyshop_colors.dart';
+import 'package:armyshop_mobile_frontend/common/dialogs.dart';
 import 'package:armyshop_mobile_frontend/common/global_variables.dart';
 import 'package:armyshop_mobile_frontend/screens/payment_screeen.dart';
 import 'package:flutter/material.dart';
@@ -51,7 +52,7 @@ class UserShoppingCartState extends State<UserShoppingCart> {
     populateCartItems();
   }
 
-  // structure: ['name', 'price', 'quantity', 'image', 'id']
+  // structure: ['name', 'price', 'quantity', 'image', 'id', 'license]
   void populateCartItems() {
     for (var productWithQuantity in productsWithQuantity) {
       final product = productWithQuantity.product;
@@ -59,8 +60,9 @@ class UserShoppingCartState extends State<UserShoppingCart> {
       final priceForOne = product.price!;
       final image = product.imageUrl!;
       final id = product.id!;
+      final license = product.licenseNeeded!;
 
-      cartItems.add([product.name, priceForOne, quantity, image, id]);
+      cartItems.add([product.name, priceForOne, quantity, image, id, license]);
     }
     print("number of items: ${cartItems.length}");
   }
@@ -243,20 +245,35 @@ class UserShoppingCartState extends State<UserShoppingCart> {
                   ),
 
                   // Pay Now
-                  Container(
-                    decoration: BoxDecoration(
-                      color: ArmyshopColors.buttonColor,
-                      border: Border.all(
-                        color: ArmyshopColors.buttonTextColor,
-                      ),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    padding: const EdgeInsets.all(12),
-                    child: GestureDetector(
-                      onTap: () {
-                        // Navigate to payment screen
+                  GestureDetector(
+                    onTap: () {
+                      // check if license is needed to buy products
+                      bool needsLicense = false;
+                      String name = '';
+                      for (var item in cartItems) {
+                        if (item[5] == true) {
+                          needsLicense = true;
+                          name = item[0];
+                        }
+                      }
+                      // check if user has license
+                      if (needsLicense &&
+                          !GlobalVariables.user.isLicenseValid) {
+                        Dialogs.showPopup(context, 'License needed',
+                            'You need a license to buy $name.');
+                      } else {
                         Navigator.pushNamed(context, PaymentScreen.routeName);
-                      },
+                      }
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: ArmyshopColors.buttonColor,
+                        border: Border.all(
+                          color: ArmyshopColors.buttonTextColor,
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      padding: const EdgeInsets.all(12),
                       child: Row(
                         children: [
                           Text(
