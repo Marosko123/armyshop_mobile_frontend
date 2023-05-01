@@ -1,5 +1,7 @@
 // ignore_for_file: avoid_print
 
+import 'dart:async';
+
 import 'package:armyshop_mobile_frontend/models/cart_model.dart';
 import 'package:armyshop_mobile_frontend/models/chat_room.dart';
 import 'package:armyshop_mobile_frontend/screens/chat.dart';
@@ -27,8 +29,12 @@ import 'screens/login_register/register_screen.dart';
 
 void main() async {
   ArmyshopColors.setColors();
+
   // find out whether we are connected to the server, if yes, set the global variable to true
-  GlobalVariables.isConnectedToServer = await RequestHandler.checkConnection();
+  Timer.periodic(
+      const Duration(seconds: 5),
+      (Timer t) async => GlobalVariables.isConnectedToServer =
+          await RequestHandler.checkConnection());
 
   WidgetsFlutterBinding.ensureInitialized();
 

@@ -10,7 +10,7 @@ class RequestHandler {
   // check connection to the server
   static Future<bool> checkConnection() async {
     final response = await ServerRequester.request(
-      subUrl: '/products',
+      subUrl: '/ping',
       type: 'GET',
     );
 

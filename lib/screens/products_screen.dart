@@ -21,16 +21,9 @@ class ProductsScreen extends StatefulWidget {
 }
 
 class ProductsScreenState extends State<ProductsScreen> {
-  // bool isLiked = false;
   List<int> likedList = [];
   int userId = GlobalVariables.user.id;
   bool isLoggedIn = GlobalVariables.isUserLoggedIn;
-
-  // void _toggleLike() {
-  //   setState(() {
-  //     isLiked = !isLiked;
-  //   });
-  // }
 
   void getLikedProducts() {
     RequestHandler.getLikedProducts(GlobalVariables.user.id).then((value) {

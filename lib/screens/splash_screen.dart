@@ -37,11 +37,15 @@ class _SplashScreenState extends State<SplashScreen> {
     print(_noInternetCounter);
 
     if (_noInternetCounter >= 3) {
-      return setState(() {
-        GlobalVariables.isConnectedToServer = false;
-        showLoading = false;
-        _timer.cancel();
-      });
+      try {
+        return setState(() {
+          GlobalVariables.isConnectedToServer = false;
+          showLoading = false;
+          _timer.cancel();
+        });
+      } catch (e) {
+        print(e);
+      }
     }
 
     await Future.delayed(const Duration(seconds: 1), () => getProducts());

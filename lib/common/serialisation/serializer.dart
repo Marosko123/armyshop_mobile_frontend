@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart' as path_provider;
@@ -58,13 +60,18 @@ class Serializer {
   }
 
   static Future<List<Product>> _getOfflineProducts() async {
-    final file = await _localFile;
-    final json = await file.readAsString();
-    final jsonList = jsonDecode(json) as List<dynamic>;
-    final products = jsonList
-        .map((jsonProduct) =>
-            Product.fromMap(jsonProduct as Map<String, dynamic>))
-        .toList();
-    return products;
+    try {
+      final file = await _localFile;
+      final json = await file.readAsString();
+      final jsonList = jsonDecode(json) as List<dynamic>;
+      final products = jsonList
+          .map((jsonProduct) =>
+              Product.fromMap(jsonProduct as Map<String, dynamic>))
+          .toList();
+      return products;
+    } catch (e) {
+      print(e);
+      return [];
+    }
   }
 }

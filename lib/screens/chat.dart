@@ -38,7 +38,8 @@ class ChatState extends State<Chat> {
     super.initState();
     _chatRoom = widget.chatRoom;
     getMessages();
-    loadUsers();
+    RequestHandler.getUsers();
+    // loadUsers();
 
     _timer = Timer.periodic(const Duration(milliseconds: 3000), (timer) async {
       await getMessages(getOnlyUnreadMessages: true);
@@ -48,11 +49,12 @@ class ChatState extends State<Chat> {
   void loadUsers() async {
     if (GlobalVariables.isConnectedToServer) {
       RequestHandler.getUsers();
-      // UsersSerializer.serialize(GlobalVariables.users);
-    } else {
-      // GlobalVariables.users = await UsersSerializer.deserialize();
-      setState(() {});
+      //UsersSerializer.serialize(GlobalVariables.users); // for offline mode - not implemented yet
     }
+    // else {
+    //   GlobalVariables.users = await UsersSerializer.deserialize();
+    //   setState(() {});
+    // }
   }
 
   Future<void> getMessages({bool getOnlyUnreadMessages = false}) async {
@@ -72,35 +74,16 @@ class ChatState extends State<Chat> {
         ));
       }
     }
-
-    setState(() {});
-  }
-
-  // Future<void> getMessages({bool getOnlyUnreadMessages = false}) async {
-  //   if (GlobalVariables.isConnectedToServer) {
-  //     final response = await RequestHandler.getMessages(
-  //         GlobalVariables.user.id, _chatRoom.roomId, getOnlyUnreadMessages);
-
-  //     if (response['status'] == 200) {
-  //       print(response['messages']);
-  //       dynamic arrOfMessages = response['messages'];
-  //       for (var x in arrOfMessages) {
-  //         _messages.add(Message(
-  //           senderId: x['sender_id'],
-  //           roomId: x['room_id'],
-  //           message: x['message'],
-  //           date: DateTime.fromMillisecondsSinceEpoch(x['date'] * 1000),
-  //           isSentByMe: GlobalVariables.user.id == x['sender_id'],
-  //         ));
-  //       }
-  //     }
-  //   } else {
+  // deserialize messages for offline mode - not implemented yet
   //     final messages = await MessageSerializer.deserialize(_chatRoom.roomId);
   //     _messages.addAll(messages);
-  //   }
 
-  //   setState(() {});
-  // }
+    try {
+      setState(() {});
+    } catch (e) {
+      print(e);
+    }
+  }
 
   Future<void> sendMessage(String text) async {
     if (text.isEmpty) return;
