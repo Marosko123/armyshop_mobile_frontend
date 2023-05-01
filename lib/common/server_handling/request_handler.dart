@@ -1,5 +1,8 @@
 // ignore_for_file: avoid_print
 
+import 'dart:convert';
+
+import '../../models/chat_room.dart';
 import '../../models/message.dart';
 import '../../models/user.dart';
 import 'server_requester.dart';
@@ -182,6 +185,17 @@ class RequestHandler {
     if (response['status'] == 200) {
       final Map u = response['user'];
 
+      List<ChatRoom> chatRooms = [];
+
+      for (var chatRoom in u['chat_rooms']) {
+        chatRooms.add(ChatRoom(
+          roomId: chatRoom['id'],
+          creatorId: chatRoom['creator_id'],
+          roomName: chatRoom['room_name'],
+          members: jsonDecode(chatRoom['members']),
+        ));
+      }
+
       return User(
         id: u['id'],
         email: u['email'],
@@ -189,10 +203,10 @@ class RequestHandler {
         lastName: u['last_name'],
         age: u['age'] ?? 0,
         address: u['address'] ?? '',
-        licensePicture: '',
-        isLicenseValid: false,
+        licensePicture: u['license_picture'] ?? '',
+        isLicenseValid: u['is_license_valid'] ?? false,
         telephone: u['telephone'] ?? '',
-        chatRooms: [],
+        chatRooms: chatRooms,
       );
     } else {
       return User(
