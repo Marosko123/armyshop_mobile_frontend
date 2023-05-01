@@ -29,7 +29,7 @@ import 'screens/login_register/register_screen.dart';
 
 void main() async {
   ArmyshopColors.setColors();
-
+  GlobalVariables.isConnectedToServer = await RequestHandler.checkConnection();
   // find out whether we are connected to the server, if yes, set the global variable to true
   Timer.periodic(
       const Duration(seconds: 5),
@@ -39,6 +39,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   SharedPreferences prefs = await SharedPreferences.getInstance();
+  // GlobalVariables.isConnectedToServer = true;
   // after we know whether we are connected to the server, load the products
   if (GlobalVariables.isConnectedToServer) {
     GlobalVariables.products =

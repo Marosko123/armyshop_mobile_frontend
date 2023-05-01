@@ -189,7 +189,7 @@ class ProductsScreenState extends State<ProductsScreen> {
           ],
         ),
 
-        const Center(
+      const Center(
           child: Text(
             'No products available',
             style: TextStyle(fontSize: 20),

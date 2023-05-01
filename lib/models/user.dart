@@ -53,7 +53,7 @@ class User {
       address: map['address'],
       licensePicture: map['license_picture'],
       isLicenseValid: map['is_license_valid'] == 1,
-      telephone: map['telephone'],
+      telephone: map['telephone'] ?? '',
       chatRooms: List<ChatRoom>.from(
           map['chat_rooms']?.map((x) => ChatRoom.fromMap(x))),
     );

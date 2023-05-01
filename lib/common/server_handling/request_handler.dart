@@ -28,7 +28,7 @@ class RequestHandler {
     final Map<String, dynamic> data =
         await ServerRequester.request(subUrl: '/products', type: 'GET');
 
-    final List productsList = data['products'];
+    final List productsList = data['products'] ?? [];
 
     for (Map m in productsList) {
       products.add(

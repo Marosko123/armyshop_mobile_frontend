@@ -1,6 +1,11 @@
 import 'package:armyshop_mobile_frontend/screens/products_screen.dart';
 import 'package:flutter/material.dart';
 
+import '../common/global_variables.dart';
+import '../common/serialisation/serializer.dart';
+import '../common/server_handling/request_handler.dart';
+import '../models/product.dart';
+
 // import '../common/global_variables.dart';
 // import '../common/request_handler.dart';
 // import '../models/Product.dart';
@@ -18,12 +23,7 @@ class UserHomeState extends State<UserHome> {
   @override
   void initState() {
     super.initState();
-    // loadProducts();
   }
-
-// void loadProducts() async {
-//   GlobalVariables.products = (await RequestHandler.getProducts()).cast<Product>();
-// }
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +85,7 @@ class UserHomeState extends State<UserHome> {
               );
             },
           ),
-          const SizedBox(height: 30.0),
+          const SizedBox(height: 50.0),
         ],
       ),
     );
@@ -93,10 +93,19 @@ class UserHomeState extends State<UserHome> {
 
   Widget _buildCategory(String name, String image) {
     return GestureDetector(
-      onTap: () => Navigator.of(context).pushNamed(
-        ProductsScreen.routeName,
-        arguments: name,
-      ),
+      onTap: () async {
+        List<Product> products =
+            (await RequestHandler.getProducts()).cast<Product>();
+        if (products.isNotEmpty) {
+          GlobalVariables.products = products;
+        } else {
+          GlobalVariables.products = await Serializer.deserialize();
+        }
+        Navigator.of(context).pushNamed(
+          ProductsScreen.routeName,
+          arguments: name,
+        );
+      },
       child: Container(
         margin: const EdgeInsets.all(8.0),
         padding: const EdgeInsets.all(8.0),

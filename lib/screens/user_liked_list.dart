@@ -27,7 +27,7 @@ class UserLikedListState extends State<UserLikedList> {
   List<Product> productsToDisplay = [];
 
   void getLikedProducts() {
-    RequestHandler.getLikedProducts(1).then((value) {
+    RequestHandler.getLikedProducts(GlobalVariables.user.id).then((value) {
       setState(() {
         likedList = value;
         print(value);
@@ -165,7 +165,7 @@ class UserLikedListState extends State<UserLikedList> {
               primary: false,
               crossAxisSpacing: 10.0,
               mainAxisSpacing: 10.0,
-              childAspectRatio: 0.73,
+              childAspectRatio: 0.70,
               children: likedList.map((productId) {
                 final product =
                     productsToDisplay.firstWhere((p) => p.id == productId);

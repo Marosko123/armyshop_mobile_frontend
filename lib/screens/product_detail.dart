@@ -78,7 +78,7 @@ class ProductPageState extends State<ProductPage> {
     productId = product.id!;
 
     if (GlobalVariables.isConnectedToServer) {
-      image = product.imageUrl!;
+      image = product.imageUrl ?? '';
     }
 
     // format the price
