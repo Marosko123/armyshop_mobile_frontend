@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:armyshop_mobile_frontend/models/user.dart';
 
 class ChatRoom {
   int roomId;

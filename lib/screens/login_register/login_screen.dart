@@ -1,6 +1,5 @@
 // ignore_for_file: avoid_print
 
-import 'dart:convert';
 
 import 'package:armyshop_mobile_frontend/components/my_button.dart';
 import 'package:armyshop_mobile_frontend/common/user_authenticator.dart';
@@ -11,7 +10,6 @@ import '../../common/dialogs.dart';
 import '../../common/global_variables.dart';
 import '../../components/textfield.dart';
 import '../../common/server_handling/request_handler.dart';
-import '../../models/chat_room.dart';
 import '../../models/user.dart';
 
 class LoginScreen extends StatefulWidget {

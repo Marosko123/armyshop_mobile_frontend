@@ -220,8 +220,7 @@ class RequestHandler {
         isLicenseValid: false,
         telephone: '',
         chatRooms: [],
-      );
-      ;
+      );    
     }
   }
 

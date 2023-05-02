@@ -9,7 +9,6 @@ import 'package:armyshop_mobile_frontend/screens/chat.dart';
 import 'package:flutter/material.dart';
 
 import '../common/armyshop_colors.dart';
-import '../common/serialisation/users_serializer.dart';
 import '../models/user.dart';
 
 class ChatRooms extends StatefulWidget {

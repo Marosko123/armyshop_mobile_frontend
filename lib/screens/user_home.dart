@@ -101,6 +101,7 @@ class UserHomeState extends State<UserHome> {
         } else {
           GlobalVariables.products = await Serializer.deserialize();
         }
+        // ignore: use_build_context_synchronously
         Navigator.of(context).pushNamed(
           ProductsScreen.routeName,
           arguments: name,
