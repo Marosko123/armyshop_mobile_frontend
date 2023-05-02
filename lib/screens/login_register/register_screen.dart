@@ -1,5 +1,7 @@
 // ignore_for_file: avoid_print
 
+import 'dart:io';
+
 import 'package:armyshop_mobile_frontend/common/armyshop_colors.dart';
 import 'package:armyshop_mobile_frontend/common/global_variables.dart';
 import 'package:armyshop_mobile_frontend/components/my_button.dart';
@@ -61,13 +63,23 @@ class RegisterScreenState extends State<RegisterScreen> {
       final UserAuthenticator userAuthenticator = UserAuthenticator();
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString('token', response['token']);
+      // Set the token
+      if (response['token'] != null) {
+        GlobalVariables.token = response['token'];
+        prefs.setString('token', response['token']);
+      } else {
+        prefs.setString('token', '');
+      }
+
+      prefs.setInt('user_id', user['id']);
 
       // send registration notification
-      NotificationService().scheduleNotification(
-          notification: Notifications.getRandomNotification(
-              Notifications.welcomeNotifications),
-          scheduledDate: DateTime.now().add(const Duration(seconds: 10)));
+      if (!Platform.isWindows) {
+        NotificationService().scheduleNotification(
+            notification: Notifications.getRandomNotification(
+                Notifications.welcomeNotifications),
+            scheduledDate: DateTime.now().add(const Duration(seconds: 10)));
+      }
 
       // ignore: use_build_context_synchronously
       return userAuthenticator.userSuccessfullyLoggedIn(

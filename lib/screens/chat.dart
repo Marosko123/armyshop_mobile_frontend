@@ -74,9 +74,9 @@ class ChatState extends State<Chat> {
         ));
       }
     }
-  // deserialize messages for offline mode - not implemented yet
-  //     final messages = await MessageSerializer.deserialize(_chatRoom.roomId);
-  //     _messages.addAll(messages);
+    // deserialize messages for offline mode - not implemented yet
+    //     final messages = await MessageSerializer.deserialize(_chatRoom.roomId);
+    //     _messages.addAll(messages);
 
     try {
       setState(() {});
@@ -114,6 +114,18 @@ class ChatState extends State<Chat> {
 
   @override
   Widget build(BuildContext context) {
+    String name = '';
+    String lastName = '';
+    try {
+      name = UserAuthenticator.getUserName(GlobalVariables.user.id)
+          .split(' ')[0][0];
+      lastName = UserAuthenticator.getUserName(GlobalVariables.user.id)
+          .split(' ')[1][0];
+    } catch (e) {
+      name = 'N';
+      lastName = 'N';
+    }
+
     return Scaffold(
       backgroundColor: ArmyshopColors.backgroundColor,
       body: Column(
@@ -226,10 +238,10 @@ class ChatState extends State<Chat> {
                     if (message.isSentByMe)
                       CircleAvatar(
                         radius: 10,
-                        backgroundColor: Converters.initialsToColor(
-                            '${UserAuthenticator.getUserName(GlobalVariables.user.id).split(' ')[0][0]}${UserAuthenticator.getUserName(GlobalVariables.user.id).split(' ')[1][0]}'),
+                        backgroundColor:
+                            Converters.initialsToColor('$name$lastName'),
                         child: Text(
-                          '${UserAuthenticator.getUserName(GlobalVariables.user.id).split(' ')[0][0]}${UserAuthenticator.getUserName(GlobalVariables.user.id).split(' ')[1][0]}',
+                          '$name$lastName',
                           style: TextStyle(
                             color: ArmyshopColors.textColor,
                             fontWeight: FontWeight.bold,
