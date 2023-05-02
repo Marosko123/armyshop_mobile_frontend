@@ -39,16 +39,16 @@ class PaymentScreenState extends State<PaymentScreen> {
         const SizedBox(height: 10),
         // Header
         Row(
-          children: [
+          children: const [
             Align(
               alignment: Alignment.centerLeft,
               child: BackButton(
-                color: ArmyshopColors.textColor,
+                color: Colors.black,
               ),
             ),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.only(right: 40.0),
+                padding: EdgeInsets.only(right: 40.0),
                 child: Align(
                   alignment: Alignment.center,
                   child: Text(
@@ -56,7 +56,7 @@ class PaymentScreenState extends State<PaymentScreen> {
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: ArmyshopColors.textColor,
+                      color: Colors.black,
                     ),
                   ),
                 ),
@@ -155,7 +155,7 @@ class PaymentScreenState extends State<PaymentScreen> {
                   Dialogs.showSuccessfulPaymentPopup(context);
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: ArmyshopColors.buttonColor,
+                  backgroundColor: Colors.black,
                 ),
                 child: const Text('Save'),
               ),

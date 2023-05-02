@@ -189,7 +189,7 @@ class ProductsScreenState extends State<ProductsScreen> {
           ],
         ),
 
-      const Center(
+        const Center(
           child: Text(
             'No products available',
             style: TextStyle(fontSize: 20),
@@ -287,6 +287,7 @@ class ProductsScreenState extends State<ProductsScreen> {
                             });
                           },
                           product.id!,
+                          product.licenseNeeded ?? false,
                           context,
                         );
                       },
@@ -308,6 +309,7 @@ class ProductsScreenState extends State<ProductsScreen> {
       Function(bool) onLiked,
       Function() onAddToBasket,
       int id,
+      bool needsLicense,
       BuildContext context) {
     // set the height of the card
     double deviceWidth = MediaQuery.of(context).size.width;
@@ -473,6 +475,14 @@ class ProductsScreenState extends State<ProductsScreen> {
                           if (!isLoggedIn) {
                             Dialogs.showPopup(context, 'You are not logged in',
                                 'Log in to order products');
+                            return;
+                          }
+                          if (!GlobalVariables.user.isLicenseValid &&
+                              needsLicense) {
+                            Dialogs.showPopup(
+                                context,
+                                'You do not have a valid license',
+                                'Please upload a license to order this product.');
                             return;
                           }
                           // Navigate to the payment page
